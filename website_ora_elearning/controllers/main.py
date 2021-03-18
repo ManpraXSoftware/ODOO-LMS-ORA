@@ -90,5 +90,8 @@ class WebsiteSlidesORA(WebsiteSlides):
             ora_karma.setdefault(slide.id, 0)
             if assessed_response:
                 ora_karma[slide.id] = assessed_response.xp_points
+            for response in total_responses:
+                if response.feedback == '<p><br></p>':
+                    response.feedback = False
         values['ora_karma'] = ora_karma
         return values
