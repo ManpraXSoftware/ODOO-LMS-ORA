@@ -17,5 +17,5 @@
     'qweb': [],
     'images': ["static/description/banner.gif"],
     'application': True,
-    'license': 'AGPL-3',
+    'license': 'GPL-3',
 }
