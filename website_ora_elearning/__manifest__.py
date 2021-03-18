@@ -15,7 +15,7 @@
         'views/templates.xml',
     ],
     'qweb': [],
-    'images': ["static/description/banner.gif"],
+    'images': ["static/description/images/banner.png"],
     'application': True,
     'license': 'AGPL-3',
 }
