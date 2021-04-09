@@ -9,7 +9,7 @@ var weDefaultOptions = require('web_editor.wysiwyg.default_options');
 publicWidget.registry.websiteORA = publicWidget.Widget.extend({
     selector: '.o_user_response',
     read_events: {
-        'click .o_wprofile_submit_btn': '_onSubmitClick',
+        'click .o_slide_submit_btn': '_onSubmitClick',
     },
     /**
      * @override
@@ -46,18 +46,23 @@ publicWidget.registry.websiteORA = publicWidget.Widget.extend({
                 html: true,
             });
         });
+
+        $('.custom_response').click(function() {
+            var id = this.id.split('-')[this.id.split('-').length - 1]
+            if($('#collapse_div_'+id).hasClass('show')) {
+                $(this).children().text('View Response')
+            }else {
+                $(this).children().text('Hide Response')
+            }
+        });
     },
-    
     /**
      * @private
      */
-    _onSubmitClick: function () {
+     _onSubmitClick: function () {
         if (this._wysiwyg) {
             this._wysiwyg.save();
         }
     },
 });
-
-return publicWidget.registry.websiteORA;
-
 });

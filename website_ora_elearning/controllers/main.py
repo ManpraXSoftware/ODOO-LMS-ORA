@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from odoo import http
 from odoo.http import request, Response
 from datetime import datetime
@@ -10,7 +9,7 @@ from odoo.addons.website_slides.controllers.main import WebsiteSlides
 
 class WebsiteSlidesORA(WebsiteSlides):
 
-    @http.route('/ora/response/save/', type='http', auth="user", methods=['POST'], website=True)
+    @http.route('/ora/response/save/', type='http', auth="user", website=True)
     def save_response(self, **kwargs):
         user_response = self._get_access_data(kwargs)
         slide = request.env['slide.slide'].sudo().browse(int(kwargs.get('slide_id')))
@@ -27,11 +26,27 @@ class WebsiteSlidesORA(WebsiteSlides):
             user_response.state = 'submitted'
             user_response.submitted_date = datetime.now()
             self.add_answers(kwargs, user_response)
+            if slide.peer_assessment:
+                peer_limit = slide.peer_limit
+                enrolled_users = slide.channel_id.partner_ids.filtered(lambda l: l.id != request.env.user.partner_id.id)
+                if peer_limit <= len(enrolled_users):
+                    peer_limit = peer_limit
+                else:
+                    peer_limit = len(enrolled_users)
+                for _ in range(peer_limit):
+                    peer_user = slide._get_peer_user(user_response)
+                    if peer_user:
+                        request.env['open.response.rubric.staff'].create({
+                            'assess_type': 'peer',
+                            'user_id': peer_user.id,
+                            'state': 'in_progress',
+                            'response_id': user_response.id
+                        })
             user_response.message_post(
                 body='This response has been submitted!', message_type='notification',
                 subtype_xmlid='mail.mt_comment', author_id=request.env.user.partner_id.id,
                 partner_ids=[user_response.staff_id.partner_id.id])
-        return request.redirect('/slides/slide/%s' % slug(slide)) 
+        return request.redirect('/slides/slide/%s' % slug(slide))
 
     def _get_access_data(self, post, resubmit=False):
         user = request.env.user
@@ -87,6 +102,7 @@ class WebsiteSlidesORA(WebsiteSlides):
             values['inactive_response'] = inactive_response
             values['total_responses'] = total_responses
             values['assessed_response'] = assessed_response
+            values['rubric_ids'] = slide.rubric_ids
             ora_karma.setdefault(slide.id, 0)
             if assessed_response:
                 ora_karma[slide.id] = assessed_response.xp_points
@@ -94,4 +110,147 @@ class WebsiteSlidesORA(WebsiteSlides):
                 if response.feedback == '<p><br></p>':
                     response.feedback = False
         values['ora_karma'] = ora_karma
+        values['peer_responses'] = request.env['open.response.rubric.staff'].search([
+            ('user_id', '=', request.env.user.id),
+            ('assess_type', '=', 'peer'),
+            ('response_id.state', 'in', ['submitted', 'assessed'])
+        ]).mapped('response_id')
         return values
+
+    @http.route('/slides/slide/get_values', website=True, type="json", auth="user")
+    def slide_get_value(self, slide_id):
+        csrf_token = request.csrf_token()
+        slide = request.env['slide.slide'].browse(slide_id)
+        if slide:
+            values = {'slide': self._get_slide_values(slide), 'csrf_token': csrf_token}
+            if slide.prompt_ids:
+                values.update({
+                    'slide_prompts': [{
+                        'id': prompt.id,
+                        'sequence': prompt.sequence,
+                        'question': prompt.question_name,
+                        'response_type': prompt.response_type,
+                        'name': prompt.name,
+                    } for prompt in slide.prompt_ids.sorted(key=lambda x: x.id)]
+                })
+            if slide.response_ids:
+                total_responses = slide.response_ids.filtered(lambda l: l.user_id == request.env.user)
+                values['total_responses'] = []
+                for ora_response in total_responses:
+                    if ora_response.feedback == '<p><br></p>':
+                        ora_response.feedback = False
+                    values['total_responses'].append(self._get_total_responses(ora_response, slide))
+                peer_response_ids = request.env['open.response.rubric.staff'].search([
+                    ('user_id', '=', request.env.user.id),
+                    ('assess_type', '=', 'peer'),
+                    ('response_id.state', 'in', ['submitted', 'assessed'])
+                ])
+                values['peer_responses'] = []
+                for staff_response in peer_response_ids:
+                    values['peer_responses'].append(({
+                        'id': staff_response.response_id.id,
+                        'state': staff_response.state,
+                        'assess_type': staff_response.assess_type,
+                        'user_id': staff_response.user_id.id,
+                        'option_ids': [{
+                            'id': rubric_id.criteria_id.id,
+                            'criterian_name': rubric_id.criteria_id.criterian_name,
+                            'criteria_desc': rubric_id.criteria_desc,
+                            'name': rubric_id.option_id.name,
+                            'criteria_option_point': rubric_id.criteria_option_point,
+                            'criteria_option_desc': rubric_id.criteria_option_desc,
+                            'assess_explanation': rubric_id.assess_explanation,
+                        } for rubric_id in staff_response.option_ids],
+                        'user_response_line': [self._get_user_response(user_response_line) for user_response_line in staff_response.response_id.user_response_line]
+                    }))
+        return values
+
+    def _get_slide_values(self, slide):
+        return {
+            'id': slide.id,
+            'is_member': slide.channel_id.is_member,
+            'is_preview': slide.is_preview,
+            'peer_assessment': slide.peer_assessment,
+            'user': request.env.user.id,
+            'rubric_ids': [{
+                'criterian_name': rubric.criterian_name,
+                'name': rubric.name,
+                'id': rubric.id,
+                'criterian_ids': [{
+                    'id': option.id,
+                    'name': option.name,
+                } for option in rubric.criterian_ids],
+            }for rubric in slide.rubric_ids],
+        }
+
+    def _get_user_response(self, user_response_line):
+        return {
+            'prompt_id': user_response_line.prompt_id.id,
+            'value_text_box': user_response_line.value_text_box,
+            'value_richtext_box': user_response_line.value_richtext_box,
+        }
+
+    def _get_total_responses(self, ora_response, slide):
+        return {
+            'id': ora_response.id,
+            'user': request.env.user.id,
+            'state': ora_response.state,
+            'feedback': ora_response.feedback,
+            'staff_id': ora_response.staff_id.id,
+            'staff_name': ora_response.staff_id.name,
+            'user_name': ora_response.user_id.name,
+            'submitted_date': ora_response.submitted_date,
+            'can_resubmit': ora_response.can_resubmit,
+            'feedback_user_image_url': request.website.image_url(ora_response.staff_id, 'image_1920', size=256),
+            'ora_res_user_image_url': request.website.image_url(ora_response.user_id, 'image_1920', size=256),
+            'user_response_line': [self._get_user_response(user_response_line) for user_response_line in ora_response.user_response_line],
+            'slide_rubric_staff_line': [{
+                'state': staff_line.state,
+                'assess_type': staff_line.assess_type,
+                'user_id': staff_line.user_id.id,
+                'option_ids': [{
+                    'id': rubric_id.criteria_id.id,
+                    'criterian_name': rubric_id.criteria_id.criterian_name,
+                    'criteria_desc': rubric_id.criteria_desc,
+                    'name': rubric_id.option_id.name,
+                    'criteria_option_point': rubric_id.criteria_option_point,
+                    'criteria_option_desc': rubric_id.criteria_option_desc,
+                    'assess_explanation': rubric_id.assess_explanation,
+                } for rubric_id in staff_line.option_ids],
+            }for staff_line in ora_response.slide_rubric_staff_line],
+            'rubric_ids': [{
+                'criterian_name': rubric.criterian_name,
+                'name': rubric.name,
+                'id': rubric.id,
+                'criterian_ids': [{
+                    'id': option.id,
+                    'name': option.name,
+                } for option in rubric.criterian_ids],
+            }for rubric in slide.rubric_ids],
+    }
+
+    @http.route('/submit/peer/response', type='http', auth="user", website=True)
+    def submit_peer_response(self, **kwargs):
+        slide = request.env['slide.slide'].sudo().browse(int(kwargs.get('slide_id')))
+        if kwargs.get('response_id'):
+            response_id = request.env['ora.response'].browse(int(kwargs.get('response_id')))
+            for line in response_id.slide_rubric_staff_line:
+                if line.user_id == request.env.user and line.assess_type == 'peer':
+                    values = []
+                    for criteria in response_id.slide_id.rubric_ids:
+                        opt_key = ''
+                        exp_key = ''
+                        for option_id in criteria.criterian_ids:
+                            opt_key = 'options_%s_%s' % (response_id.id, criteria.id)
+                            exp_key = 'exp_%s_%s' % (response_id.id, criteria.id)
+                            if opt_key in kwargs and exp_key in kwargs:
+                                break
+                        option_id = kwargs.get(opt_key)
+                        values.append((0, 0, {
+                            'criteria_id': criteria.id,
+                            'option_id': int(option_id) if option_id else False,
+                            'assess_explanation': kwargs.get(exp_key)
+                        }))
+                    line.option_ids = values
+                    line.state = 'completed'
+        return request.redirect('/slides/slide/%s' % slug(slide))

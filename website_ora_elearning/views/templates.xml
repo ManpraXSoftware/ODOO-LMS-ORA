@@ -3,12 +3,45 @@
     <data>
         <template id="assets_frontend" inherit_id="website.assets_frontend">
             <xpath expr="script[last()]" position="after">
-                <script type="text/javascript" src="/website_ora_elearning/static/src/js/website_ora.js" priority="100"/>
+                <script type="text/javascript" src="/website_ora_elearning/static/src/js/ora_fullscreen.js"/>
+                <script type="text/javascript" src="/website_ora_elearning/static/src/js/website_ora.js"/>
             </xpath>
         </template>
         <template id="slide_content_detailed_inherit_ora" inherit_id="website_slides.slide_content_detailed">
-            <div class="o_wslides_js_quiz_container" position="before">
-                <div class="o_wslides_js_ora_container o_user_response" t-att-data-slide-id="slide.id" name="slide" value="slide.id">
+            <span t-if="slide.question_ids" position="replace">
+                <span t-if="slide.question_ids or slide.prompt_ids"
+                    t-att-class="'ml-2 badge %s' % ('badge-success' if channel_progress[slide.id].get('completed') else 'badge-info')">
+                    <t t-set="total_karma" t-value="channel_progress[slide.id].get('quiz_karma_gain', 0)"/>
+                    <t t-if="total_karma == 0 and slide.id in ora_karma">
+                        <t t-set="total_karma" t-value="ora_karma[slide.id]"/>
+                    </t>
+                    <span t-if="channel_progress[slide.id].get('completed')">
+                        <i class="fa fa-check-circle"/>
+                        <t t-esc="total_karma"/>
+                    </span>
+                    <span t-else="" t-esc="total_karma"/>
+                    <span>XP</span>
+                </span>
+            </span>
+            <div id="about" position="attributes">
+                <attribute name="t-att-class">'tab-pane fade in show active'</attribute>
+            </div>
+            <div id="discuss" position="replace">
+                <div role="tabpanel" t-att-class="'tab-pane fade'" id="discuss">
+                    <t t-call="portal.message_thread">
+                        <t t-set="object" t-value="slide"/>
+                        <t t-set="disable_composer" t-value="not (slide.channel_id.can_comment and slide.channel_id.allow_comment and slide.channel_id.channel_type == 'training')"/>
+                        <t t-set="display_rating" t-value="False"/>
+                    </t>
+                </div>
+            </div>
+            <div id="about" position="inside">
+                <style>
+                    .question_text p {
+                        display: inline;
+                    }
+                </style>
+                <div class="o_wslides_js_ora_container o_user_response" id="lessonAssessment" t-att-data-slide-id="slide.id" name="slide" value="slide.id">
                     <t t-if="total_responses">
                         <t t-if="inactive_response">
                             <t t-foreach="inactive_response" t-as="response">
@@ -39,24 +72,12 @@
                                                 data-toggle="collapse" t-att-href="'#collapse_div_%s' % (response.id)" aria-controls="collapse_div">
                                                     <span id='response_button_text'>View Response</span>
                                                 </button>
-                                                <script type="text/javascript" src="/web/static/lib/jquery/jquery.js" /> 
-                                                <script>
-                                                    $(document).ready(function(){
-                                                        $('.custom_response').click(function() {
-                                                            var id = this.id.split('-')[this.id.split('-').length - 1]
-                                                            if($('#collapse_div_'+id).hasClass('show')) {
-                                                                $(this).children().text('View Response')
-                                                            }else {
-                                                                $(this).children().text('Hide Response')
-                                                            }
-                                                        })
-                                                    });
-                                                </script>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div t-att-id="'collapse_div_%s' % (response.id)" class="collapse custom_collapse" t-if="slide.slide_type != 'certification'">
+                                <div t-att-id="'collapse_div_%s' % (response.id)" style="padding-top:0;padding-bottom:0;"
+                                    class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
                                     <t t-if="slide.prompt_ids">
                                         <t t-call="website_ora_elearning.lesson_inactive_response_prompts"/>
                                     </t>
@@ -116,24 +137,12 @@
                                                 data-toggle="collapse" t-att-href="'#collapse_div_%s' % (response.id)" aria-controls="collapse_div">
                                                     <span id='response_button_text'>View Response</span>
                                                 </button>
-                                                <script type="text/javascript" src="/web/static/lib/jquery/jquery.js" /> 
-                                                <script>
-                                                    $(document).ready(function(){
-                                                        $('.custom_response').click(function() {
-                                                            var id = this.id.split('-')[this.id.split('-').length - 1]
-                                                            if($('#collapse_div_'+id).hasClass('show')) {
-                                                                $(this).children().text('View Response')
-                                                            }else {
-                                                                $(this).children().text('Hide Response')
-                                                            }
-                                                        })
-                                                    });
-                                                </script>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div t-att-id="'collapse_div_%s' % (response.id)" class="collapse custom_collapse" t-if="slide.slide_type != 'certification'">
+                                <div t-att-id="'collapse_div_%s' % (response.id)" style="padding-top:0;padding-bottom:0;"
+                                    class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
                                     <t t-if="slide.prompt_ids">
                                         <t t-call="website_ora_elearning.lesson_assessed_response_prompts"/>
                                     </t>
@@ -193,24 +202,12 @@
                                                 data-toggle="collapse" t-att-href="'#collapse_div_%s' % (response.id)" aria-controls="collapse_div">
                                                     <span id='response_button_text'>View Response</span>
                                                 </button>
-                                                <script type="text/javascript" src="/web/static/lib/jquery/jquery.js" /> 
-                                                <script>
-                                                    $(document).ready(function(){
-                                                        $('.custom_response').click(function() {
-                                                            var id = this.id.split('-')[this.id.split('-').length - 1]
-                                                            if($('#collapse_div_'+id).hasClass('show')) {
-                                                                $(this).children().text('View Response')
-                                                            }else {
-                                                                $(this).children().text('Hide Response')
-                                                            }
-                                                        })
-                                                    });
-                                                </script>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div t-att-id="'collapse_div_%s' % (response.id)" class="collapse custom_collapse" t-if="slide.slide_type != 'certification'">
+                                <div t-att-id="'collapse_div_%s' % (response.id)" style="padding-top:0;padding-bottom:0;"
+                                    class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
                                     <t t-if="slide.prompt_ids">
                                         <t t-call="website_ora_elearning.lesson_submitted_response_prompts"/>
                                     </t>
@@ -244,11 +241,11 @@
                                                 <input type="hidden" name="slide_id" t-att-value="slide.id"/>
                                                 <div>
                                                     <input type="hidden" name="response_id" t-att-value="response.id"/>
-                                                    <button class="btn btn-primary" id="submit_response_fresh" type="submit"
+                                                    <button class="btn btn-primary o_slide_submit_btn" id="submit_response_fresh" type="submit"
                                                         style="margin-top: 10px;" name="submit" value="resubmit_fresh">
                                                         <span>Resubmit Fresh</span>
                                                     </button>
-                                                    <button class="btn btn-primary" id="submit_response_fresh" type="submit"
+                                                    <button class="btn btn-primary o_slide_submit_btn" id="submit_response_fresh" type="submit"
                                                         style="margin-right:10px;margin-top: 10px;" name="submit" value="resubmit_copy">
                                                         <span>Resubmit Copy</span>
                                                     </button>
@@ -259,7 +256,7 @@
                                 </t>
                             </t>
                         </t>
-                        <form t-attf-action="/ora/response/save" method="post" role="form" enctype="multipart/form-data">
+                        <form action="/ora/response/save" id="ora_form" role="form" enctype="multipart/form-data">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                             <t t-if="active_response">
                                 <t t-foreach="active_response" t-as="response">
@@ -269,10 +266,10 @@
                                         </t>
                                     </div>
                                     <div class="mt-3">
-                                        <button t-att-class="'btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" type="submit" name="submit" value="save">
+                                        <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" type="submit" name="submit" value="save">
                                             <span>Save Your Progress</span>
                                         </button>
-                                        <button t-att-class="'btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" style="float:right;" type="submit" name="submit" value="submit">
+                                        <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" style="float:right;" type="submit" name="submit" value="submit">
                                             <span>Submit</span>
                                         </button>
                                     </div>
@@ -289,14 +286,35 @@
                                 </t>
                             </div>
                             <div class="mt-3">
-                                <button t-att-class="'btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" type="submit" name="submit" value="save">
+                                <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" type="submit" name="submit" value="save">
                                     <span>Save Your Progress</span>
                                 </button>
-                                <button t-att-class="'btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" style="float:right;" type="submit" name="submit" value="submit">
+                                <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" style="float:right;" type="submit" name="submit" value="submit">
                                     <span>Submit</span>
                                 </button>
                             </div>
                         </form>
+                    </t>
+                </div>
+            </div>
+            <ul role="tablist" position="inside">
+                <t t-if="slide.peer_assessment">
+                    <li class="nav-item">
+                        <a href="#peer_assessment" aria-controls="peer_assessment" class="nav-link" role="tab" data-toggle="tab">
+                            <i class="fa fa-users"></i> Peer Assessment
+                        </a>
+                    </li>
+                </t>
+            </ul>
+            <div class="tab-content mt-3" position="inside">
+                <div role="tabpanel" class="tab-pane fade" id="peer_assessment">
+                    <t t-if="peer_responses">
+                        <div>
+                            <t t-call="website_ora_elearning.lesson_content_peer_responses"/>
+                        </div>
+                    </t>
+                    <t t-if="not peer_responses">
+                        <h2>There is no peer responses to assess.</h2>
                     </t>
                 </div>
             </div>
@@ -321,21 +339,46 @@
                     </h4>
                     <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
                     <t t-foreach="response.slide_rubric_staff_line" t-as="line">
-                        <t t-foreach="line.option_ids" t-as="rubric">
-                            <div class="list-group">
-                                <h3>
-                                    <u><span t-esc="rubric.criteria_id.criterian_name"></span></u><br/>
-                                </h3>
-                                <span t-esc="rubric.criteria_desc"></span>
-                                <div style="display: inline-flex;">
-                                    <span style="margin-right:5px;font-weight: bold;">Result:</span>
-                                    <span style="margin-right:2px;" t-esc="rubric.option_id.name"></span>
-                                    (<span style="margin-right:2px;" t-esc="rubric.criteria_option_point"></span>points)
-                                </div>
-                                <span><b>Description: </b><t t-esc="rubric.criteria_option_desc"/></span>
-                                <span><b>Explanation: </b><t t-esc="rubric.assess_explanation"/></span>
-                            </div>
+                        <t t-if="line.assess_type == 'staff'">
+                            <table class="table-bordered table">
+                                <t t-foreach="line.option_ids" t-as="res_rubric">
+                                    <tr>
+                                        <td><strong><span t-esc="res_rubric.criteria_id.criterian_name"/></strong></td>
+                                        <t t-foreach="slide.rubric_ids" t-as="rubric">
+                                            <t t-if="res_rubric.criteria_id.id == rubric.id">
+                                                <t t-foreach="rubric.criterian_ids" t-as="option">
+                                                    <td t-att-style="'background-color:%s; overflow-wrap: anywhere;' % ('#d9edf7' if res_rubric.option_id.name == option.name else '')">
+                                                        <span t-esc="option.name"/>
+                                                        <t t-if="res_rubric.option_id.name == option.name">
+                                                            (<span style="margin-right:2px;" t-esc="res_rubric.criteria_option_point"></span>points)
+                                                            <br/>
+                                                            <span t-esc="res_rubric.assess_explanation" style="font-size:12px;"/>
+                                                        </t>
+                                                    </td>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </table>
                         </t>
+                        <!-- <t t-if="line.assess_type == 'staff'">
+                            <t t-foreach="line.option_ids" t-as="rubric">
+                                <div class="list-group">
+                                    <h3>
+                                        <u><span t-esc="rubric.criteria_id.criterian_name"></span></u><br/>
+                                    </h3>
+                                    <span t-esc="rubric.criteria_desc"></span>
+                                    <div style="display: inline-flex;">
+                                        <span style="margin-right:5px;font-weight: bold;">Result:</span>
+                                        <span style="margin-right:2px;" t-esc="rubric.option_id.name"></span>
+                                        (<span style="margin-right:2px;" t-esc="rubric.criteria_option_point"></span>points)
+                                    </div>
+                                    <span><b>Description: </b><t t-esc="rubric.criteria_option_desc"/></span>
+                                    <span><b>Explanation: </b><t t-esc="rubric.assess_explanation"/></span>
+                                </div>
+                            </t>
+                        </t> -->
                     </t>
                 </div>
                 <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
@@ -371,9 +414,9 @@
                 <div class="row d-flex mb-2 mx-0">
                     <div class="h4">
                         <small class="text-muted">
-                            <i class="fa fa-question-circle mr-1 text-muted"/>
+                            <i class="fa fa-quora"></i>
                         </small>
-                        <span t-raw="prompt['question']"/>
+                        <span class="question_text" t-raw="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -389,10 +432,12 @@
                             <textarea class="form-control o_wysiwyg_loader" t-att-name="prompt['id']" required="required"></textarea>
                         </div>
                     </t>
-                    <div class="o_wslides_quiz_answer_info list-group-item list-group-item-info">
-                        <i class="fa fa-info-circle"/>
-                        <span class="o_wslides_quiz_answer_comment" t-esc="prompt['name']"/>
-                    </div>
+                    <t t-if="prompt['name']">
+                        <div class="o_wslides_quiz_answer_info list-group-item list-group-item-info">
+                            <i class="fa fa-info-circle"/>
+                            <span class="o_wslides_quiz_answer_comment" t-esc="prompt['name']"/>
+                        </div>
+                    </t>
                 </div>
             </div>
         </template>
@@ -402,9 +447,9 @@
                 <div class="row d-flex mb-2 mx-0">
                     <div class="h4">
                         <small class="text-muted">
-                            <i class="o_wslides_js_quiz_icon o_wslides_js_quiz_sequence_handler fa fa-question-circle mr-1 text-muted" t-if="slide.channel_id.can_upload and not slide_completed" />
+                            <i class="fa fa-quora"></i>
                         </small>
-                        <span t-raw="prompt['question']"/>
+                        <span class="question_text" t-raw="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -424,10 +469,12 @@
                             </t>
                         </t>
                     </t>
-                    <div class="o_wslides_quiz_answer_info list-group-item list-group-item-info">
-                        <i class="fa fa-info-circle"/>
-                        <span class="o_wslides_quiz_answer_comment" t-esc="prompt['name']"/>
-                    </div>
+                    <t t-if="prompt['name']">
+                        <div class="o_wslides_quiz_answer_info list-group-item list-group-item-info">
+                            <i class="fa fa-info-circle"/>
+                            <span class="o_wslides_quiz_answer_comment" t-esc="prompt['name']"/>
+                        </div>
+                    </t>
                 </div>
             </div>
         </template>
@@ -437,11 +484,9 @@
                 <div class="row d-flex mb-2 mx-0">
                     <div class="h4">
                         <small class="text-muted">
-                            <i class="o_wslides_js_quiz_icon o_wslides_js_quiz_sequence_handler fa fa-question-circle mr-1 text-muted"/>
+                            <i class="fa fa-quora"></i>
                         </small>
-                    </div>
-                    <div>
-                        <span t-raw="prompt['question']"/>
+                        <span class="question_text" t-raw="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -455,7 +500,7 @@
                             </t>
                             <t t-if="prompt['response_type'] == 'rich_text'">
                                 <span style="font-weight: bold;">Response</span>
-                                <div class="mb32" style="overflow-wrap: break-word;">
+                                <div style="overflow-wrap: break-word;">
                                     <span t-field="user_input.value_richtext_box"/>
                                 </div>
                             </t>
@@ -471,11 +516,9 @@
                 <div class="row d-flex mb-2 mx-0">
                     <div class="h4">
                         <small class="text-muted">
-                            <i class="o_wslides_js_quiz_icon o_wslides_js_quiz_sequence_handler fa fa-question-circle mr-1 text-muted"/>
+                            <i class="fa fa-quora"></i>
                         </small>
-                    </div>
-                    <div>
-                        <span t-raw="prompt['question']"/>
+                        <span class="question_text" t-raw="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -489,7 +532,7 @@
                             </t>
                             <t t-if="prompt['response_type'] == 'rich_text'">
                                 <span style="font-weight: bold;">Response</span>
-                                <div class="mb32" style="overflow-wrap: break-word;">
+                                <div style="overflow-wrap: break-word;">
                                     <span t-field="user_input.value_richtext_box"/>
                                 </div>
                             </t>
@@ -505,11 +548,9 @@
                 <div class="row d-flex mb-2 mx-0">
                     <div class="h4">
                         <small class="text-muted">
-                            <i class="o_wslides_js_quiz_icon o_wslides_js_quiz_sequence_handler fa fa-question-circle mr-1 text-muted"/>
+                            <i class="fa fa-quora"></i>
                         </small>
-                    </div>
-                    <div>
-                        <span t-raw="prompt['question']"/>
+                        <span class="question_text" t-raw="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -523,7 +564,7 @@
                             </t>
                             <t t-if="prompt['response_type'] == 'rich_text'">
                                 <span style="font-weight: bold;">Response</span>
-                                <div class="mb32" style="overflow-wrap: break-word;">
+                                <div style="overflow-wrap: break-word;">
                                     <span t-field="user_input.value_richtext_box"/>
                                 </div>
                             </t>
@@ -544,6 +585,112 @@
                         <t t-esc="total_karma"/> xp
                     </span>
                 </div>
+            </div>
+            <ul class="list-group px-2 mb-1 list-unstyled" position="attributes">
+                <attribute name="t-if">aside_slide.prompt_ids or aside_slide.link_ids or aside_slide.slide_resource_ids or aside_slide.question_ids</attribute>
+            </ul>
+            <ul class="list-group px-2 mb-1 list-unstyled" position="inside">
+                <li class="pl-4">
+                    <a t-if="can_access and aside_slide.prompt_ids" t-att-href="'/slides/slide/%s#lessonAssessment' % (slug(aside_slide))" class="o_wslides_lesson_aside_list_link text-decoration-none small text-600">
+                        <i class="fa fa-flag text-warning"/> Assessment
+                    </a>
+                    <span t-elif="not can_access and aside_slide.prompt_ids"
+                        class="o_wslides_lesson_aside_list_link text-decoration-none small text-600 text-muted">
+                        <i class="fa fa-flag text-warning"/> Assessment
+                    </span>
+                </li>
+            </ul>
+        </template>
+        <template id="lesson_content_peer_responses">
+            <div class="o_wslides_js_lesson_ora" id="peer">
+                <t t-set="count" t-value="0"/>
+                <t t-foreach="peer_responses" t-as="response">
+                    <t t-set="count" t-value="count + 1"/>
+                    <div class="mt-3 list-group-item list-group-item-light" style="line-height: 2.5em;">
+                        <span>Learner Response </span><t t-esc="count"/>
+                        <button class="btn btn-primary custom_response"
+                        t-att-id="'show_response-%s'%(response.id)" type="button" style="float:right;position:relative;"
+                        data-toggle="collapse" t-att-href="'#collapse_div_%s' % (response.id)" aria-controls="collapse_div">
+                            <span id='response_button_text'>View Response</span>
+                        </button>
+                    </div>
+                    <t t-call="website_ora_elearning.lesson_peer_responses_cards"/>
+                </t>
+                <input type="hidden" name="slide_id" t-att-value="slide.id" />
+            </div>
+        </template>
+        <template id="lesson_peer_responses_cards">
+            <div t-att-id="'collapse_div_%s' % (response.id)" class="collapse custom_collapse list-group-item"
+                style="padding-top:0;padding-bottom:0;">
+                <form t-attf-action="/submit/peer/response" method="post" role="form" enctype="multipart/form-data">
+                    <input type="hidden" name="response_id" t-att-value="response.id"/>
+                    <t t-foreach="response.user_response_line" t-as="user_response">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <t t-set="prompt" t-value="{'id': user_response.prompt_id.id,'question':user_response.question_name,'response_type':user_response.response_type}"/>
+                        <t t-call="website_ora_elearning.lesson_content_quiz_prompt_assessed"/>
+                        <input type="hidden" name="slide_id" t-att-value="slide.id"/>
+                    </t>
+                    <t t-foreach="response.slide_rubric_staff_line" t-as="staff_line">
+                        <t t-if="staff_line.user_id == user and staff_line.state == 'in_progress'">
+                            <h3>Complete the rubric and submit the assessment.</h3>
+                            <div>
+                                <t t-foreach="rubric_ids" t-as="rubric">
+                                    <ul class="list-group">
+                                        <li class="list-group-item mb-3">
+                                            <div class="mb-3">
+                                                <h4><t t-esc="rubric.criterian_name"/></h4>
+                                                <span t-esc="rubric.name"/>
+                                            </div>
+                                            <div class="o_select_option mb-3 row" style="margin: auto;">
+                                                <select class="form-control" t-att-name="'options_%s_%s'% (response.id, rubric.id)" t-att-id="'options_%s_%s'% (response.id, rubric.id)"
+                                                style="width:auto;margin-right: 20px;margin-bottom: 20px;">
+                                                    <t t-foreach="rubric.criterian_ids" t-as="option">
+                                                        <option t-att-value="option.id">
+                                                            <t t-esc="option.name"/>
+                                                        </option>
+                                                    </t>
+                                                </select>
+                                                <textarea class="form-control" t-att-name="'exp_%s_%s'% (response.id, rubric.id)" required="required" placeholder="Assessment Explanation"
+                                                style="width: 600px;"/>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </t>
+                                <button class="btn btn-primary" t-att-id="'submit_peer_response_%s' % (response.id)" type="submit"
+                                    style="margin-top: 10px;margin-bottom:10px;" name="submit" value="peer_response">
+                                    <span>Submit</span>
+                                </button>
+                            </div>
+                        </t>
+                        <t t-if="staff_line.user_id == user and staff_line.state == 'completed'">
+                            <h3 style="text-align: center;">
+                                <span style="font-weight: bold;">Assessment</span>
+                            </h3>
+                            <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
+                            <table class="table-bordered table">
+                                <t t-foreach="staff_line.option_ids" t-as="res_rubric">
+                                    <tr>
+                                        <td><strong><span t-esc="res_rubric.criteria_id.criterian_name"/></strong></td>
+                                        <t t-foreach="slide.rubric_ids" t-as="rubric">
+                                            <t t-if="res_rubric.criteria_id.id == rubric.id">
+                                                <t t-foreach="rubric.criterian_ids" t-as="option">
+                                                    <td t-att-style="'background-color:%s; overflow-wrap: anywhere;' % ('#d9edf7' if res_rubric.option_id.name == option.name else '')">
+                                                        <span t-esc="option.name"/>
+                                                        <t t-if="res_rubric.option_id.name == option.name">
+                                                            (<span style="margin-right:2px;" t-esc="res_rubric.criteria_option_point"></span>points)
+                                                            <br/>
+                                                            <span t-esc="res_rubric.assess_explanation" style="font-size:12px;"/>
+                                                        </t>
+                                                    </td>
+                                                </t>
+                                            </t>
+                                        </t>
+                                    </tr>
+                                </t>
+                            </table>
+                        </t>
+                    </t>
+                </form>
             </div>
         </template>
     </data>
