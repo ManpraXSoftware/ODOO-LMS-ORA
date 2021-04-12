@@ -27,7 +27,7 @@ publicWidget.registry.websiteORA = publicWidget.Widget.extend({
             ];
             var options = {
                 height: 150,
-                width: 825,
+                // width: 825,
                 minHeight: 80,
                 toolbar: toolbar,
                 styleWithSpan: false,

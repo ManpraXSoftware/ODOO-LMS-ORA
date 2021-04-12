@@ -116,7 +116,7 @@ Fullscreen.include({
                     ];
                     var options = {
                         height: 150,
-                        width: 939,
+                        // width: 939,
                         minHeight: 80,
                         toolbar: toolbar,
                         styleWithSpan: false,

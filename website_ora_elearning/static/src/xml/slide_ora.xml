@@ -340,7 +340,7 @@
                             </t>
                             <t t-if="prompt.response_type == 'rich_text'">
                                 <span class="input-group-text">Your Response</span>
-                                <div class="input-group" style="width:825px;">
+                                <div class="input-group">
                                     <textarea class="form-control o_wysiwyg_loader" t-att-name="prompt.id" required="required"><t t-if="user_input.value_richtext_box"><t t-esc="user_input.value_richtext_box"/></t></textarea>
                                 </div>
                             </t>
@@ -356,7 +356,7 @@
                     </t>
                     <t t-if="prompt.response_type == 'rich_text'">
                         <span class="input-group-text">Your Response</span>
-                        <div class="input-group" style="width:825px;">
+                        <div class="input-group">
                             <textarea class="form-control o_wysiwyg_loader" t-att-name="prompt.id" required="required"></textarea>
                         </div>
                     </t>

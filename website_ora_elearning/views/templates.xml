@@ -6,6 +6,9 @@
                 <script type="text/javascript" src="/website_ora_elearning/static/src/js/ora_fullscreen.js"/>
                 <script type="text/javascript" src="/website_ora_elearning/static/src/js/website_ora.js"/>
             </xpath>
+            <xpath expr="//link[last()]" position="after">
+                <link rel="stylesheet" type="text/scss" href="/website_ora_elearning/static/src/scss/website_slides.scss" t-ignore="true"/>
+            </xpath>
         </template>
         <template id="slide_content_detailed_inherit_ora" inherit_id="website_slides.slide_content_detailed">
             <span t-if="slide.question_ids" position="replace">
@@ -415,7 +418,7 @@
                     </t>
                     <t t-if="prompt['response_type'] == 'rich_text'">
                         <span class="input-group-text">Your Response</span>
-                        <div class="input-group" style="width:825px">
+                        <div class="input-group">
                             <textarea class="form-control o_wysiwyg_loader" t-att-name="prompt['id']" required="required"></textarea>
                         </div>
                     </t>
@@ -450,7 +453,7 @@
                             </t>
                             <t t-if="prompt['response_type'] == 'rich_text'">
                                 <span class="input-group-text">Your Response</span>
-                                <div class="input-group" style="width:825px;">
+                                <div class="input-group">
                                     <textarea class="form-control o_wysiwyg_loader" t-att-name="prompt['id']" required="required"><t t-esc="user_input.value_richtext_box"/></textarea>
                                 </div>
                             </t>
