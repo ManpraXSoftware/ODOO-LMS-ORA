@@ -147,11 +147,15 @@ class WebsiteSlidesORA(WebsiteSlides):
                 ])
                 values['peer_responses'] = []
                 for staff_response in peer_response_ids:
+                    submitted_date = False
+                    if staff_response.submitted_date:
+                        submitted_date = staff_response.submitted_date.strftime('%d %B %Y')
                     values['peer_responses'].append(({
                         'id': staff_response.response_id.id,
                         'state': staff_response.state,
                         'assess_type': staff_response.assess_type,
                         'user_id': staff_response.user_id.id,
+                        'submitted_date': submitted_date,
                         'option_ids': [{
                             'id': rubric_id.criteria_id.id,
                             'criterian_name': rubric_id.criteria_id.criterian_name,
@@ -191,6 +195,9 @@ class WebsiteSlidesORA(WebsiteSlides):
         }
 
     def _get_total_responses(self, ora_response, slide):
+        submitted_date = False
+        if ora_response.submitted_date:
+            submitted_date = ora_response.submitted_date.strftime('%d %B %Y')
         return {
             'id': ora_response.id,
             'user': request.env.user.id,
@@ -199,7 +206,7 @@ class WebsiteSlidesORA(WebsiteSlides):
             'staff_id': ora_response.staff_id.id,
             'staff_name': ora_response.staff_id.name,
             'user_name': ora_response.user_id.name,
-            'submitted_date': ora_response.submitted_date,
+            'submitted_date': submitted_date,
             'can_resubmit': ora_response.can_resubmit,
             'feedback_user_image_url': request.website.image_url(ora_response.staff_id, 'image_1920', size=256),
             'ora_res_user_image_url': request.website.image_url(ora_response.user_id, 'image_1920', size=256),
@@ -253,4 +260,5 @@ class WebsiteSlidesORA(WebsiteSlides):
                         }))
                     line.option_ids = values
                     line.state = 'completed'
+                    line.submitted_date = datetime.now()
         return request.redirect('/slides/slide/%s' % slug(slide))

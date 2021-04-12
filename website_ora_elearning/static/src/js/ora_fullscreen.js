@@ -32,14 +32,7 @@ Fullscreen.include({
     },
     /**
     * @override
-    * @param {Object} el'name': 'eLearning with ORA',
-    'description': 'Open Response"click .o_wslides_fs_toggle_sidebar": '_onClickToggleSidebar', Assessment',
-    'category': 'Website/eLearning',
-    'summary': 'Manage and publish an eLearning platform',
-    'sequence': 125,
-    'version': '2.0',
-    'website': 'https://www.manprax.com',
-    'author': 'ManpraX',
+    * @param {Object} el
     * @param {Object} slides Contains the list of all slides of the course
     * @param {integer} defaultSlideId Contains the ID of the slide requested by the user
     */

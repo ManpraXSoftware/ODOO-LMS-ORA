@@ -213,6 +213,7 @@ class OpenResponseRubricStaff(models.Model):
         ('in_progress', 'In Progress'),
         ('completed', 'Completed')
     ], default="in_progress", readonly=True, string="Status")
+    submitted_date = fields.Datetime("Submitted Date")
     option_ids = fields.One2many('open.response.rubric.assess', 'response_assess_id')
 
     @api.depends('option_ids.criteria_option_point')
