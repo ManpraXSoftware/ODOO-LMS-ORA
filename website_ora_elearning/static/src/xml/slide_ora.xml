@@ -38,22 +38,25 @@
                                                 </div>
                                             </div>
                                         </t>
-                                        <div class="row"  style="line-height: 2.3em;">
-                                            <div t-attf-class="o_wforum_author_box d-inline-flex o_show_info o_compact align-items-center o_wforum_bio_popover"
-                                            t-att-data-content="bio_popover_data">
-                                                <div class="o_wforum_author_pic position-relative rounded-circle">
-                                                    <img t-attf-class="rounded-circle o_forum_avatar shadow" t-att-src="response.ora_res_user_image_url" alt="Avatar"
-                                                    style="height:40px;width:40px;"/>
+                                        <div class="row" style="line-height: 2.3em;">
+                                            <div class="d-flex align-items-start">
+                                                <div t-attf-class="o_wforum_author_box d-inline-flex o_show_info o_compact align-items-center o_wforum_bio_popover"
+                                                t-att-data-content="bio_popover_data">
+                                                    <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                        <img t-attf-class="rounded-circle o_forum_avatar shadow" t-att-src="response.ora_res_user_image_url" alt="Avatar"
+                                                        style="height:40px;width:40px;"/>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div style="width:850px;margin-left:20px;">
                                                 <t t-if="response.state != 'assessed'">
-                                                    <span>Your response has been submitted successfully on </span>
-                                                    <t t-esc="response.submitted_date"/>
+                                                    <span class="ml-2">Your response has been submitted successfully on
+                                                        <t t-esc="response.submitted_date"/>
+                                                    </span>
                                                 </t>
                                                 <t t-if="response.state == 'assessed'">
-                                                    <span>Your response has been assessed.</span>
+                                                    <span class="ml-2">Your response has been assessed.</span>
                                                 </t>
+                                            </div>
+                                            <div class="ml-auto">
                                                 <button class="btn btn-primary custom_response"
                                                 t-attf-id="show_response-#{response.id}" type="button" style="float:right;position:relative;"
                                                 data-toggle="collapse" t-attf-href="#collapse_div_#{response.id}" aria-controls="collapse_div">
@@ -179,7 +182,7 @@
             <t t-set="count" t-value="0"/>
             <t t-foreach="widget.peer_responses" t-as="response">
                 <t t-set="count" t-value="count + 1"/>
-                <div class="mt-3 list-group-item list-group-item-light d-flex justify-content-between align-items-center" style="line-height: 2.5em;">
+                <div class="mt-3 list-group-item list-group-item-light d-flex flex-wrap justify-content-between align-items-center" style="line-height: 2.5em;">
                     <span>Learner Response <t t-esc="count"/>
                         <t t-if="response.submitted_date">assessed on <t t-esc="response.submitted_date"/></t>
                     </span>
@@ -238,59 +241,22 @@
                 </button>
             </t>
             <t t-if="response.state == 'completed'">
-                <h3 style="text-align: center;">
-                    <span style="font-weight: bold;">Assessment</span>
-                </h3>
-                <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
-                <table class="table-bordered table">
-                    <t t-foreach="response.option_ids" t-as="res_rubric">
-                        <tr>
-                            <td style="text-align: center;vertical-align: middle;">
-                                <strong><span t-esc="res_rubric.criterian_name"/></strong>
-                            </td>
-                            <t t-foreach="widget.slide.rubric_ids" t-as="rubric">
-                                <t t-foreach="rubric.criterian_ids" t-as="option">
-                                    <t t-if="res_rubric.id == rubric.id">
-                                        <td t-attf-style="background-color:#{res_rubric.name == option.name and '#d9edf7'};
-                                        overflow-wrap: anywhere;text-align: center;vertical-align: middle;">
-                                            <span t-esc="option.name"/>
-                                            <t t-if="res_rubric.name == option.name">
-                                                (<span style="margin-right:2px;" t-esc="res_rubric.criteria_option_point"></span>points)
-                                                <br/>
-                                                <span t-esc="res_rubric.assess_explanation" style="font-size:12px;"/>
-                                            </t>
-                                        </td>
-                                    </t>
-                                </t>
-                            </t>
-                        </tr>
-                    </t>
-                </table>
-            </t>
-        </div>
-    </t>
-    <t t-name="lesson_assessed_response_prompts">
-        <div class="o_wslides_js_lesson_ora" id="lessonORA">
-            <t t-foreach="widget.slide_prompts" t-as="prompt">
-                <t t-call="lesson_content_quiz_prompt_submitted"/>
-            </t>
-            <t t-foreach="response.slide_rubric_staff_line" t-as="staff_line">
-                <t t-if="staff_line.assess_type == 'staff'">
+                <div style="overflow: auto;">
                     <h3 style="text-align: center;">
                         <span style="font-weight: bold;">Assessment</span>
                     </h3>
                     <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
-                    <table class="table-bordered table">
-                        <t t-foreach="staff_line.option_ids" t-as="res_rubric">
+                    <table class="table-bordered table" style="table-layout: auto;">
+                        <t t-foreach="response.option_ids" t-as="res_rubric">
                             <tr>
-                                <td style="text-align: center;vertical-align: middle;">
+                                <td style="text-align: center;vertical-align: middle;min-width:120px;">
                                     <strong><span t-esc="res_rubric.criterian_name"/></strong>
                                 </td>
                                 <t t-foreach="widget.slide.rubric_ids" t-as="rubric">
                                     <t t-foreach="rubric.criterian_ids" t-as="option">
                                         <t t-if="res_rubric.id == rubric.id">
                                             <td t-attf-style="background-color:#{res_rubric.name == option.name and '#d9edf7'};
-                                            overflow-wrap: anywhere;text-align: center;vertical-align: middle;">
+                                            overflow-wrap: anywhere;text-align: center;vertical-align: middle;min-width:120px;">
                                                 <span t-esc="option.name"/>
                                                 <t t-if="res_rubric.name == option.name">
                                                     (<span style="margin-right:2px;" t-esc="res_rubric.criteria_option_point"></span>points)
@@ -304,6 +270,47 @@
                             </tr>
                         </t>
                     </table>
+                </div>
+            </t>
+        </div>
+    </t>
+    <t t-name="lesson_assessed_response_prompts">
+        <div class="o_wslides_js_lesson_ora" id="lessonORA">
+            <t t-foreach="widget.slide_prompts" t-as="prompt">
+                <t t-call="lesson_content_quiz_prompt_submitted"/>
+            </t>
+            <t t-foreach="response.slide_rubric_staff_line" t-as="staff_line">
+                <t t-if="staff_line.assess_type == 'staff'">
+                    <div style="overflow-x: auto">
+                        <h3 style="text-align: center;">
+                            <span style="font-weight: bold;">Assessment</span>
+                        </h3>
+                        <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
+                        <table class="table-bordered table" style="table-layout: auto;">
+                            <t t-foreach="staff_line.option_ids" t-as="res_rubric">
+                                <tr>
+                                    <td style="text-align: center;vertical-align: middle;">
+                                        <strong><span t-esc="res_rubric.criterian_name"/></strong>
+                                    </td>
+                                    <t t-foreach="widget.slide.rubric_ids" t-as="rubric">
+                                        <t t-foreach="rubric.criterian_ids" t-as="option">
+                                            <t t-if="res_rubric.id == rubric.id">
+                                                <td t-attf-style="background-color:#{res_rubric.name == option.name and '#d9edf7'};
+                                                overflow-wrap: anywhere;text-align: center;vertical-align: middle;">
+                                                    <span t-esc="option.name"/>
+                                                    <t t-if="res_rubric.name == option.name">
+                                                        (<span style="margin-right:2px;" t-esc="res_rubric.criteria_option_point"></span>points)
+                                                        <br/>
+                                                        <span t-esc="res_rubric.assess_explanation" style="font-size:12px;"/>
+                                                    </t>
+                                                </td>
+                                            </t>
+                                        </t>
+                                    </t>
+                                </tr>
+                            </t>
+                        </table>
+                    </div>
                 </t>
             </t>
         </div>
@@ -320,11 +327,11 @@
         <div t-attf-class="o_wslides_js_lesson_quiz_question card-body mt-3#{(widget.slide.is_member) and ' ' or  ' disabled'}"
             t-att-data-question-id="prompt.id" t-att-data-title="prompt.question">
             <div class="row d-flex mb-2 mx-0">
-                <div style="position:relative;">
-                    <small class="text-muted" style="position:absolute;top: 3px;left: -15px;">
+                <div class="d-flex">
+                    <small class="text-muted">
                         <i class="fa fa-quora"></i>
                     </small>
-                    <span class="question_text" t-raw="prompt.question"/>
+                    <span class="question_text ml-2" style="line-height: 1;" t-raw="prompt.question"/>
                 </div>
             </div>
             <div class="list-group o_wslides_ora_answer_info" t-att-id="prompt.id">
@@ -373,11 +380,11 @@
         <div t-attf-class="o_wslides_js_lesson_quiz_question mt-3#{(widget.slide.is_member) and ' ' or  ' disabled'}"
             t-attf-data-question-id="prompt.id" t-attf-data-title="prompt.question">
             <div class="row d-flex mb-2 mx-0">
-                <div>
+                <div class="d-flex">
                     <small class="text-muted">
                         <i class="fa fa-quora"></i>
                     </small>
-                    <span class="question_text" t-raw="prompt.question"/>
+                    <span class="question_text ml-2" style="line-height: 1;" t-raw="prompt.question"/>
                 </div>
             </div>
             <div class="list-group flex-row align-content-start">
