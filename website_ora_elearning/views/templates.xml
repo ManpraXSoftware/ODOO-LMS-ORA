@@ -402,11 +402,11 @@
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member or slide.is_preview) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2 mx-0">
-                    <div style="position:relative;">
-                        <small class="text-muted" style="position:absolute;top: 3px;left: -15px;">
+                    <div class="d-flex align-content-start">
+                        <small class="text-muted">
                             <i class="fa fa-quora"></i>
                         </small>
-                        <span class="question_text" t-raw="prompt['question']"/>
+                        <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -435,11 +435,11 @@
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member or slide.is_preview) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2 mx-0">
-                    <div style="position:relative;">
-                        <small class="text-muted" style="position:absolute;top: 3px;left: -15px;">
+                    <div class="d-flex align-content-start">
+                        <small class="text-muted">
                             <i class="fa fa-quora"></i>
                         </small>
-                        <span class="question_text" t-raw="prompt['question']"/>
+                        <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -472,29 +472,29 @@
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member or slide.is_preview) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2 mx-0">
-                    <div style="position:relative;">
-                        <small class="text-muted" style="position:absolute;top: 3px;left: -15px;">
+                    <div class="d-flex align-content-start">
+                        <small class="text-muted">
                             <i class="fa fa-quora"></i>
                         </small>
-                        <span class="question_text" t-raw="prompt['question']"/>
+                        <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
                     </div>
                 </div>
-                <div class="list-group" style="position:relative;">
+                <div class="list-group flex-row">
                     <t t-foreach="response.user_response_line" t-as="user_input">
                         <t t-if="user_input.prompt_id.id == prompt['id']">
                             <t t-if="prompt['response_type'] == 'text'">
-                                <small class="text-muted" style="position:absolute;left: -16px;top: 2px;">
+                                <small class="text-muted">
                                     <i class="fa fa-font"></i>
                                 </small>
-                                <div class="input-group" style="text-align: justify;overflow-wrap: anywhere;">
+                                <div class="input-group ml-1" style="line-height:1">
                                     <t t-esc="user_input.value_text_box"/>
                                 </div>
                             </t>
                             <t t-if="prompt['response_type'] == 'rich_text'">
-                                <small class="text-muted" style="position:absolute;left: -16px;top: 2px;">
+                                <small class="text-muted">
                                     <i class="fa fa-font"></i>
                                 </small>
-                                <div style="overflow-wrap: break-word;">
+                                <div class="ml-1" style="line-height:1">
                                     <span t-field="user_input.value_richtext_box"/>
                                 </div>
                             </t>
@@ -508,29 +508,29 @@
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member or slide.is_preview) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2 mx-0">
-                    <div style="position:relative;">
-                        <small class="text-muted" style="position:absolute;top: 3px;left: -15px;">
+                    <div class="d-flex align-content-start">
+                        <small class="text-muted">
                             <i class="fa fa-quora"></i>
                         </small>
-                        <span class="question_text" t-raw="prompt['question']"/>
+                        <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
                     </div>
                 </div>
-                <div class="list-group" style="position:relative;">
+                <div class="list-group flex-row">
                     <t t-foreach="response.user_response_line" t-as="user_input">
                         <t t-if="user_input.prompt_id.id == prompt['id']">
                             <t t-if="prompt['response_type'] == 'text'">
-                                <small class="text-muted" style="position:absolute;left: -16px;top: 2px;">
+                                <small class="text-muted">
                                     <i class="fa fa-font"></i>
                                 </small>
-                                <div class="input-group" style="text-align: justify;overflow-wrap: anywhere;">
+                                <div class="input-group ml-1" style="line-height:1">
                                     <t t-esc="user_input.value_text_box"/>
                                 </div>
                             </t>
                             <t t-if="prompt['response_type'] == 'rich_text'">
-                                <small class="text-muted" style="position:absolute;left: -16px;top: 2px;">
+                                <small class="text-muted">
                                     <i class="fa fa-font"></i>
                                 </small>
-                                <div style="overflow-wrap: break-word;">
+                                <div class="ml-1" style="line-height:1">
                                     <span t-field="user_input.value_richtext_box"/>
                                 </div>
                             </t>
@@ -544,29 +544,29 @@
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member or slide.is_preview) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2 mx-0">
-                    <div style="position:relative;">
-                        <small class="text-muted" style="position:absolute;top: 3px;left: -15px;">
+                    <div class="d-flex align-content-start">
+                        <small class="text-muted">
                             <i class="fa fa-quora"></i>
                         </small>
-                        <span class="question_text" t-raw="prompt['question']"/>
+                        <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
                     </div>
                 </div>
-                <div class="list-group" style="position:relative;">
+                <div class="list-group flex-row">
                     <t t-foreach="response.user_response_line" t-as="user_input">
                         <t t-if="user_input.prompt_id.id == prompt['id']">
                             <t t-if="prompt['response_type'] == 'text'">
-                                <small class="text-muted" style="position:absolute;left: -16px;top: 2px;">
+                                <small class="text-muted">
                                     <i class="fa fa-font"></i>
                                 </small>
-                                <div class="input-group" style="text-align: justify;overflow-wrap: anywhere;">
+                                <div class="input-group ml-1" style="line-height:1">
                                     <t t-esc="user_input.value_text_box"/>
                                 </div>
                             </t>
                             <t t-if="prompt['response_type'] == 'rich_text'">
-                                <small class="text-muted" style="position:absolute;left: -16px;top: 2px;">
+                                <small class="text-muted">
                                     <i class="fa fa-font"></i>
                                 </small>
-                                <div style="overflow-wrap: break-word;">
+                                <div class="ml-1" style="line-height:1">
                                     <span t-field="user_input.value_richtext_box"/>
                                 </div>
                             </t>
