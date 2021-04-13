@@ -281,8 +281,8 @@
             </t>
             <t t-foreach="response.slide_rubric_staff_line" t-as="staff_line">
                 <t t-if="staff_line.assess_type == 'staff'">
-                    <div style="overflow-x: auto">
-                        <h3 style="text-align: center;">
+                    <div class="tableBox" style="overflow-x: auto">
+                        <h3 class="text-center mt-3">
                             <span style="font-weight: bold;">Assessment</span>
                         </h3>
                         <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>

@@ -10,3 +10,13 @@
 .o_wslides_js_lesson_ora .o_wysiwyg_wrapper {
     width: 100%;
 }
+
+#wrapwrap table.table.table-bordered td, .o_editable table.table.table-bordered td {
+	min-width: 120px;
+}
+
+@media (max-width: 575px) {
+    .tableBox {
+        width: 277px;
+    }
+}
