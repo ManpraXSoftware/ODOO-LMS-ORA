@@ -344,11 +344,11 @@
                     <t t-call="website_ora_elearning.lesson_content_quiz_prompt_assessed"/>
                 </t>
                 <input type="hidden" name="slide_id" t-att-value="slide.id" />
+                <h4 style="text-align: center;">
+                    <span style="font-weight: bold;">Assessment</span>
+                </h4>
+                <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
                 <div style="overflow: auto;">
-                    <h4 style="text-align: center;">
-                        <span style="font-weight: bold;">Assessment</span>
-                    </h4>
-                    <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
                     <t t-foreach="response.slide_rubric_staff_line" t-as="line">
                         <t t-if="line.assess_type == 'staff'">
                             <table class="table-bordered table" style="table-layout: auto;">
@@ -677,11 +677,11 @@
                             </div>
                         </t>
                         <t t-if="staff_line.user_id == user and staff_line.state == 'completed'">
+                            <h3 style="text-align: center;">
+                                <span style="font-weight: bold;">Assessment</span>
+                            </h3>
+                            <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
                             <div style="overflow: auto;">
-                                <h3 style="text-align: center;">
-                                    <span style="font-weight: bold;">Assessment</span>
-                                </h3>
-                                <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
                                 <table class="table-bordered table" style="table-layout: auto;">
                                     <t t-foreach="staff_line.option_ids" t-as="res_rubric">
                                         <tr>

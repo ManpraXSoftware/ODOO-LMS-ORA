@@ -241,22 +241,22 @@
                 </button>
             </t>
             <t t-if="response.state == 'completed'">
-                <div style="overflow: auto;">
-                    <h3 style="text-align: center;">
-                        <span style="font-weight: bold;">Assessment</span>
-                    </h3>
-                    <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
+                <h3 style="text-align: center;">
+                    <span style="font-weight: bold;">Assessment</span>
+                </h3>
+                <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
+                <div class="tableBox" style="overflow: auto;">
                     <table class="table-bordered table" style="table-layout: auto;">
                         <t t-foreach="response.option_ids" t-as="res_rubric">
                             <tr>
-                                <td style="text-align: center;vertical-align: middle;min-width:120px;">
+                                <td style="text-align: center;vertical-align: middle;">
                                     <strong><span t-esc="res_rubric.criterian_name"/></strong>
                                 </td>
                                 <t t-foreach="widget.slide.rubric_ids" t-as="rubric">
                                     <t t-foreach="rubric.criterian_ids" t-as="option">
                                         <t t-if="res_rubric.id == rubric.id">
                                             <td t-attf-style="background-color:#{res_rubric.name == option.name and '#d9edf7'};
-                                            overflow-wrap: anywhere;text-align: center;vertical-align: middle;min-width:120px;">
+                                            overflow-wrap: anywhere;text-align: center;vertical-align: middle;">
                                                 <span t-esc="option.name"/>
                                                 <t t-if="res_rubric.name == option.name">
                                                     (<span style="margin-right:2px;" t-esc="res_rubric.criteria_option_point"></span>points)
@@ -281,11 +281,11 @@
             </t>
             <t t-foreach="response.slide_rubric_staff_line" t-as="staff_line">
                 <t t-if="staff_line.assess_type == 'staff'">
+                    <h3 class="text-center mt-3">
+                        <span style="font-weight: bold;">Assessment</span>
+                    </h3>
+                    <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
                     <div class="tableBox" style="overflow-x: auto">
-                        <h3 class="text-center mt-3">
-                            <span style="font-weight: bold;">Assessment</span>
-                        </h3>
-                        <hr style="height:1px;border-width:0;color:gray;background-color:gray"/>
                         <table class="table-bordered table" style="table-layout: auto;">
                             <t t-foreach="staff_line.option_ids" t-as="res_rubric">
                                 <tr>
