@@ -113,7 +113,8 @@ class WebsiteSlidesORA(WebsiteSlides):
         values['peer_responses'] = request.env['open.response.rubric.staff'].search([
             ('user_id', '=', request.env.user.id),
             ('assess_type', '=', 'peer'),
-            ('response_id.state', 'in', ['submitted', 'assessed'])
+            ('response_id.state', 'in', ['submitted', 'assessed']),
+            ('response_id.slide_id', '=', slide.id)
         ]).mapped('response_id')
         return values
 
@@ -143,7 +144,8 @@ class WebsiteSlidesORA(WebsiteSlides):
                 peer_response_ids = request.env['open.response.rubric.staff'].search([
                     ('user_id', '=', request.env.user.id),
                     ('assess_type', '=', 'peer'),
-                    ('response_id.state', 'in', ['submitted', 'assessed'])
+                    ('response_id.state', 'in', ['submitted', 'assessed']),
+                    ('response_id.slide_id', '=', slide.id)
                 ])
                 values['peer_responses'] = []
                 for staff_response in peer_response_ids:
