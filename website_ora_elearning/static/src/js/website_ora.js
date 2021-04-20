@@ -4,6 +4,8 @@ odoo.define('website_ora_elearning.website_ora', function (require) {
 var publicWidget = require('web.public.widget');
 var wysiwygLoader = require('web_editor.loader');
 var weDefaultOptions = require('web_editor.wysiwyg.default_options');
+var core = require('web.core');
+var _lt = core._lt;
 
 
 publicWidget.registry.websiteORA = publicWidget.Widget.extend({
@@ -23,7 +25,8 @@ publicWidget.registry.websiteORA = publicWidget.Widget.extend({
                 ['font', ['bold', 'italic', 'underline', 'clear']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
-                ['insert', ['link', 'picture']]
+                ['insert', ['link', 'picture']],
+
             ];
             var options = {
                 height: 150,
@@ -50,9 +53,9 @@ publicWidget.registry.websiteORA = publicWidget.Widget.extend({
         $('.custom_response').click(function() {
             var id = this.id.split('-')[this.id.split('-').length - 1]
             if($('#collapse_div_'+id).hasClass('show')) {
-                $(this).children().text('View Response')
+                $(this).children().text(_lt('View Response'))
             }else {
-                $(this).children().text('Hide Response')
+                $(this).children().text(_lt('Hide Response'))
             }
         });
     },
