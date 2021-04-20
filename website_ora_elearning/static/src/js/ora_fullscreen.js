@@ -2,6 +2,7 @@ odoo.define('website_ora_elearning.ora', function (require) {
 '"use strict"';
 
 var core = require('web.core');
+var _lt = core._lt;
 var QWeb = core.qweb;
 var Fullscreen = require('website_slides.fullscreen');
 var publicWidget = require('web.public.widget');
@@ -139,9 +140,9 @@ Fullscreen.include({
                 $('.custom_response').click(function() {
                     var id = this.id.split('-')[this.id.split('-').length - 1]
                     if($('#collapse_div_'+id).hasClass('show')) {
-                        $(this).children().text('View Response')
+                        $(this).children().text(_lt('View Response'))
                     }else {
-                        $(this).children().text('Hide Response')
+                        $(this).children().text(_lt('Hide Response'))
                     }
                 });
             });
