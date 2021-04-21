@@ -109,13 +109,13 @@ class WebsiteSlidesORA(WebsiteSlides):
             for response in total_responses:
                 if response.feedback == '<p><br></p>':
                     response.feedback = False
+            values['peer_responses'] = request.env['open.response.rubric.staff'].search([
+                ('user_id', '=', request.env.user.id),
+                ('assess_type', '=', 'peer'),
+                ('response_id.state', 'in', ['submitted', 'assessed']),
+                ('response_id.slide_id', '=', slide.id)
+            ]).mapped('response_id')
         values['ora_karma'] = ora_karma
-        values['peer_responses'] = request.env['open.response.rubric.staff'].search([
-            ('user_id', '=', request.env.user.id),
-            ('assess_type', '=', 'peer'),
-            ('response_id.state', 'in', ['submitted', 'assessed']),
-            ('response_id.slide_id', '=', slide.id)
-        ]).mapped('response_id')
         return values
 
     @http.route('/slides/slide/get_values', website=True, type="json", auth="user")
