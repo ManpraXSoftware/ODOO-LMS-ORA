@@ -111,9 +111,9 @@ class ORA_Prompt(models.Model):
     _order = "sequence"
 
     sequence = fields.Integer("Sequence")
-    name = fields.Text("Description")
+    name = fields.Text("Description", translate=True)
     slide_id = fields.Many2one('slide.slide')
-    question_name = fields.Html("Question", required=True)
+    question_name = fields.Html("Question", required=True, translate=True)
     response_type = fields.Selection([
         ('text', 'Text'),
         ('rich_text', 'Rich Text')
@@ -124,9 +124,9 @@ class ORA_Rubric(models.Model):
     _name = 'open.response.rubric'
     _rec_name = 'criterian_name'
 
-    name = fields.Text("Description", required=True)
+    name = fields.Text("Description", required=True, translate=True)
     slide_id = fields.Many2one('slide.slide')
-    criterian_name = fields.Char("Criterian Name", required=True)
+    criterian_name = fields.Char("Criterian Name", required=True, translate=True)
     criterian_ids = fields.One2many('rubric.criterian', "rubric_id", "Options")
 
 
@@ -134,8 +134,8 @@ class RubricCriterian(models.Model):
     _name = 'rubric.criterian'
 
     rubric_id = fields.Many2one('open.response.rubric')
-    name = fields.Char("Option", required=True)
-    option_desc = fields.Text("Option Description", required=True)
+    name = fields.Char("Option", required=True, translate=True)
+    option_desc = fields.Text("Option Description", required=True, translate=True)
     option_points = fields.Integer("Points", required=True)
 
 
@@ -148,7 +148,7 @@ class ORAResponse(models.Model):
     slide_id = fields.Many2one('slide.slide', "Content")
     user_id = fields.Many2one('res.users', "User")
     staff_id = fields.Many2one(related="slide_id.channel_id.user_id", string="Staff", store=True)
-    feedback = fields.Html("Feedback")
+    feedback = fields.Html("Feedback", translate=True)
     can_resubmit = fields.Boolean("Allow Resubmit")
     xp_points = fields.Integer("XP Points", compute="calculate_total_xp", store=True)
     user_response_line = fields.One2many('open.response.user.line', 'response_id' , string="Prompts")
@@ -190,8 +190,8 @@ class OpenResponseUserLine(models.Model):
     _name = 'open.response.user.line'
 
     response_id = fields.Many2one('ora.response', ondelete="cascade")
-    value_text_box = fields.Text("Text answer")
-    value_richtext_box = fields.Html("Richtext answer")
+    value_text_box = fields.Text("Text answer", translate=True)
+    value_richtext_box = fields.Html("Richtext answer", translate=True)
     slide_id = fields.Many2one(related="response_id.slide_id")
     prompt_id = fields.Many2one('open.response.prompt', ondelete='cascade', string="Prompt")
     question_name = fields.Html("Question", related='prompt_id.question_name', store=True)
@@ -233,7 +233,7 @@ class OpenResponseRubricAssess(models.Model):
     option_id = fields.Many2one('rubric.criterian', 'Options', required=True)
     criteria_option_desc = fields.Text(related='option_id.option_desc')
     criteria_option_point = fields.Integer(related='option_id.option_points')
-    assess_explanation = fields.Text("Assess Explanation", required=True)
+    assess_explanation = fields.Text("Assess Explanation", required=True, translate=True)
     response_assess_id = fields.Many2one('open.response.rubric.staff', ondelete="cascade")
 
     @api.onchange('criteria_id')
