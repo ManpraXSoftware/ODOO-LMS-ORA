@@ -79,7 +79,6 @@ class WebsiteSlidesORA(WebsiteSlides):
         values = super(WebsiteSlidesORA, self)._prepare_additional_channel_values(values, **kwargs)
         slide = values.get('slide')
         submitted = False
-        ora_karma = {}
         if slide and slide.prompt_ids:
             values.update({
                 'slide_prompts': [{
@@ -103,9 +102,9 @@ class WebsiteSlidesORA(WebsiteSlides):
             values['total_responses'] = total_responses
             values['assessed_response'] = assessed_response
             values['rubric_ids'] = slide.rubric_ids
-            ora_karma.setdefault(slide.id, 0)
             if assessed_response:
-                ora_karma[slide.id] = assessed_response.xp_points
+                values['channel_progress'][slide.id]['quiz_karma_gain'] += assessed_response.xp_points
+                values['channel_progress'][slide.id]['quiz_karma_won'] += assessed_response.xp_points
             for response in total_responses:
                 if response.feedback == '<p><br></p>':
                     response.feedback = False
@@ -115,7 +114,6 @@ class WebsiteSlidesORA(WebsiteSlides):
                 ('response_id.state', 'in', ['submitted', 'assessed']),
                 ('response_id.slide_id', '=', slide.id)
             ]).mapped('response_id')
-        values['ora_karma'] = ora_karma
         return values
 
     @http.route('/slides/slide/get_values', website=True, type="json", auth="user")
