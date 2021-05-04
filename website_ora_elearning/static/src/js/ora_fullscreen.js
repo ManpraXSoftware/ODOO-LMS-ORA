@@ -60,9 +60,10 @@ Fullscreen.include({
         var res = this._super.apply(this, arguments);
         res.forEach(function (slideData, index) {
             slideData.isOra = !!slideData.isOra;
-            slideData._autoSetDone = _.contains(['infographic', 'presentation', 'document', 'webpage'], slideData.type) && !slideData.isOra;
+            slideData.hasQuestion = !!slideData.hasQuestion;
+            slideData._autoSetDone = _.contains(['infographic', 'presentation', 'document', 'webpage'], slideData.type) && !slideData.isOra && !slideData.hasQuestion;
         });
-        return slidesDataList;
+        return res;
     },
     _onChangeSlideRequest: function (ev){
         var slideData = ev.data;
