@@ -6,7 +6,7 @@
                 <attribute name="t-if">slide.prompt_ids or slide.link_ids or slide.slide_resource_ids or (slide.question_ids and not slide.slide_type =='quiz')</attribute>
             </ul>
             <xpath expr='//li[@class="o_wslides_fs_sidebar_list_item pl-0 mb-1"]' position="after">
-                <li class="o_wslides_fs_sidebar_list_item pl-0 mb-1 ora_tab" t-if="slide.prompt_ids and not slide.slide_type == 'quiz'"
+                <li class="o_wslides_fs_sidebar_list_item pl-0 mb-1 ora_tab" t-if="slide.prompt_ids"
                     t-att-data-id="slide.id"
                     t-att-data-can-access="can_access"
                     t-att-data-name="slide.name"

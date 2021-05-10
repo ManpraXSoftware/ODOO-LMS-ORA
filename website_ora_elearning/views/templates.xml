@@ -11,20 +11,8 @@
             </xpath>
         </template>
         <template id="slide_content_detailed_inherit_ora" inherit_id="website_slides.slide_content_detailed">
-            <span t-if="slide.question_ids" position="replace">
-                <span t-if="slide.question_ids or slide.prompt_ids"
-                    t-att-class="'ml-2 badge %s' % ('badge-success' if channel_progress[slide.id].get('completed') else 'badge-info')">
-                    <t t-set="total_karma" t-value="channel_progress[slide.id].get('quiz_karma_gain', 0)"/>
-                    <t t-if="total_karma == 0 and slide.id in ora_karma">
-                        <t t-set="total_karma" t-value="ora_karma[slide.id]"/>
-                    </t>
-                    <span t-if="channel_progress[slide.id].get('completed')">
-                        <i class="fa fa-check-circle"/>
-                        <t t-esc="total_karma"/>
-                    </span>
-                    <span t-else="" t-esc="total_karma"/>
-                    <span>XP</span>
-                </span>
+            <span t-att-class="'ml-2 badge %s' % ('badge-success' if channel_progress[slide.id].get('completed') else 'badge-info')" position="attributes">
+                <attribute name="t-if" separator=" or " add="aside_slide.prompt_ids"/>
             </span>
             <div id="about" position="attributes">
                 <attribute name="t-att-class">'tab-pane fade in show active'</attribute>
@@ -585,16 +573,8 @@
             </div>
         </template>
         <template inherit_id="website_slides.slide_aside_training_category" id="slide_aside_training_category_inherited">
-            <div class="ml-auto" position="replace">
-                <t t-set="total_karma" t-value="channel_progress[aside_slide.id].get('quiz_karma_won') if channel_progress[aside_slide.id].get('completed') else channel_progress[aside_slide.id].get('quiz_karma_gain')"/>
-                <div class="ml-auto" t-if="ora_karma or aside_slide.question_ids">
-                    <t t-if="aside_slide.id in ora_karma">
-                        <t t-set="total_karma" t-value="total_karma+ora_karma[aside_slide.id]"/>
-                    </t>
-                    <span class="badge badge-pill badge-success" t-if="total_karma > 0">
-                        <t t-esc="total_karma"/> xp
-                    </span>
-                </div>
+            <div class="ml-auto" position="attributes">
+                <attribute name="t-if" separator=" or " add="aside_slide.prompt_ids"/>
             </div>
             <ul class="list-group px-2 mb-1 list-unstyled" position="attributes">
                 <attribute name="t-if">aside_slide.prompt_ids or aside_slide.link_ids or aside_slide.slide_resource_ids or aside_slide.question_ids</attribute>

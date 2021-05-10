@@ -39,50 +39,25 @@ Fullscreen.include({
     */
     init: function (parent, slides, defaultSlideId, channelData){
         var result = this._super.apply(this,arguments);
-        this.initialSlideID = defaultSlideId;
-        this.slides = this._preprocessSlideData(slides);
-        this.channel = channelData;
         var slide;
         var urlParams = $.deparam.querystring();
         if (defaultSlideId) {
-            slide = findSlide(this.slides, {id: defaultSlideId, isQuiz: urlParams.quiz === "1"});
+            slide = findSlide(slides, {id: defaultSlideId, isQuiz: urlParams.quiz === "1"});
         } else {
             slide = this.slides[0];
         }
-
         this.set('slide', slide);
-
         this.sidebar = new NewSidebar(this, this.slides, slide);
-        // this.shareButton = new ShareButton(this, slide);
         return result;
     },
     _preprocessSlideData: function (slidesDataList) {
-        slidesDataList.forEach(function (slideData, index) {
-            // compute hasNext slide
-            slideData.hasNext = index < slidesDataList.length-1;
-            // compute embed url
-            if (slideData.type === 'video') {
-                slideData.embedCode = $(slideData.embedCode).attr('src') || ""; // embedCode contains an iframe tag, where src attribute is the url (youtube or embed document from odoo)
-                var separator = slideData.embedCode.indexOf("?") !== -1 ? "&" : "?";
-                var scheme = slideData.embedCode.indexOf('//') === 0 ? 'https:' : '';
-                var params = { rel: 0, enablejsapi: 1, origin: window.location.origin };
-                if (slideData.embedCode.indexOf("//drive.google.com") === -1) {
-                    params.autoplay = 1;
-                }
-                slideData.embedUrl = slideData.embedCode ? scheme + slideData.embedCode + separator + $.param(params) : "";
-            } else if (slideData.type === 'infographic') {
-                slideData.embedUrl = _.str.sprintf('/web/image/slide.slide/%s/image_1024', slideData.id);
-            } else if (_.contains(['document', 'presentation'], slideData.type)) {
-                slideData.embedUrl = $(slideData.embedCode).attr('src');
-            }
-            // fill empty property to allow searching on it with _.filter(list, matcher)
-            slideData.isQuiz = !!slideData.isQuiz;
+        var res = this._super.apply(this, arguments);
+        res.forEach(function (slideData, index) {
             slideData.isOra = !!slideData.isOra;
             slideData.hasQuestion = !!slideData.hasQuestion;
-            // technical settings for the Fullscreen to work
-            slideData._autoSetDone = _.contains(['infographic', 'presentation', 'document', 'webpage'], slideData.type) && !slideData.hasQuestion && !slideData.isOra;
+            slideData._autoSetDone = _.contains(['infographic', 'presentation', 'document', 'webpage'], slideData.type) && !slideData.isOra && !slideData.hasQuestion;
         });
-        return slidesDataList;
+        return res;
     },
     _onChangeSlideRequest: function (ev){
         var slideData = ev.data;
