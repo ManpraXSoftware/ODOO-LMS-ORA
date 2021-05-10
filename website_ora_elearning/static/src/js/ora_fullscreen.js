@@ -39,21 +39,15 @@ Fullscreen.include({
     */
     init: function (parent, slides, defaultSlideId, channelData){
         var result = this._super.apply(this,arguments);
-        this.initialSlideID = defaultSlideId;
-        this.slides = this._preprocessSlideData(slides);
-        this.channel = channelData;
         var slide;
         var urlParams = $.deparam.querystring();
         if (defaultSlideId) {
-            slide = findSlide(this.slides, {id: defaultSlideId, isQuiz: urlParams.quiz === "1"});
+            slide = findSlide(slides, {id: defaultSlideId, isQuiz: urlParams.quiz === "1"});
         } else {
             slide = this.slides[0];
         }
-
         this.set('slide', slide);
-
         this.sidebar = new NewSidebar(this, this.slides, slide);
-        // this.shareButton = new ShareButton(this, slide);
         return result;
     },
     _preprocessSlideData: function (slidesDataList) {
