@@ -12,7 +12,7 @@
         </template>
         <template id="slide_content_detailed_inherit_ora" inherit_id="website_slides.slide_content_detailed">
             <span t-att-class="'ml-2 badge %s' % ('badge-success' if channel_progress[slide.id].get('completed') else 'badge-info')" position="attributes">
-                <attribute name="t-if" separator=" or " add="aside_slide.prompt_ids"/>
+                <attribute name="t-if" separator=" or " add="slide.prompt_ids"/>
             </span>
             <div id="about" position="attributes">
                 <attribute name="t-att-class">'tab-pane fade in show active'</attribute>
