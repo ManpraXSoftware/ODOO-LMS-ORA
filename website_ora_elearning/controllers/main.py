@@ -268,7 +268,8 @@ class WebsiteSlidesORA(WebsiteSlides):
         slides = request.env['slide.slide'].sudo().search([('channel_id', '=', channel.id)])
         ora_response_ids = request.env['ora.response'].sudo().search([
             ('slide_id', 'in', slides.ids),
-            ('state', '=', 'assessed')
+            ('state', '=', 'assessed'),
+            ('user_id', '=', request.env.user.id)
         ])
         for ora_response in ora_response_ids:
             result[ora_response.slide_id.id]['quiz_karma_gain'] += ora_response.xp_points
