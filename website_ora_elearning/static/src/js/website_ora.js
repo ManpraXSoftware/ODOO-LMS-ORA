@@ -4,12 +4,14 @@ odoo.define('website_ora_elearning.website_ora', function (require) {
 var publicWidget = require('web.public.widget');
 var wysiwygLoader = require('web_editor.loader');
 var weDefaultOptions = require('web_editor.wysiwyg.default_options');
+var core = require('web.core');
+var _lt = core._lt;
 
 
 publicWidget.registry.websiteORA = publicWidget.Widget.extend({
     selector: '.o_user_response',
     read_events: {
-        'click .o_wprofile_submit_btn': '_onSubmitClick',
+        'click .o_slide_submit_btn': '_onSubmitClick',
     },
     /**
      * @override
@@ -23,11 +25,12 @@ publicWidget.registry.websiteORA = publicWidget.Widget.extend({
                 ['font', ['bold', 'italic', 'underline', 'clear']],
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
-                ['insert', ['link', 'picture']]
+                ['insert', ['link', 'picture']],
+
             ];
             var options = {
                 height: 150,
-                width: 825,
+                // width: 825,
                 minHeight: 80,
                 toolbar: toolbar,
                 styleWithSpan: false,
@@ -46,18 +49,23 @@ publicWidget.registry.websiteORA = publicWidget.Widget.extend({
                 html: true,
             });
         });
+
+        $('.custom_response').click(function() {
+            var id = this.id.split('-')[this.id.split('-').length - 1]
+            if($('#collapse_div_'+id).hasClass('show')) {
+                $(this).children().text(_lt('View Response'))
+            }else {
+                $(this).children().text(_lt('Hide Response'))
+            }
+        });
     },
-    
     /**
      * @private
      */
-    _onSubmitClick: function () {
+     _onSubmitClick: function () {
         if (this._wysiwyg) {
             this._wysiwyg.save();
         }
     },
 });
-
-return publicWidget.registry.websiteORA;
-
 });
