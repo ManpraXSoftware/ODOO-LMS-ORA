@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="assets_common" inherit_id="web.assets_common" name="Web Editor Common Assets (used in backend interface and website)">
+    <xpath expr="script[last()]" position="after">
+        <script type="text/javascript" src="/web_elearning_video/static/src/js/summernote.js"/>
+        <script type="text/javascript" src="/web_elearning_video/static/src/js/recorder.js"/>
+    </xpath>
+</template>
+</odoo>
