@@ -203,18 +203,18 @@ class WebsiteSlidesORA(WebsiteSlides):
             'user': request.env.user.id,
             'state': ora_response.state,
             'feedback': ora_response.feedback,
-            'staff_id': ora_response.staff_id.id,
-            'staff_name': ora_response.staff_id.name,
-            'user_name': ora_response.user_id.name,
+            'staff_id': ora_response.sudo().staff_id.id,
+            'staff_name': ora_response.sudo().staff_id.name,
+            'user_name': ora_response.sudo().user_id.name,
             'submitted_date': submitted_date,
             'can_resubmit': ora_response.can_resubmit,
-            'feedback_user_image_url': request.website.image_url(ora_response.staff_id, 'image_1920', size=256),
-            'ora_res_user_image_url': request.website.image_url(ora_response.user_id, 'image_1920', size=256),
+            'feedback_user_image_url': request.website.image_url(ora_response.sudo().staff_id, 'image_1920', size=256),
+            'ora_res_user_image_url': request.website.image_url(ora_response.sudo().user_id, 'image_1920', size=256),
             'user_response_line': [self._get_user_response(user_response_line) for user_response_line in ora_response.user_response_line],
             'slide_rubric_staff_line': [{
                 'state': staff_line.state,
                 'assess_type': staff_line.assess_type,
-                'user_id': staff_line.user_id.id,
+                'user_id': staff_line.sudo().user_id.id,
                 'option_ids': [{
                     'id': rubric_id.criteria_id.id,
                     'criterian_name': rubric_id.criteria_id.criterian_name,
@@ -268,7 +268,8 @@ class WebsiteSlidesORA(WebsiteSlides):
         slides = request.env['slide.slide'].sudo().search([('channel_id', '=', channel.id)])
         ora_response_ids = request.env['ora.response'].sudo().search([
             ('slide_id', 'in', slides.ids),
-            ('state', '=', 'assessed')
+            ('state', '=', 'assessed'),
+            ('user_id', '=', request.env.user.id)
         ])
         for ora_response in ora_response_ids:
             result[ora_response.slide_id.id]['quiz_karma_gain'] += ora_response.xp_points
