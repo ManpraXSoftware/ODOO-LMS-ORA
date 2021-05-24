@@ -32,7 +32,7 @@ class Slide(models.Model):
                     rec.response_count = len(total_response)
 
     def action_open_responses(self):
-        action = self.env['ir.actions.act_window']._for_xml_id('website_ora_elearning.action_ora_response')
+        action = self.env['ir.actions.act_window'].for_xml_id('website_ora_elearning', 'action_ora_response')
         action['domain'] = [('id', 'in', self.response_ids.ids)]
         return action
 
