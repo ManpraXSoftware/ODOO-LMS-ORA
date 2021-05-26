@@ -88,7 +88,8 @@ Fullscreen.include({
                         ['font', ['bold', 'italic', 'underline', 'clear']],
                         ['para', ['ul', 'ol', 'paragraph']],
                         ['table', ['table']],
-                        ['insert', ['link', 'picture']]
+                        ['insert', ['link', 'picture']],
+                        ['video', ['video', 'audio']]
                     ];
                     var options = {
                         height: 150,
