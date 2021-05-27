@@ -1,6 +1,7 @@
 odoo.define('web_elearning_video.summernote', function (require) {
     'use strict';
     var core = require('web.core');
+    var publicWidget = require('web.public.widget');
     require('web_editor.wysiwyg');
     var handler = $.summernote.eventHandler;
     var lang = $.summernote.lang.odoo;
@@ -47,7 +48,7 @@ odoo.define('web_elearning_video.summernote', function (require) {
                     handler.invoke('editor.restoreRange', $editable);
                     let url = window.location.origin + '/web/content/' + data.id + '?autoplay=0';
                     let videoUrl = `
-                      <div>
+                      <div class="media_iframe_video iframe_custom">
                         <video controls="true" class="embed-responsive-item" contenteditable="false">
                           <source src="${url}" type="video/webm" />
                         </video>
@@ -258,7 +259,7 @@ odoo.define('web_elearning_video.summernote', function (require) {
                     handler.invoke('editor.restoreRange', $editable);
                     let url = window.location.origin + '/web/content/' + data.id + '?autoplay=0&rel=0';
                     let audioUrl = `
-                    <div>
+                    <div class="media_iframe_video iframe_custom">
                       <audio controls="true" class="embed-responsive-item" contenteditable="false">
                         <source src="${url}" type="audio/webm" />
                       </audio>
