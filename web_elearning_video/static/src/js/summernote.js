@@ -29,7 +29,7 @@ odoo.define('web_elearning_video.summernote', function (require) {
                 return button;
             },
             "audio": function (lang, options) {
-                var button = tmpl.iconButton(options.iconPrefix + 'volume-up', {
+                var button = tmpl.iconButton(options.iconPrefix + 'microphone', {
                     event: 'showAudioDialog',
                     hide: true,
                     title: lang.audio.video,
