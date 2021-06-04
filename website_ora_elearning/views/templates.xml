@@ -265,10 +265,10 @@
                                         </t>
                                     </div>
                                     <div class="mt-3" style="margin-left:13px;">
-                                        <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" type="submit" name="submit" value="save">
+                                        <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member) else '')" type="submit" name="submit" value="save">
                                             <span>Save Your Progress</span>
                                         </button>
-                                        <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" style="float:right;" type="submit" name="submit" value="submit">
+                                        <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" style="float:right;" type="submit" name="submit" value="submit">
                                             <span>Submit</span>
                                         </button>
                                     </div>
@@ -285,10 +285,10 @@
                                 </t>
                             </div>
                             <div class="mt-3" style="margin-left:13px;">
-                                <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" type="submit" name="submit" value="save">
+                                <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" type="submit" name="submit" value="save">
                                     <span>Save Your Progress</span>
                                 </button>
-                                <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member or slide.is_preview) else '')" style="float:right;" type="submit" name="submit" value="submit">
+                                <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" style="float:right;" type="submit" name="submit" value="submit">
                                     <span>Submit</span>
                                 </button>
                             </div>
@@ -395,7 +395,7 @@
             </div>
         </template>
         <template id="lesson_content_quiz_prompt" name="Lesson: ORA prompt template">
-            <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member or slide.is_preview) else '')"
+            <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2 mx-0">
                     <div class="d-flex align-content-start">
@@ -428,7 +428,7 @@
             </div>
         </template>
         <template id="lesson_content_quiz_prompt_active" name="Lesson: ORA prompt template">
-            <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member or slide.is_preview) else '')"
+            <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2 mx-0">
                     <div class="d-flex align-content-start">
@@ -465,7 +465,7 @@
             </div>
         </template>
         <template id="lesson_content_quiz_prompt_submitted">
-            <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member or slide.is_preview) else '')"
+            <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2 mx-0">
                     <div class="d-flex align-content-start">
@@ -501,7 +501,7 @@
             </div>
         </template>
         <template id="lesson_content_quiz_prompt_inactive" name="Lesson: ORA prompt template">
-            <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member or slide.is_preview) else '')"
+            <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2 mx-0">
                     <div class="d-flex align-content-start">
@@ -537,7 +537,7 @@
             </div>
         </template>
         <template id="lesson_content_quiz_prompt_assessed" name="Lesson: ORA prompt template">
-            <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member or slide.is_preview) else '')"
+            <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2 mx-0">
                     <div class="d-flex align-content-start">

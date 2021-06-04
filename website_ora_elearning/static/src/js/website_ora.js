@@ -26,7 +26,7 @@ publicWidget.registry.websiteORA = publicWidget.Widget.extend({
                 ['para', ['ul', 'ol', 'paragraph']],
                 ['table', ['table']],
                 ['insert', ['link', 'picture']],
-
+                ['video', ['video', 'audio']]
             ];
             var options = {
                 height: 150,
