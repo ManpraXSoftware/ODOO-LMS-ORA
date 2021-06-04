@@ -13,7 +13,7 @@
         'views/assets.xml',
     ],
     'qweb': [],
-    'images': [],
+    'images': ["static/description/images/banner.png"],
     'application': True,
     'license': 'AGPL-3',
 }
