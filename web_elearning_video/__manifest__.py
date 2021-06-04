@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'LMS Web E-learning Video',
+    'name': 'Record and Embed Audio or Video in Html Editor',
     'description': 'Web E-learning Video',
     'category': 'Website/eLearning',
-    'summary': 'Create and play videos on eLearning platform',
+    'summary': 'Create and play videos/audios on odoo platform',
     'sequence': 10,
     'version': '1.0',
     'website': 'https://www.manprax.com',
