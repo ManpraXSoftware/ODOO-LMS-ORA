@@ -1,12 +1,14 @@
 odoo.define('web_elearning_video.summernote', function (require) {
     'use strict';
     var core = require('web.core');
-    var publicWidget = require('web.public.widget');
     require('web_editor.wysiwyg');
     var handler = $.summernote.eventHandler;
     var lang = $.summernote.lang.odoo;
     var _t = core._t;
     var tmpl = $.summernote.renderer.getTemplate();
+    const topBus = window.top.odoo.__DEBUG__.services['web.core'].bus;
+    var summernoteManager = require('web_editor.rte.summernote');
+    var weWidgets = require('wysiwyg.widgets');
 
     $.extend(lang, {
         video: {
@@ -27,18 +29,18 @@ odoo.define('web_elearning_video.summernote', function (require) {
                 return button;
             },
             "audio": function (lang, options) {
-              var button = tmpl.iconButton(options.iconPrefix + 'volume-up', {
-                  event: 'showAudioDialog',
-                  hide: true,
-                  title: lang.audio.video,
-              });
-              return button;
-          }
+                var button = tmpl.iconButton(options.iconPrefix + 'volume-up', {
+                    event: 'showAudioDialog',
+                    hide: true,
+                    title: lang.audio.video,
+                });
+                return button;
+            }
         },
         events: {
             "showVideoDialog": function (layoutInfo, value) {
                 var dom = $.summernote.core.dom;
-                var layoutInfoCustom = dom.makeLayoutInfo(layoutInfo.target);
+                var layoutInfoCustom = dom.makeLayoutInfo(layoutInfo.currentTarget);
                 var $dialog = layoutInfoCustom.dialog(),
                     $editable = layoutInfoCustom.editable();
                 var header = $dialog.find('.note-video-dialog').find('.modal-header');
@@ -46,209 +48,23 @@ odoo.define('web_elearning_video.summernote', function (require) {
                 handler.invoke('editor.saveRange', $editable);
                 this.videoDialog($editable, $dialog).then(function (data) {
                     handler.invoke('editor.restoreRange', $editable);
-                    let url = window.location.origin + '/web/content/' + data.id + '?autoplay=0';
-                    let videoUrl = `
-                      <div class="media_iframe_video iframe_custom">
-                        <video controls="true" class="embed-responsive-item" contenteditable="false">
-                          <source src="${url}" type="video/webm" />
-                        </video>
-                      </div><br/>`;
-                    let textVal = $dialog.parent().parent().children(':first-child').val();
-                    textVal = textVal + videoUrl
-                    $dialog.parent().parent().children(':first-child').val(textVal);
-                    $editable.append(videoUrl);
                 }).fail(function () {
-                  handler.invoke('editor.restoreRange', $editable);
+                    handler.invoke('editor.restoreRange', $editable);
                 });
             },
             "videoDialog": function ($editable, $dialog) {
                 return $.Deferred(function (deferred) {
-                    var mediaSource = new MediaSource();
-                    mediaSource.addEventListener('sourceopen', handleSourceOpen, false);
                     var $videoDialog = $dialog.find('.note-video-dialog');
-                    var mediaRecorder;
-                    var recordedBlobs;
-                    var gumVideo = $videoDialog.find('video.gum').get(0);
-                    var recordedVideo = $videoDialog.find('video.note-video-input').get(0);
-                    var recordButton = $videoDialog.find('button.note-record-btn').get(0);
-                    var playButton = $videoDialog.find('button.note-video-play').get(0);
-                    var downloadButton = $videoDialog.find('button.note-video-download').get(0);
-                    var $recordButton = $dialog.find('.note-record-btn');
-                    var $videoBtn =  $dialog.find('.note-video-btn');
-                    playButton.onclick = play;
-                    downloadButton.onclick = download;
-                    var constraints = {
-                        audio: true,
-                        video: true
-                    };
-                    const blobToBase64 = blob => {
-                      const reader = new FileReader();
-                      reader.readAsDataURL(blob);
-                      return new Promise(resolve => {
-                        reader.onloadend = () => {
-                          resolve(reader.result);
-                        };
-                      });
-                    };
-                    async function addAttachment(){
-                      let videoAttachment;
-                      if (recordedBlobs){
-                        let type = (recordedBlobs[0] || {}).type;
-                        let superBuffer = new Blob(recordedBlobs, {type});
-                        const bs64Video = await blobToBase64(superBuffer)
-                        let rpc = require('web.rpc');
-                        videoAttachment = await rpc.query({
-                          route: '/web_editor/attachment/add_data',
-                          params: {
-                              'name': 'recording.webm',
-                              'data': bs64Video.split(',')[2],
-                              'res_id': $.summernote.options.res_id,
-                              'res_model': $.summernote.options.res_model,
-                          },
-                        })
-                      }
-                      return videoAttachment;
-                    }
-                    $videoBtn.unbind().click(async function (event) {
-                      event.preventDefault();
-                      const attachmentObj = await addAttachment();
-                      await deferred.resolve(attachmentObj);
-                      $videoDialog.modal('hide');
-                      recordedVideo.removeAttribute('src');
-                      recordedVideo.load();
-                      playButton.disabled = true;
-                      downloadButton.disabled = true;
-                      $videoBtn.attr("disabled", "disabled");
-                      if (typeof(stream) == "object") {
-                        stream.getTracks().forEach( (track) => {
-                          track.stop();
-                        });
-                      }
-                    });
-
-                    navigator.mediaDevices.getUserMedia(
-                        constraints
-                      ).then(
-                        successCallback,
-                        errorCallback
-                      );
                     $videoDialog.one('shown.bs.modal', function () {
-                        $recordButton.click(function (event) {
-                            event.preventDefault();
-                            toggleRecording();
-                          });
                     }).one('hidden.bs.modal', function () {
-                        $recordButton.off('click');
                         if (deferred.state() === 'pending') {
-                          deferred.reject();
-                          if (mediaRecorder != undefined && mediaRecorder.state == 'recording') {
-                            mediaRecorder.stop();
-                            recordButton.textContent = 'Start Recording';
-                          }
-                          playButton.disabled = true;
-                          downloadButton.disabled = true;
-                          recordedVideo.removeAttribute('src');
-                          recordedVideo.load();
-                          if (typeof(stream) == "object") {
-                            stream.getTracks().forEach( (track) => {
-                              track.stop();
-                            });
-                          }
+                            deferred.reject();
                         }
                     }).modal('show');
-                    function successCallback(stream) {
-                        window.stream = stream;
-                        gumVideo.srcObject = stream;
-                    }
-                    
-                    function errorCallback(error) {
-                    }
-                    
-                    function handleSourceOpen(event) {
-                      sourceBuffer = mediaSource.addSourceBuffer('video/webm; codecs="vp8"');
-                    }
-                    
-                    function handleDataAvailable(event) {
-                      if (event.data && event.data.size > 0) {
-                        recordedBlobs.push(event.data);
-                      }
-                    }
-                      
-                    function handleStop(event) {
-                    }
-                      
-                    function toggleRecording() {
-                      if (recordButton.textContent === 'Start Recording') {
-                          startRecording();
-                      } else {
-                          stopRecording();
-                          recordButton.textContent = 'Start Recording';
-                          playButton.disabled = false;
-                          downloadButton.disabled = false;
-                          $videoBtn.removeAttr("disabled");
-                      }
-                    }
-                      
-                    // The nested try blocks will be simplified when Chrome 47 moves to Stable
-                    function startRecording() {
-                        var options = {mimeType: 'video/webm;codecs=vp9', bitsPerSecond: 100000};
-                        recordedBlobs = [];
-                        try {
-                          mediaRecorder = new MediaRecorder(window.stream, options);
-                        } catch (e0) {
-                          console.log('Unable to create MediaRecorder with options Object: ', options, e0);
-                          try {
-                            options = {mimeType: 'video/webm;codecs=vp8', bitsPerSecond: 100000};
-                            mediaRecorder = new MediaRecorder(window.stream, options);
-                          } catch (e1) {
-                            console.log('Unable to create MediaRecorder with options Object: ', options, e1);
-                            try {
-                              options = 'video/mp4';
-                              mediaRecorder = new MediaRecorder(window.stream, options);
-                            } catch (e2) {
-                              alert('MediaRecorder is not supported by this browser.');
-                              console.error('Exception while creating MediaRecorder:', e2);
-                              return;
-                            }
-                        }
-                      }
-                      recordButton.textContent = 'Stop Recording';
-                      playButton.disabled = true;
-                      downloadButton.disabled = true;
-                      mediaRecorder.onstop = handleStop;
-                      mediaRecorder.ondataavailable = handleDataAvailable;
-                      mediaRecorder.start(10); // collect 10ms of data
-                    }
-                      
-                    function stopRecording() {
-                        mediaRecorder.stop();
-                        recordedVideo.controls = true;
-                    }
-                      
-                    function play() {
-                        var type = (recordedBlobs[0] || {}).type;
-                        var superBuffer = new Blob(recordedBlobs, {type});
-                        recordedVideo.src = window.URL.createObjectURL(superBuffer);
-                    }
-      
-                    function download() {
-                        var blob = new Blob(recordedBlobs, {type: 'video/webm'});
-                        var url = window.URL.createObjectURL(blob);
-                        var a = document.createElement('a');
-                        a.style.display = 'none';
-                        a.href = url;
-                        a.download = 'recording.webm';
-                        document.body.appendChild(a);
-                        a.click();
-                        setTimeout(function() {
-                          document.body.removeChild(a);
-                          window.URL.revokeObjectURL(url);
-                        }, 100);
-                    }
                 });
             },
-            "showAudioDialog": function(layoutInfo, value){
-              var dom = $.summernote.core.dom;
+            "showAudioDialog": function (layoutInfo, value) {
+                var dom = $.summernote.core.dom;
                 var layoutInfoCustom = dom.makeLayoutInfo(layoutInfo.target);
                 var $dialog = layoutInfoCustom.dialog(),
                     $editable = layoutInfoCustom.editable();
@@ -269,157 +85,25 @@ odoo.define('web_elearning_video.summernote', function (require) {
                     $dialog.parent().parent().children(':first-child').val(textVal);
                     $editable.append(audioUrl);
                 }).fail(function () {
-                  handler.invoke('editor.restoreRange', $editable);
+                    handler.invoke('editor.restoreRange', $editable);
                 });
             },
-            "audioDialog": function($dialog) {
-              return $.Deferred(function (deferred) {
-                var $audioDialog = $dialog.find('.note-audio-dialog');
-                var mediaRecorder;
-                var recordedBlobs;
-                var recordedAudio = $audioDialog.find('audio.recorded').get(0);
-                var recordButton = $audioDialog.find('button.note-record-audio-btn').get(0);
-                var playButton = $audioDialog.find('button.note-audio-play').get(0);
-                var downloadButton = $audioDialog.find('button.note-audio-download').get(0);
-                var $recordButton = $audioDialog.find('button.note-record-audio-btn');
-                var $audioBtn =  $dialog.find('.note-audio-btn');
-                playButton.onclick = play;
-                downloadButton.onclick = download;
-                var constraints = {
-                    audio: true,
-                    video: false
-                };
-                navigator.mediaDevices.getUserMedia(constraints).then(
-                  successCallback, errorCallback
-                );
-                function successCallback(stream) {
-                  window.stream = stream;
-                }
-                function errorCallback(error) {
-                }
-                $audioBtn.unbind().click(async function (event) {
-                  event.preventDefault();
-                  const attachmentObj = await addAttachment();
-                  await deferred.resolve(attachmentObj);
-                  $audioDialog.modal('hide');
-                  recordedAudio.removeAttribute('src');
-                  recordedAudio.load();
-                  playButton.disabled = true;
-                  downloadButton.disabled = true;
-                  $audioBtn.attr("disabled", "disabled");
-                  if (typeof(stream) == "object") {
-                    stream.getTracks().forEach( (track) => {
-                      track.stop();
-                    });
-                  }
+            "audioDialog": function ($dialog) {
+                return $.Deferred(function (deferred) {
+                    var $audioDialog = $dialog.find('.note-audio-dialog');
+                    $audioDialog.one('shown.bs.modal', function () {
+                    }).one('hidden.bs.modal', function () {
+                        if (deferred.state() === 'pending') {
+                            deferred.reject();
+                        }
+                    }).modal('show');
                 });
-                const blobToBase64 = blob => {
-                  const reader = new FileReader();
-                  reader.readAsDataURL(blob);
-                  return new Promise(resolve => {
-                    reader.onloadend = () => {
-                      resolve(reader.result);
-                    };
-                  });
-                };
-                async function addAttachment(){
-                  let audioAttachment;
-                  if (recordedBlobs){
-                    let type = (recordedBlobs[0] || {}).type;
-                    let superBuffer = new Blob(recordedBlobs, {type});
-                    const bs64Audio = await blobToBase64(superBuffer)
-                    let rpc = require('web.rpc');
-                    audioAttachment = await rpc.query({
-                      route: '/web_editor/attachment/add_data',
-                      params: {
-                          'name': 'recording.webm',
-                          'data': bs64Audio.split(',')[1],
-                          'res_id': $.summernote.options.res_id,
-                          'res_model': $.summernote.options.res_model,
-                      },
-                    })
-                  }
-                  return audioAttachment;
-                }
-                $audioDialog.one('shown.bs.modal', function () {
-                  $recordButton.click(function (event) {
-                      event.preventDefault();
-                      toggleRecording();
-                    });
-                }).one('hidden.bs.modal', function () {
-                  $recordButton.off('click');
-                  if (deferred.state() === 'pending') {
-                    deferred.reject();
-                    if (mediaRecorder != undefined && mediaRecorder.state == 'recording') {
-                      mediaRecorder.stop();
-                      recordButton.textContent = 'Start Recording';
-                    }
-                    playButton.disabled = true;
-                    downloadButton.disabled = true;
-                    recordedAudio.removeAttribute('src');
-                    recordedAudio.load();
-                    if (typeof(stream) == "object") {
-                      stream.getTracks().forEach( (track) => {
-                        track.stop();
-                      });
-                    }
-                  }
-                }).modal('show');
-                function toggleRecording() {
-                  if (recordButton.textContent === 'Start Recording') {
-                      startRecording();
-                  } else {
-                      stopRecording();
-                      recordButton.textContent = 'Start Recording';
-                      playButton.disabled = false;
-                      downloadButton.disabled = false;
-                      $audioBtn.removeAttr("disabled");
-                  }
-                }
-                function handleDataAvailable(event) {
-                  if (event.data && event.data.size > 0) {
-                    recordedBlobs.push(event.data);
-                  }
-                }
-                function startRecording() {
-                  mediaRecorder = new MediaRecorder(window.stream);
-                  recordedBlobs = [];
-                  recordButton.textContent = 'Stop Recording';
-                  playButton.disabled = true;
-                  downloadButton.disabled = true;
-                  mediaRecorder.ondataavailable = handleDataAvailable;
-                  mediaRecorder.start(); // collect 10ms of data
-                }
-                
-                function stopRecording() {
-                  mediaRecorder.stop();
-                }
-                function play() {
-                  var type = (recordedBlobs[0] || {}).type;
-                  var superBuffer = new Blob(recordedBlobs, {type});
-                  recordedAudio.src = window.URL.createObjectURL(superBuffer);
-                }
-                function download() {
-                  var blob = new Blob(recordedBlobs, {type: 'audio/webm'});
-                  var url = window.URL.createObjectURL(blob);
-                  var a = document.createElement('a');
-                  a.style.display = 'none';
-                  a.href = url;
-                  a.download = 'recording.webm';
-                  document.body.appendChild(a);
-                  a.click();
-                  setTimeout(function() {
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
-                  }, 100);
-              }
-              });
             },
         },
         dialogs: {
             videoDialog: function (lang, options) {
                 var body =
-                `<div id="container">
+                    `<div id="container">
                     <div class="videos" style="display:flex;justify-content:space-between;margin-bottom:10px;flex-wrap:wrap;">
                       <video class="gum" autoplay muted playsinline style="width:49%"></video>
                       <video class="note-video-input" autoplay playsinline style="width:49%;background: #222;"></video>
@@ -435,8 +119,8 @@ odoo.define('web_elearning_video.summernote', function (require) {
                 return tmpl.dialog('note-video-dialog', 'Add Video', body, footer);
             },
             audioDialog: function (lang, options) {
-              var body =
-              `<div id="container">
+                var body =
+                    `<div id="container">
                   <div>
                     <audio class="recorded" autoplay playsinline class="note-audio-input" controls></audio>
                   </div>
@@ -447,10 +131,62 @@ odoo.define('web_elearning_video.summernote', function (require) {
                   </div>
               </div>
               `;
-              var footer = '<button href="#" class="btn btn-primary note-audio-btn" disabled>' + 'Add Audio' + '</button>';
-              return tmpl.dialog('note-audio-dialog', 'Add Audio', body, footer);
-          }
+                var footer = '<button href="#" class="btn btn-primary note-audio-btn" disabled>' + 'Add Audio' + '</button>';
+                return tmpl.dialog('note-audio-dialog', 'Add Audio', body, footer);
+            }
         }
     });
+
+    $.summernote.pluginEvents.showVideoDialog = function (event, editor, layoutInfo, sorted) {
+        var $editable = layoutInfo.editable();
+        var $selection = layoutInfo.handle().find('.note-control-selection');
+        topBus.trigger('video_dialog_demand', {
+            $editable: $editable,
+            media: $selection.data('target'),
+        });
+    };
+    $.summernote.pluginEvents.showAudioDialog = function (event, editor, layoutInfo, sorted) {
+        var $editable = layoutInfo.editable();
+        var $selection = layoutInfo.handle().find('.note-control-selection');
+        topBus.trigger('audio_dialog_demand', {
+            $editable: $editable,
+            media: $selection.data('target'),
+        });
+    };
+    summernoteManager.include({
+        init: function (parent) {
+            var res = this._super.apply(this, arguments);
+            topBus.on('video_dialog_demand', this, this._onVideoDialogDemand);
+            topBus.on('audio_dialog_demand', this, this._onAudioDialogDemand);
+            return res;
+        },
+        destroy: function () {
+            topBus.off('video_dialog_demand', this, this._onVideoDialogDemand);
+            topBus.off('audio_dialog_demand', this, this._onAudioDialogDemand);
+            return this._super.apply(this, arguments);
+        },
+        _onVideoDialogDemand: function (data) {
+            if (data.__alreadyDone) {
+                return;
+            }
+            data.__alreadyDone = true;
+            var videoDialog = new weWidgets.VideoDialog(this,
+                data.media,
+                data.$editable,
+            );
+            videoDialog.open();
+        },
+        _onAudioDialogDemand: function (data) {
+            if (data.__alreadyDone) {
+                return;
+            }
+            data.__alreadyDone = true;
+            var audioDialog = new weWidgets.AudioDialog(this,
+                data.media,
+                data.$editable,
+            );
+            audioDialog.open();
+        },
+    })
 });
 
