@@ -2,7 +2,7 @@
 {
     'name': 'Record and Embed Audio or Video in Html Editor',
     'description': 'Web E-learning Video',
-    'category': 'Website/eLearning',
+    'category': 'Extra Tools or Productivity',
     'summary': 'Create and play videos/audios on odoo platform',
     'sequence': 10,
     'version': '1.0',
