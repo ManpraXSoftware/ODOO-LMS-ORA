@@ -67,13 +67,15 @@ class WebsiteSlidesORA(WebsiteSlides):
                         if line.response_type == 'text':
                             line.value_text_box = oline.value_text_box
                         elif line.response_type == 'rich_text':
-                            line.value_richtext_box = oline.value_richtext_box
+                            query = ("update open_response_user_line set value_richtext_box='%s' where id=%s") % (oline.value_richtext_box, oline.id)
+                            request.cr.execute(query)
         else:
             for line in response.user_response_line:
                 if line.response_type == 'text':
                     line.value_text_box = kwargs[str(line.prompt_id.id)]
                 elif line.response_type == 'rich_text':
-                    line.value_richtext_box = kwargs[str(line.prompt_id.id)]
+                    query = ("update open_response_user_line set value_richtext_box='%s' where id='%s'") % (kwargs[str(line.prompt_id.id)], line.id)
+                    request.cr.execute(query)
 
     def _prepare_additional_channel_values(self, values, **kwargs):
         values = super(WebsiteSlidesORA, self)._prepare_additional_channel_values(values, **kwargs)
@@ -268,7 +270,8 @@ class WebsiteSlidesORA(WebsiteSlides):
         slides = request.env['slide.slide'].sudo().search([('channel_id', '=', channel.id)])
         ora_response_ids = request.env['ora.response'].sudo().search([
             ('slide_id', 'in', slides.ids),
-            ('state', '=', 'assessed')
+            ('state', '=', 'assessed'),
+            ('user_id', '=', request.env.user.id)
         ])
         for ora_response in ora_response_ids:
             result[ora_response.slide_id.id]['quiz_karma_gain'] += ora_response.xp_points
