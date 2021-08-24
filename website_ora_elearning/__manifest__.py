@@ -3,7 +3,7 @@
     'name': 'LMS eLearning with ORA',
     'description': 'Open Response Assessment',
     'category': 'Website/eLearning',
-    'summary': 'Manage and publish an eLearning platform',
+    'summary': 'Learning with Open Response Assessment',
     'sequence': 10,
     'version': '1.0',
     'website': 'https://www.manprax.com',
