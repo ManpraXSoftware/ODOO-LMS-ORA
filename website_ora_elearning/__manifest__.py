@@ -16,6 +16,13 @@
         'views/templates.xml',
         'views/slide_fullscreen_view.xml'
     ],
+    'assets': {
+        'web.assets_frontend': [
+            'website_ora_elearning/static/src/scss/website_slides.scss',
+            'website_ora_elearning/static/src/js/ora_fullscreen.js',
+            'website_ora_elearning/static/src/js/website_ora.js',
+        ],
+    },
     'qweb': [],
     'images': ["static/description/images/banner.png"],
     'application': True,

@@ -3,7 +3,6 @@ odoo.define('website_ora_elearning.website_ora', function (require) {
 
 var publicWidget = require('web.public.widget');
 var wysiwygLoader = require('web_editor.loader');
-var weDefaultOptions = require('web_editor.wysiwyg.default_options');
 var core = require('web.core');
 var _lt = core._lt;
 
@@ -17,28 +16,17 @@ publicWidget.registry.websiteORA = publicWidget.Widget.extend({
      * @override
      */
     start: function () {
+        var def = this._super.apply(this, arguments);
+        if (this.editableMode) {
+            return def;
+        }
         var self = this;
-        _.each($('textarea.o_wysiwyg_loader'), function (textarea) {
+        _.each($('textarea.o_wysiwyg_loader'), async function (textarea) {
             var $textarea = $(textarea);
-            var toolbar = [
-                ['style', ['style']],
-                ['font', ['bold', 'italic', 'underline', 'clear']],
-                ['para', ['ul', 'ol', 'paragraph']],
-                ['table', ['table']],
-                ['insert', ['link', 'picture']],
-                ['video', ['video', 'audio']]
-            ];
-            var options = {
-                height: 150,
-                // width: 825,
-                minHeight: 80,
-                toolbar: toolbar,
-                styleWithSpan: false,
-                styleTags: _.without(weDefaultOptions.styleTags, 'h1', 'h2', 'h3'),
-                disableResizeImage: true,
-            };
-            wysiwygLoader.load(self, $textarea[0], options).then(wysiwyg => {
-                self._wysiwyg = wysiwyg;
+            debugger;
+            self._wysiwyg = await wysiwygLoader.loadFromTextarea(self, $textarea[0], {
+                resizable: true,
+                userGeneratedContent: true,
             });
         });
         _.each(this.$('.o_wforum_bio_popover'), authorBox => {
@@ -58,6 +46,7 @@ publicWidget.registry.websiteORA = publicWidget.Widget.extend({
                 $(this).children().text(_lt('Hide Response'))
             }
         });
+        return Promise.all([def]);
     },
     /**
      * @private

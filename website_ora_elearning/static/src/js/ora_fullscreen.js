@@ -4,10 +4,9 @@ odoo.define('website_ora_elearning.ora', function (require) {
 var core = require('web.core');
 var _lt = core._lt;
 var QWeb = core.qweb;
-var Fullscreen = require('website_slides.fullscreen');
 var publicWidget = require('web.public.widget');
 var wysiwygLoader = require('web_editor.loader');
-var weDefaultOptions = require('web_editor.wysiwyg.default_options');
+var Fullscreen = require('@website_slides/js/slides_course_fullscreen_player')[Symbol.for("default")];
 
 /**
  * Helper: Get the slide dict matching the given criteria
@@ -81,27 +80,12 @@ Fullscreen.include({
                 }
             }).then(function (data){
                 $content.html(QWeb.render('slide.ora.assessment',{widget: data}));
-                _.each($('textarea.o_wysiwyg_loader'), function (textarea) {
-                    var $textarea = $(textarea);
-                    var toolbar = [
-                        ['style', ['style']],
-                        ['font', ['bold', 'italic', 'underline', 'clear']],
-                        ['para', ['ul', 'ol', 'paragraph']],
-                        ['table', ['table']],
-                        ['insert', ['link', 'picture']],
-                        ['video', ['video', 'audio']]
-                    ];
-                    var options = {
-                        height: 150,
-                        // width: 939,
-                        minHeight: 80,
-                        toolbar: toolbar,
-                        styleWithSpan: false,
-                        styleTags: _.without(weDefaultOptions.styleTags, 'h1', 'h2', 'h3'),
-                        disableResizeImage: true,
-                    };
-                    wysiwygLoader.load(self, $textarea[0], options).then(wysiwyg => {
-                        self._wysiwyg = wysiwyg;
+                self._load_dom_content();
+                _.each($('textarea.o_wysiwyg_loader'), async function (textarea) {
+                    self._wysiwyg = await wysiwygLoader.loadFromTextarea(self, textarea, {
+                        resizable: true,
+                        userGeneratedContent: true,
+                        toolbar: ['video', ['video', 'audio']]
                     });
                 });
                 _.each(this.$('.o_wforum_bio_popover'), authorBox => {
@@ -112,7 +96,6 @@ Fullscreen.include({
                         html: true,
                     });
                 });
-        
                 $('.custom_response').click(function() {
                     var id = this.id.split('-')[this.id.split('-').length - 1]
                     if($('#collapse_div_'+id).hasClass('show')) {
@@ -125,7 +108,23 @@ Fullscreen.include({
         }
         return Promise.all([def]);
     },
-
+    _load_dom_content: function(){
+        var textareaEls = document.querySelectorAll('textarea.o_wysiwyg_loader');
+        for (var i = 0; i < textareaEls.length; i++) {
+            var textarea = textareaEls[i];
+            var wrapper = document.createElement('div');
+            wrapper.classList.add('position-relative', 'o_wysiwyg_textarea_wrapper');
+            var loadingElement = document.createElement('div');
+            loadingElement.classList.add('o_wysiwyg_loading');
+            var loadingIcon = document.createElement('i');
+            loadingIcon.classList.add('text-600', 'text-center',
+                'fa', 'fa-circle-o-notch', 'fa-spin', 'fa-2x');
+            loadingElement.appendChild(loadingIcon);
+            wrapper.appendChild(loadingElement);
+            textarea.parentNode.insertBefore(wrapper, textarea);
+            wrapper.insertBefore(textarea, loadingElement);
+        }
+    },
     _submitPeer: function (ev) {
         var id = ev.currentTarget.id.split('_')[ev.currentTarget.id.split('_').length - 1]
         var data = $('#ora_peer_submit_'+id).serializeArray();

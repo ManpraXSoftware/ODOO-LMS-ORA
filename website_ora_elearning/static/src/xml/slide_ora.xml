@@ -9,13 +9,13 @@
         <div class="o_wslides_fs_quiz_container o_wslides_wrap h-100 w-100 overflow-auto pb-5 o_user_response" style="background-color: rgb(236 236 236)">
             <ul class="nav nav-tabs o_wslides_lesson_nav" role="tablist">
                 <li class="nav-item">
-                    <a href="#ora_assessment" aria-controls="ora_assessment" class="nav-link active" role="tab" data-toggle="tab">
+                    <a href="#ora_assessment" aria-controls="ora_assessment" data-oe-model="slide.slide" class="nav-link active" role="tab" data-toggle="tab">
                         <i class="fa fa-edit"></i> Assessment
                     </a>
                 </li>
                 <t t-if="widget.slide.peer_assessment">
                     <li class="nav-item">
-                        <a href="#peer_assessment" aria-controls="peer_assessment" class="nav-link" role="tab" data-toggle="tab">
+                        <a href="#peer_assessment" aria-controls="peer_assessment" data-oe-model="slide.slide" class="nav-link" role="tab" data-toggle="tab">
                             <i class="fa fa-users"></i> Peer Assessment
                         </a>
                     </li>
@@ -346,7 +346,7 @@
                             </t>
                             <t t-if="prompt.response_type == 'rich_text'">
                                 <span class="input-group-text">Your Response</span>
-                                <div class="input-group">
+                                <div>
                                     <textarea class="form-control o_wysiwyg_loader" t-att-name="prompt.id" required="required"><t t-if="user_input.value_richtext_box"><t t-esc="user_input.value_richtext_box"/></t></textarea>
                                 </div>
                             </t>
@@ -362,7 +362,7 @@
                     </t>
                     <t t-if="prompt.response_type == 'rich_text'">
                         <span class="input-group-text">Your Response</span>
-                        <div class="input-group">
+                        <div>
                             <textarea class="form-control o_wysiwyg_loader" t-att-name="prompt.id" required="required"></textarea>
                         </div>
                     </t>
