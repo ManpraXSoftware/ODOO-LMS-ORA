@@ -1,0 +1,127 @@
+<odoo>
+  <template id="assets_poll_fullscreen" name="web_elearning_poll assets" inherit_id="web.assets_frontend">
+    <xpath expr="script[last()]" position="after">
+        <script type="text/javascript" src="/web_elearning_poll/static/src/js/poll_fullscreen.js"></script>
+    </xpath>
+  </template>
+  <template inherit_id="website_slides.slide_aside_training_category" id="slide_aside_training_category_inherited_poll">
+    <div class="ml-auto" position="attributes">
+      <attribute name="t-if" separator=" or " add="aside_slide.poll_ids"/>
+    </div>
+    <ul class="list-group px-2 mb-1 list-unstyled" position="attributes">
+      <attribute name="t-if">aside_slide.poll_ids or aside_slide.link_ids or aside_slide.slide_resource_ids or aside_slide.question_ids</attribute>
+    </ul>
+    <ul class="list-group px-2 mb-1 list-unstyled" position="inside">
+        <li class="pl-4">
+          <a t-if="aside_slide.poll_ids" class="o_wslides_lesson_aside_list_link text-decoration-none small text-600" t-att-href="'/slides/slide/%s#pollDiv' % (slug(aside_slide))">
+            <i class="fa fa-list-ul text-warning" style="margin-right:4px;"/>Poll
+          </a>
+        </li>
+    </ul>
+  </template>
+  <template id="slide_content_detailed_inherit_poll" inherit_id="website_slides.slide_content_detailed">
+    <div id="about" position="inside">
+      <t t-if="slide_polls">
+        <span t-call="web_elearning_poll.web_poll_slide"  />
+      </t>
+    </div>
+  </template> 
+  <template id="web_poll_slide">
+    <style>
+      .question_text p {
+          display: inline;
+      }
+      .progress {
+        width: 200px;
+        background-color: #dae1e0;
+        height:14px;
+        margin-bottom:20px;
+      }
+    </style>
+    <hr></hr>
+    <form t-attf-action="/poll/response/save" id="poll_form" method="post" role="form" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+      <input type="hidden" name="slide_id" t-att-value="slide.id"/>
+      <h4>Choose your options!!</h4>
+      <hr></hr>
+       <t t-foreach="slide_polls" t-as="poll">
+          <t t-if="poll['quest_text']">
+            <div class="row d-flex mb-2 mx-0" id="pollDiv">
+              <div class="d-flex align-content-start" >
+                <small class="text-muted">
+                  <i class="fa fa-quora"></i>
+                </small>
+                  <span class="question_text ml-1"  style="line-height:1;" t-esc="poll['quest_text']"/>
+              </div>
+            </div>
+            <t t-foreach="poll['option_ids']" t-as="option">
+              <t t-if="option['option_text_value']">
+                <div class="row d-flex mb-2 mx-0">
+                  <div class="d-flex align-content-start">
+                    <input type="radio" t-att-disabled="True if option_percentage else False" t-att-name="'poll_%s'%(poll['quest_id'])" t-att-value="option['option_id']"> 
+                     <span style="margin-top: -5px;margin-left: 4px;" t-esc="option['option_text_value']"/>
+                    </input>
+                  </div>
+                </div>
+                <div class="progress" id="progress_div" t-if="option_percentage">
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"  aria-valuemin="0" aria-valuemax="100"  t-att-style="'width:%s%s' % (option_percentage[option['option_id']], '%')">  <span style="margin-left: 5px;"><t t-esc="option_percentage[option['option_id']]"/>%</span></div>
+                </div>
+              </t>
+              <t t-elif="option['option_value']">
+                <div class="row d-flex mb-2 mx-0">
+                  <div class="d-flex align-content-start">
+                    <input type="radio" t-att-disabled="True if option_percentage else False" t-att-name="'poll_%s'%(poll['quest_id'])" t-att-value="option['option_id']"> 
+                      <span class="question_text ml-1" t-raw="option['option_value']"/>
+                    </input>
+                  </div>
+                </div>
+                <div class="progress" id="progress_div"  t-if="option_percentage">
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"  aria-valuemin="0" aria-valuemax="100" t-att-style="'width:%s%s' % (option_percentage[option['option_id']], '%')">   <span style="margin-left: 5px;"><t t-esc="option_percentage[option['option_id']]"/>%</span></div>
+                </div>
+              </t>
+            </t> 
+          </t>
+          <t t-elif="poll['quest']">
+            <div class="row d-flex mb-2 mx-0" id="pollDiv">
+              <div class="d-flex align-content-start">
+                <small class="text-muted">
+                  <i class="fa fa-quora"></i>
+                </small>
+                  <span class="question_text ml-1"  style="line-height:1;" t-raw="poll['quest']"/>
+              </div>
+            </div>
+            <t t-foreach="poll['option_ids']" t-as="option">  
+              <t t-if="option['option_text_value']">
+                <div class="row d-flex mb-2 mx-0">
+                  <div class="d-flex align-content-start">
+                    <input type="radio" t-att-disabled="True if option_percentage else False" t-att-name="'poll_%s'%(poll['quest_id'])" t-att-value="option['option_id']"> 
+                      <span style="margin-top: -5px;margin-left: 4px;" t-esc="option['option_text_value']"/>
+                    </input>
+                  </div>
+                </div>
+                <div class="progress" id="progress_div"  t-if="option_percentage">
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"  aria-valuemin="0" aria-valuemax="100" t-att-style="'width:%s%s' % (option_percentage[option['option_id']], '%')"> <span style="margin-left: 5px;"><t t-esc="option_percentage[option['option_id']]"/>%</span></div>
+                </div>
+              </t>
+              <t t-elif="option['option_value']">
+                <div class="row d-flex mb-2 mx-0">
+                  <div class="d-flex align-content-start">
+                    <input type="radio" t-att-disabled="True if option_percentage else False"  t-att-name="'poll_%s'%(poll['quest_id'])" t-att-value="option['option_id']"> 
+                      <span class="question_text ml-1" t-raw="option['option_value']"/>
+                    </input>
+                  </div>
+                </div>
+                <div class="progress" id="progress_div"  t-if="option_percentage" >
+                    <div class="progress-bar progress-bar-striped bg-success" role="progressbar"  aria-valuemin="0" aria-valuemax="100" t-att-style="'width:%s%s' % (option_percentage[option['option_id']], '%')"> <span style="margin-left: 5px;"><t t-esc="option_percentage[option['option_id']]"/>%</span></div>
+                </div>
+              </t>
+            </t> 
+          </t>
+          <hr></hr>
+       </t> 
+       <button t-att-class="'btn btn-primary %s' % ('d-none' if option_percentage else '')" style="float:right;" type="submit" name="submit" value="submit" >Submit</button>
+      </form>
+    </template>
+</odoo>
+
+ 

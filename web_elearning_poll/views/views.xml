@@ -1,0 +1,195 @@
+<odoo>
+	<data>
+		<!-- explicit list view definition -->
+		<record id="view_slide_form_inherit_poll" model="ir.ui.view">
+			<field name="name">slide.slide.form.poll</field>
+			<field name="model">slide.slide</field>
+			<field name="inherit_id" ref="website_slides.view_slide_slide_form" />
+			<field name="arch" type="xml">
+				<div class="oe_button_box" position="inside">
+					<button name="action_poll_responses" type="object" class="oe_stat_button" icon="fa-pencil-square-o">
+						<field name="poll_response_count" widget="statinfo" />
+					</button>
+				</div>
+				<page name="statistics" position="after">
+					<page name="poll" string="Poll">
+						<separator string="Create polls!" />
+						<field name="poll_ids" mode="kanban">
+							<style>
+								.oe_form_field
+								.oe_form_field_html .o_field_widget
+								{
+								display: inline-flex;
+								}
+							</style>
+							<kanban class="o_res_partner_kanban">
+								<templates>
+									<t t-name="kanban-box">
+										<div t-attf-class="oe_kanban_global_click">
+											<div class="oe_kanban_details">
+												<strong class="o_kanban_record_title">
+													<b>Question:-</b>
+													<div class="float-right">
+														<field name="create_date" />
+													</div>
+													<field name="quest" widget="html" attrs="{'invisible': [('text_type', '=', 'text')]}" />
+													<field name="quest_text" attrs="{'invisible': [('text_type', '=', 'rich_text')]}" />
+												</strong>
+												<div>
+													<b>Question Type:-</b>
+													<field name="text_type" />
+												</div>
+											</div>
+										</div>
+									</t>
+								</templates>
+							</kanban>
+							<form string="Create Poll">
+								<div class="col-md-12">
+									<div class="row">
+										<div class="col-md-6" style="padding-right:6px !important;padding-left:0px !important;">
+											<div class="oe_edit_only">
+												<label for="text_type" string="Response Type" />
+											</div>
+											<field name="text_type" />
+										</div>
+										<div class="col-md-6" style="padding-right:0px !important;">
+											<div class="oe_edit_only">
+												<label for="option_type" string="Option Type" />
+											</div>
+											<field name="option_type" />
+										</div>
+									</div>
+								</div>
+								<div class="oe_edit_only">
+									<label for="quest" string="Question Name" />
+								</div>
+								<h1>
+									<field name="quest_text" default_focus="1" placeholder="Name" attrs="{'invisible': [('text_type', '=', 'rich_text')], 'required': [('text_type', '=', 'text')]}" />
+									<field name="quest" widget="html" default_focus="1" placeholder="Name" attrs="{'invisible': [('text_type', '=', 'text')], 'required': [('text_type', '=', 'rich_text')]}" />
+								</h1>
+								<field name="option_ids">
+									<tree editable="bottom" create="true" delete="true">
+										<field name="sequence" widget="handle" />
+										<field name="option_value" widget="html" attrs="{'column_invisible': [('parent.option_type', '=', 'text')], 'required': [('parent.option_type', '=', 'rich_text')]}" />
+										<field name="option_text_value" attrs="{'column_invisible': [('parent.option_type', '=', 'rich_text')], 'required': [('parent.option_type', '=', 'text')]}" />
+									</tree>
+								</field>
+							</form>
+						</field>
+					</page>
+				</page>
+			</field>
+		</record>
+		<record id="poll_response_view_form" model="ir.ui.view">
+			<field name="name">poll.response.view.form</field>
+			<field name="model">poll.response</field>
+			<field name="arch" type="xml">
+				<form string="Poll Response">
+					<sheet>
+						<group col="2">
+							<group>
+								<field name="slide_id" readonly="1" />
+								<field name="create_date" readonly="1" />
+								<field name="user_id" />
+								<field name="submitted_date" readonly="0" />
+							</group>
+						</group>
+						<notebook>
+							<page name="polls" string="Polls">
+								<field name="user_response_line" mode="kanban" readonly="1">
+									<kanban>
+										<field name="create_date" />
+										<templates>
+											<t t-name="kanban-box">
+												<div t-attf-class="oe_kanban_global_click">
+													<div class="oe_module_vignette">
+														<div class="oe_module_desc">
+															<div class="float-right">
+																<field name="create_date" />
+															</div>
+															<div>
+																<p>
+																	<strong>Question</strong>
+																</p>
+															</div>
+															<div>
+																<p>
+																	<field name="poll_id" />
+																</p>
+																<div>
+																	<p>
+																		<strong>Option</strong>
+																	</p>
+																</div>
+																<p style="overflow-wrap: break-word;">
+																	<field name="response_option_ids" />
+																</p>
+																<p>
+																	<strong>Response</strong>
+																</p>
+																<p>
+																	<!-- <field name="response_option_ids">
+																		<form>
+																			<field name="selected_option_name"/>
+																		</form>
+																	</field>															 -->
+																</p>
+															</div>
+														</div>
+													</div>
+												</div>
+											</t>
+										</templates>
+									</kanban>
+								</field>
+							</page>
+						</notebook>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<record id="poll_options_view_from" model="ir.ui.view">
+			<field name="name">poll.options.view.form</field>
+			<field name="model">user.poll.response</field>
+			<field name="arch" type="xml">
+				<form string="Poll Response">
+					<sheet>
+						<field name="response_option_ids" mode="tree">
+							<tree>
+								<field name="option_id" invisible="1"/>
+								<field name="option_name" />
+								<field name="option_richname" />
+								<field name="selected_option" />
+							</tree>
+						</field>
+					</sheet>
+				</form>
+			</field>
+		</record>
+		<record id="poll_response_view_tree" model="ir.ui.view">
+			<field name="name">poll.response.view.tree</field>
+			<field name="model">poll.response</field>
+			<field name="arch" type="xml">
+				<tree string="Poll Response">
+					<field name="slide_id" />
+					<field name="create_date" />
+					<field name="user_id" />
+				</tree>
+			</field>
+		</record>
+		<record model="ir.actions.act_window" id="action_poll_response">
+			<field name="name">Poll Responses</field>
+			<field name="res_model">poll.response</field>
+			<field name="view_mode">tree,form</field>
+			<field name="view_id" ref="poll_response_view_tree">
+			</field>
+			<field name="help" type="html">
+				<p class="o_view_nocontent_empty_folder">
+					Nobody has replied to your polls yet
+				</p>
+			</field>
+		</record>
+		<menuitem name="Poll Responses" id="menu_poll_responses" action="action_poll_response" parent="website_slides.website_slides_menu_courses" sequence="110" />
+	</data>
+</odoo>
