@@ -9,13 +9,13 @@
         <div class="o_wslides_fs_quiz_container o_wslides_wrap h-100 w-100 overflow-auto pb-5 o_user_response" style="background-color: rgb(236 236 236)">
             <ul class="nav nav-tabs o_wslides_lesson_nav" role="tablist">
                 <li class="nav-item">
-                    <a href="#ora_assessment" aria-controls="ora_assessment" data-oe-model="slide.slide" class="nav-link active" role="tab" data-toggle="tab">
+                    <a href="#ora_assessment" aria-controls="ora_assessment" data-oe-model="slide.slide" class="nav-link active" role="tab" data-bs-toggle="tab">
                         <i class="fa fa-edit"></i> Assessment
                     </a>
                 </li>
                 <t t-if="widget.slide.peer_assessment">
                     <li class="nav-item">
-                        <a href="#peer_assessment" aria-controls="peer_assessment" data-oe-model="slide.slide" class="nav-link" role="tab" data-toggle="tab">
+                        <a href="#peer_assessment" aria-controls="peer_assessment" data-oe-model="slide.slide" class="nav-link" role="tab" data-bs-toggle="tab">
                             <i class="fa fa-users"></i> Peer Assessment
                         </a>
                     </li>
@@ -57,16 +57,20 @@
                                                 </t>
                                             </div>
                                             <div class="ml-auto">
-                                                <button class="btn btn-primary custom_response"
-                                                t-attf-id="show_response-#{response.id}" type="button" style="float:right;position:relative;"
-                                                data-toggle="collapse" t-attf-href="#collapse_div_#{response.id}" aria-controls="collapse_div">
+                                                <button t-attf-id="show_response-{{response.id}}"
+                                                        t-attf-class="btn btn-primary custom_response"
+                                                        t-attf-data-bs-target="#collapse_div_{{response.id}}"
+                                                        t-attf-aria-controls="collapse_div"
+                                                        data-bs-toggle="collapse"
+                                                        t-attf-style="float:right;position:relative;"
+                                                        type="button">
                                                     <span id='response_button_text'>View Response</span>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                     <t t-if="response.state != 'assessed'">
-                                        <div t-attf-id="collapse_div_#{response.id}" style="padding-top:0;padding-bottom:0;"
+                                        <div t-attf-id="collapse_div_{{response.id}}" style="padding-top:0;padding-bottom:0;"
                                             class="collapse custom_collapse list-group-item">
                                             <t t-if="widget.slide_prompts">
                                                 <t t-call="lesson_submitted_response_prompts"/>
@@ -74,7 +78,7 @@
                                         </div>
                                     </t>
                                     <t t-if="response.state == 'assessed'">
-                                        <div t-attf-id="collapse_div_#{response.id}" style="padding-top:0;padding-bottom:0;"
+                                        <div t-attf-id="collapse_div_{{response.id}}" style="padding-top:0;padding-bottom:0;"
                                             class="collapse custom_collapse list-group-item">
                                                 <t t-call="lesson_assessed_response_prompts"/>
                                         </div>
@@ -100,7 +104,7 @@
                                                         </div>
                                                 </div>
                                                 <div class="col">
-                                                    <t t-raw="response.feedback"/>
+                                                    <t t-out="response.feedback"/>
                                                 </div>
                                             </div>
                                             <t t-if="response.can_resubmit and response.state == 'submitted'">
@@ -186,15 +190,19 @@
                     <span>Learner Response <t t-esc="count"/>
                         <t t-if="response.submitted_date">assessed on <t t-esc="response.submitted_date"/></t>
                     </span>
-                    <button class="btn btn-primary custom_response flex-shrink-0 ml-2"
-                    t-attf-id="show_response-#{response.id}" type="button"
-                    data-toggle="collapse" t-attf-href="#collapse_div_#{response.id}" aria-controls="collapse_div">
+                    <button t-attf-id="show_response-{{response.id}}"
+                            t-attf-class="btn btn-primary custom_response"
+                            t-attf-data-bs-target="#collapse_div_{{response.id}}"
+                            t-attf-aria-controls="collapse_div"
+                            data-bs-toggle="collapse"
+                            t-attf-style="float:right;position:relative;"
+                            type="button">
                         <span id='response_button_text'>View Response</span>
                     </button>
                 </div>
-                <div t-attf-id="collapse_div_#{response.id}" style="padding-top:0;padding-bottom:0;"
+                <div t-attf-id="collapse_div_{{response.id}}" style="padding-top:0;padding-bottom:0;"
                     class="collapse custom_collapse list-group-item">
-                    <form action="/submit/peer/response" t-attf-id="ora_peer_submit_#{response.id}" role="form" enctype="multipart/form-data">
+                    <form action="/submit/peer/response" t-attf-id="ora_peer_submit_{{response.id}}" role="form" enctype="multipart/form-data">
                         <input type="hidden" name="response_id" t-att-value="response.id"/>
                         <input type="hidden" name="csrf_token" t-att-value="widget.csrf_token"/>
                         <input type="hidden" name="slide_id" t-att-value="widget.slide.id"/>
@@ -220,8 +228,8 @@
                                 <span t-esc="rubric.name"/>
                             </div>
                             <div class="o_select_option mb-3 row flex-lg-nowrap" style="margin: auto;">
-                                <select class="form-control" t-attf-name="options_#{response.id}_#{rubric.id}"
-                                    t-attf-id="'options_#{response.id}_#{rubric.id}" required="required"
+                                <select class="form-control" t-attf-name="options_{{response.id}}_{{rubric.id}}"
+                                    t-attf-id="'options_{{response.id}}_{{rubric.id}}" required="required"
                                     style="width:auto;margin-right: 20px;margin-bottom: 20px;">
                                     <t t-foreach="rubric.criterian_ids" t-as="option">
                                         <option t-att-value="option.id">
@@ -229,13 +237,13 @@
                                         </option>
                                     </t>
                                 </select>
-                                <textarea class="form-control" t-attf-name="exp_#{response.id}_#{rubric.id}"
+                                <textarea class="form-control" t-attf-name="exp_{{response.id}}_{{rubric.id}}"
                                     required="required" placeholder="Assessment Explanation"/>
                             </div>
                         </li>
                     </ul>
                 </t>
-                <button class="btn btn-primary o_submit_peer_response" t-attf-id="submit_peer_response_#{response.id}" type="submit"
+                <button class="btn btn-primary o_submit_peer_response" t-attf-id="submit_peer_response_{{response.id}}" type="submit"
                     style="margin-top: 10px;margin-bottom:10px;margin-left: auto;display: table;" name="submit" value="peer_response">
                     <span>Submit</span>
                 </button>
@@ -325,13 +333,13 @@
     </t>
     <t t-name="lesson_content_quiz_prompt_active">
         <div t-attf-class="o_wslides_js_lesson_quiz_question card-body mt-3#{(widget.slide.is_member) and ' ' or  ' disabled'}"
-            t-att-data-question-id="prompt.id" t-att-data-title="prompt.question">
-            <div class="row d-flex mb-2 mx-0">
+            t-attf-data-question-id="#{prompt.id}" t-att-data-title="prompt.question">
+            <div class="row d-flex mb-2">
                 <div class="d-flex">
                     <small class="text-muted">
                         <i class="fa fa-quora"></i>
                     </small>
-                    <span class="question_text ml-2" style="line-height: 1;" t-raw="prompt.question"/>
+                    <span class="question_text ml-2" style="line-height: 1;" t-out="prompt['question']"/>
                 </div>
             </div>
             <div class="list-group o_wslides_ora_answer_info" t-att-id="prompt.id">
@@ -347,7 +355,7 @@
                             <t t-if="prompt.response_type == 'rich_text'">
                                 <span class="input-group-text">Your Response</span>
                                 <div>
-                                    <textarea class="form-control o_wysiwyg_loader" t-att-name="prompt.id" required="required"><t t-if="user_input.value_richtext_box"><t t-esc="user_input.value_richtext_box"/></t></textarea>
+                                    <textarea class="form-control o_wysiwyg_loader" t-att-name="prompt.id" required="required"><t t-if="user_input.value_richtext_box"><t t-out="user_input.value_richtext_box"/></t></textarea>
                                 </div>
                             </t>
                         </t>
@@ -378,13 +386,13 @@
     </t>
     <t t-name="lesson_content_quiz_prompt_submitted">
         <div t-attf-class="o_wslides_js_lesson_quiz_question mt-3#{(widget.slide.is_member) and ' ' or  ' disabled'}"
-            t-attf-data-question-id="prompt.id" t-attf-data-title="prompt.question">
-            <div class="row d-flex mb-2 mx-0">
+            t-attf-data-question-id="#{prompt.id}" t-att-data-title="prompt.question">
+            <div class="row d-flex mb-2">
                 <div class="d-flex">
                     <small class="text-muted">
                         <i class="fa fa-quora"></i>
                     </small>
-                    <span class="question_text ml-2" style="line-height: 1;" t-raw="prompt.question"/>
+                    <t class="question_text ml-2" style="line-height: 1;"  t-out="prompt['question']"/>
                 </div>
             </div>
             <div class="list-group flex-row align-content-start">
@@ -403,7 +411,7 @@
                                 <i class="fa fa-font"></i>
                             </small>
                             <div class="ml-1" style="line-height: 1">
-                                <t t-raw="user_input.value_richtext_box"/>
+                                <t t-out="user_input.value_richtext_box"/>
                             </div>
                         </t>
                     </t>

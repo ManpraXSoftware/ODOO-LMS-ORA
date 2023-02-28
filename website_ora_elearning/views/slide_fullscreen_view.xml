@@ -2,11 +2,11 @@
 <odoo>
     <data>
         <template id="slide_fullscreen_sidebar_category_ora_inherit" inherit_id="website_slides.slide_fullscreen_sidebar_category">
-            <ul class="list-unstyled w-100 pt-2 small" position="attributes">
-                <attribute name="t-if">slide.prompt_ids or slide.link_ids or slide.slide_resource_ids or (slide.question_ids and not slide.slide_type =='quiz')</attribute>
+            <ul class="list-unstyled w-100 pt-2 small ps-4" position="attributes">
+                <attribute name="t-if">slide.prompt_ids or slide._has_additional_resources() or (slide.question_ids and not slide.slide_category =='quiz')</attribute>
             </ul>
-            <xpath expr='//li[@class="o_wslides_fs_sidebar_list_item pl-0 mb-1"]' position="after">
-                <li class="o_wslides_fs_sidebar_list_item pl-0 mb-1 ora_tab" t-if="slide.prompt_ids"
+            <xpath expr='//li[@class="o_wslides_fs_sidebar_list_item ps-0 mb-1"]' position="after">
+                <li class="o_wslides_fs_sidebar_list_item ps-0 mb-1 ora_tab" t-if="slide.prompt_ids"
                     t-att-data-id="slide.id"
                     t-att-data-can-access="is_member"
                     t-att-data-name="slide.name"

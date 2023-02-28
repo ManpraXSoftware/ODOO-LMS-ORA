@@ -3,6 +3,7 @@
 from odoo import http
 from odoo.http import request, Response
 from datetime import datetime
+from markupsafe import Markup
 from odoo.addons.http_routing.models.ir_http import slug
 from odoo.addons.website_slides.controllers.main import WebsiteSlides
 
@@ -67,15 +68,17 @@ class WebsiteSlidesORA(WebsiteSlides):
                         if line.response_type == 'text':
                             line.value_text_box = oline.value_text_box
                         elif line.response_type == 'rich_text':
-                            query = ("update open_response_user_line set value_richtext_box='%s' where id=%s") % (oline.value_richtext_box, oline.id)
-                            request.cr.execute(query)
+                            line.value_richtext_box = Markup(oline.value_richtext_box)
+                            # query = ("update open_response_user_line set value_richtext_box='%s' where id=%s") % (oline.value_richtext_box, oline.id)
+                            # request.cr.execute(query)
         else:
             for line in response.user_response_line:
                 if line.response_type == 'text':
                     line.value_text_box = kwargs[str(line.prompt_id.id)]
                 elif line.response_type == 'rich_text':
-                    query = ("update open_response_user_line set value_richtext_box='%s' where id='%s'") % (kwargs[str(line.prompt_id.id)], line.id)
-                    request.cr.execute(query)
+                    line.value_richtext_box = Markup(kwargs[str(line.prompt_id.id)])
+                    # query = ("update open_response_user_line set value_richtext_box='%s' where id='%s'") % (Markup(kwargs[str(line.prompt_id.id)]), line.id)
+                    # request.cr.execute(query)
 
     def _prepare_additional_channel_values(self, values, **kwargs):
         values = super(WebsiteSlidesORA, self)._prepare_additional_channel_values(values, **kwargs)
@@ -86,7 +89,7 @@ class WebsiteSlidesORA(WebsiteSlides):
                 'slide_prompts': [{
                     'id': prompt.id,
                     'sequence': prompt.sequence,
-                    'question': prompt.question_name,
+                    'question': Markup(prompt.question_name),
                     'response_type': prompt.response_type,
                     'submitted': submitted,
                     'name': prompt.name,
@@ -129,7 +132,7 @@ class WebsiteSlidesORA(WebsiteSlides):
                     'slide_prompts': [{
                         'id': prompt.id,
                         'sequence': prompt.sequence,
-                        'question': prompt.question_name,
+                        'question': Markup(prompt.question_name),
                         'response_type': prompt.response_type,
                         'name': prompt.name,
                     } for prompt in slide.prompt_ids.sorted(key=lambda x: x.id)]
@@ -193,7 +196,7 @@ class WebsiteSlidesORA(WebsiteSlides):
         return {
             'prompt_id': user_response_line.prompt_id.id,
             'value_text_box': user_response_line.value_text_box,
-            'value_richtext_box': user_response_line.value_richtext_box,
+            'value_richtext_box': Markup(user_response_line.value_richtext_box),
         }
 
     def _get_total_responses(self, ora_response, slide):
@@ -204,7 +207,7 @@ class WebsiteSlidesORA(WebsiteSlides):
             'id': ora_response.id,
             'user': request.env.user.id,
             'state': ora_response.state,
-            'feedback': ora_response.feedback,
+            'feedback': Markup(ora_response.feedback),
             'staff_id': ora_response.sudo().staff_id.id,
             'staff_name': ora_response.sudo().staff_id.name,
             'user_name': ora_response.sudo().user_id.name,

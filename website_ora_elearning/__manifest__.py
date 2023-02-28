@@ -21,6 +21,7 @@
             'website_ora_elearning/static/src/scss/website_slides.scss',
             'website_ora_elearning/static/src/js/ora_fullscreen.js',
             'website_ora_elearning/static/src/js/website_ora.js',
+            'website_ora_elearning/static/src/xml/slide_ora.xml',
         ],
     },
     'qweb': [],

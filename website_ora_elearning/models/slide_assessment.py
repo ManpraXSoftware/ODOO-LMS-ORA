@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
+from odoo import models, fields, api, tools
 from odoo.exceptions import UserError
 
 
@@ -148,7 +148,7 @@ class ORAResponse(models.Model):
     slide_id = fields.Many2one('slide.slide', "Content")
     user_id = fields.Many2one('res.users', "User")
     staff_id = fields.Many2one(related="slide_id.channel_id.user_id", string="Staff", store=True)
-    feedback = fields.Html("Feedback", translate=True)
+    feedback = fields.Html("Feedback", translate=True, sanitize_attributes=False, sanitize_form=False)
     can_resubmit = fields.Boolean("Allow Resubmit")
     xp_points = fields.Integer("XP Points", compute="calculate_total_xp", store=True)
     user_response_line = fields.One2many('open.response.user.line', 'response_id' , string="Prompts")
@@ -191,10 +191,10 @@ class OpenResponseUserLine(models.Model):
 
     response_id = fields.Many2one('ora.response', ondelete="cascade")
     value_text_box = fields.Text("Text answer", translate=True)
-    value_richtext_box = fields.Html("Richtext answer", translate=True)
+    value_richtext_box = fields.Html("Richtext answer", translate=True, sanitize_attributes=False, sanitize_form=False)
     slide_id = fields.Many2one(related="response_id.slide_id")
     prompt_id = fields.Many2one('open.response.prompt', ondelete='cascade', string="Prompt")
-    question_name = fields.Html("Question", related='prompt_id.question_name', store=True)
+    question_name = fields.Html("Question", related='prompt_id.question_name', store=True, translate=tools.html_translate, sanitize_attributes=False, sanitize_form=False)
     question_sequence = fields.Integer('Sequence', related='prompt_id.sequence', store=True)
     response_type = fields.Selection(string="Response Type", related="prompt_id.response_type")
 

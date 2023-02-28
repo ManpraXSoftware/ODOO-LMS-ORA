@@ -2,8 +2,8 @@
 <odoo>
     <data>
         <template id="slide_content_detailed_inherit_ora" inherit_id="website_slides.slide_content_detailed">
-            <span t-att-class="'ml-2 badge %s' % ('badge-success' if channel_progress[slide.id].get('completed') else 'badge-info')" position="attributes">
-                <attribute name="t-if" separator=" or " add="slide.prompt_ids"/>
+            <span t-attf-class="mx-2 badge #{'text-bg-success' if slide_completed else 'text-bg-info'}" position="attributes">
+                <attribute name="t-if">"slide.question_ids and (slide_completed or quiz_karma_gain) or slide.prompt_ids"</attribute>
             </span>
             <div id="about" position="attributes">
                 <attribute name="t-att-class">'tab-pane fade in show active'</attribute>
@@ -52,16 +52,20 @@
                                                 </span>
                                             </div>
                                             <div class="ml-auto">
-                                                <button class="btn btn-primary custom_response"
-                                                t-att-id="'show_response-%s'%(response.id)" type="button" style="float:right;position:relative;"
-                                                data-toggle="collapse" t-att-href="'#collapse_div_%s' % (response.id)" aria-controls="collapse_div">
+                                                <button t-attf-id="show_response-{{response.id}}"
+                                                        t-attf-class="btn btn-primary custom_response"
+                                                        t-attf-data-bs-target="#collapse_div_{{response.id}}"
+                                                        t-attf-aria-controls="collapse_div"
+                                                        data-bs-toggle="collapse"
+                                                        t-attf-style="float:right;position:relative;"
+                                                        type="button">
                                                     <span id='response_button_text'>View Response</span>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div t-att-id="'collapse_div_%s' % (response.id)" style="padding-top:0;padding-bottom:0;"
+                                <div t-att-id="'collapse_div_%s' % response.id" style="padding-top:0;padding-bottom:0;"
                                     class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
                                     <t t-if="slide.prompt_ids">
                                         <t t-call="website_ora_elearning.lesson_inactive_response_prompts"/>
@@ -87,7 +91,7 @@
                                                     </div>
                                             </div>
                                             <div class="col">
-                                                <t t-raw="response.feedback"/>
+                                                <t t-out="response.feedback"/>
                                             </div>
                                         </div>
                                     </div>
@@ -119,16 +123,20 @@
                                                 <span class="ml-2">Your response has been assessed.</span>
                                             </div>
                                             <div class="ml-auto">
-                                                <button class="btn btn-primary custom_response"
-                                                t-att-id="'show_response-%s'%(response.id)" type="button" style="float:right;position:relative;"
-                                                data-toggle="collapse" t-att-href="'#collapse_div_%s' % (response.id)" aria-controls="collapse_div">
+                                                <button t-attf-id="show_response-{{response.id}}"
+                                                        t-attf-class="btn btn-primary custom_response"
+                                                        t-attf-data-bs-target="#collapse_div_{{response.id}}"
+                                                        t-attf-aria-controls="collapse_div"
+                                                        data-bs-toggle="collapse"
+                                                        t-attf-style="float:right;position:relative;"
+                                                        type="button">
                                                     <span id='response_button_text'>View Response</span>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div t-att-id="'collapse_div_%s' % (response.id)" style="padding-top:0;padding-bottom:0;"
+                                <div t-att-id="'collapse_div_%s' % response.id" style="padding-top:0;padding-bottom:0;"
                                     class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
                                     <t t-if="slide.prompt_ids">
                                         <t t-call="website_ora_elearning.lesson_assessed_response_prompts"/>
@@ -154,7 +162,7 @@
                                                     </div>
                                             </div>
                                             <div class="col">
-                                                <t t-raw="response.feedback"/>
+                                                <t t-out="response.feedback"/>
                                             </div>
                                         </div>
                                     </div>
@@ -188,15 +196,20 @@
                                                 </span>
                                             </div>
                                             <div class="ml-auto">
-                                                <button class="btn btn-primary custom_response" t-att-id="'show_response-%s'%(response.id)" type="button" style="float:right;position:relative;"
-                                                data-toggle="collapse" t-att-href="'#collapse_div_%s' % (response.id)" aria-controls="collapse_div">
+                                                <button t-attf-id="show_response-{{response.id}}"
+                                                        t-attf-class="btn btn-primary custom_response"
+                                                        t-attf-data-bs-target="#collapse_div_{{response.id}}"
+                                                        t-attf-aria-controls="collapse_div"
+                                                        data-bs-toggle="collapse"
+                                                        t-attf-style="float:right;position:relative;"
+                                                        type="button">
                                                     <span id='response_button_text'>View Response</span>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div t-att-id="'collapse_div_%s' % (response.id)" style="padding-top:0;padding-bottom:0;"
+                                <div t-att-id="'collapse_div_%s' % response.id" style="padding-top:0;padding-bottom:0;"
                                     class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
                                     <t t-if="slide.prompt_ids">
                                         <t t-call="website_ora_elearning.lesson_submitted_response_prompts"/>
@@ -222,7 +235,7 @@
                                                     </div>
                                             </div>
                                             <div class="col">
-                                                <t t-raw="response.feedback"/>
+                                                <t t-out="response.feedback"/>
                                             </div>
                                         </div>
                                         <t t-if="response.can_resubmit">
@@ -290,13 +303,13 @@
             <ul role="tablist" position="inside">
                 <t t-if="slide.peer_assessment">
                     <li class="nav-item">
-                        <a href="#peer_assessment" aria-controls="peer_assessment" class="nav-link" role="tab" data-toggle="tab">
+                        <a href="#peer_assessment" aria-controls="peer_assessment" class="nav-link" role="tab"  data-bs-toggle="tab">
                             <i class="fa fa-users"></i> Peer Assessment
                         </a>
                     </li>
                 </t>
             </ul>
-            <div class="tab-content mt-3" position="inside">
+            <div id="statistic" position="after">
                 <div role="tabpanel" class="tab-pane fade" id="peer_assessment">
                     <t t-if="peer_responses">
                         <div>
@@ -388,12 +401,12 @@
         <template id="lesson_content_quiz_prompt" name="Lesson: ORA prompt template">
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
-                <div class="row d-flex mb-2 mx-0">
+                <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
                             <i class="fa fa-quora"></i>
                         </small>
-                        <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
+                        <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -421,12 +434,12 @@
         <template id="lesson_content_quiz_prompt_active" name="Lesson: ORA prompt template">
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
-                <div class="row d-flex mb-2 mx-0">
+                <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
                             <i class="fa fa-quora"></i>
                         </small>
-                        <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
+                        <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -458,12 +471,12 @@
         <template id="lesson_content_quiz_prompt_submitted">
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
-                <div class="row d-flex mb-2 mx-0">
+                <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
                             <i class="fa fa-quora"></i>
                         </small>
-                        <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
+                        <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group flex-row">
@@ -494,12 +507,12 @@
         <template id="lesson_content_quiz_prompt_inactive" name="Lesson: ORA prompt template">
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
-                <div class="row d-flex mb-2 mx-0">
+                <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
                             <i class="fa fa-quora"></i>
                         </small>
-                        <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
+                        <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group flex-row">
@@ -530,7 +543,7 @@
         <template id="lesson_content_quiz_prompt_assessed" name="Lesson: ORA prompt template">
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
-                <div class="row d-flex mb-2 mx-0">
+                <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
                             <i class="fa fa-quora"></i>
@@ -564,14 +577,17 @@
             </div>
         </template>
         <template inherit_id="website_slides.slide_aside_training_category" id="slide_aside_training_category_inherited">
-            <div class="ml-auto" position="attributes">
+            <span class="align-items-end" position="attributes">
                 <attribute name="t-if" separator=" or " add="aside_slide.prompt_ids"/>
-            </div>
-            <ul class="list-group px-2 mb-1 list-unstyled" position="attributes">
-                <attribute name="t-if">aside_slide.prompt_ids or aside_slide.link_ids or aside_slide.slide_resource_ids or aside_slide.question_ids</attribute>
+            </span>
+            <!-- <div class="ml-auto" position="attributes">
+                <attribute name="t-if" separator=" or " add="aside_slide.prompt_ids"/>
+            </div> -->
+            <ul class="list-group ps-5 mb-1 list-unstyled" position="attributes">
+                <attribute name="t-if">aside_slide.prompt_ids or aside_slide._has_additional_resources() or aside_slide.question_ids</attribute>
             </ul>
-            <ul class="list-group px-2 mb-1 list-unstyled" position="inside">
-                <li class="pl-4">
+            <ul class="list-group ps-5 mb-1 list-unstyled" position="inside">
+                <li class="ps-4">
                     <a t-if="can_access and aside_slide.prompt_ids" t-att-href="'/slides/slide/%s#lessonAssessment' % (slug(aside_slide))" class="o_wslides_lesson_aside_list_link text-decoration-none small text-600">
                         <i class="fa fa-flag text-warning"/> Assessment
                     </a>
@@ -593,9 +609,13 @@
                             <t t-set="submitted_date" t-value="response.slide_rubric_staff_line.filtered(lambda x: x.user_id == user).submitted_date"/>
                             <t t-if="submitted_date">assessed on <t t-esc="submitted_date" t-options="{'widget': 'date','format': 'd MMM Y'}"/></t>
                         </span>
-                        <button class="btn btn-primary custom_response"
-                        t-att-id="'show_response-%s'%(response.id)" type="button" style="float:right;position:relative;"
-                        data-toggle="collapse" t-att-href="'#collapse_div_%s' % (response.id)" aria-controls="collapse_div">
+                        <button t-attf-id="show_response-{{response.id}}"
+                                t-attf-class="btn btn-primary custom_response"
+                                t-attf-data-bs-target="#collapse_div_{{response.id}}"
+                                t-attf-aria-controls="collapse_div"
+                                data-bs-toggle="collapse"
+                                t-attf-style="float:right;position:relative;"
+                                type="button">
                             <span id='response_button_text'>View Response</span>
                         </button>
                     </div>
@@ -605,7 +625,7 @@
             </div>
         </template>
         <template id="lesson_peer_responses_cards">
-            <div t-att-id="'collapse_div_%s' % (response.id)" class="collapse custom_collapse list-group-item"
+            <div t-att-id="'collapse_div_%s' % response.id" class="collapse custom_collapse list-group-item"
                 style="padding-top:0;padding-bottom:0;">
                 <form t-attf-action="/submit/peer/response" method="post" role="form" enctype="multipart/form-data">
                     <input type="hidden" name="response_id" t-att-value="response.id"/>
