@@ -24,7 +24,6 @@ odoo.define('website_ora_elearning.website_ora', function (require) {
             var self = this;
             _.each($('textarea.o_wysiwyg_loader'), async function (textarea) {
                 var $textarea = $(textarea);
-                debugger;
                 self._wysiwyg = await wysiwygLoader.loadFromTextarea(self, $textarea[0], {
                     resizable: true,
                     userGeneratedContent: true,

@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <template id="slide_content_detailed_inherit_ora" inherit_id="website_slides.slide_content_detailed">
-            <span t-attf-class="mx-2 badge #{'text-bg-success' if slide_completed else 'text-bg-info'}" position="attributes">
+            <span t-attf-class="mx-2 my-1 badge #{'text-bg-success' if slide_completed else 'text-bg-info'}" position="attributes">
                 <attribute name="t-if">"slide.question_ids and (slide_completed or quiz_karma_gain) or slide.prompt_ids"</attribute>
             </span>
             <div id="about" position="attributes">
