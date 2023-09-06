@@ -23,303 +23,303 @@
                         display: inline;
                     }
                 </style>
-                <div class="o_wslides_js_ora_container o_user_response" id="lessonAssessment" t-att-data-slide-id="slide.id" name="slide" value="slide.id">
-                    <t t-if="total_responses">
-                        <t t-if="inactive_response">
-                            <t t-foreach="inactive_response" t-as="response">
-                                <div class="mt-3">
-                                    <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
-                                        <t t-set="bio_popover_data">
-                                            <div class="d-flex o_wforum_bio_popover_wrap">
-                                                <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.create_uid, 'image_128', '75x75')" alt="Avatar"/>
-                                                <div>
-                                                    <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.create_uid" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
-                                                    <span class="o_wforum_bio_popover_info" t-field="response.create_uid" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
-                                                </div>
-                                            </div>
-                                        </t>
-                                        <div class="row" style="line-height: 2.3em;">
-                                            <div class="d-flex align-items-start">
-                                                <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
-                                                t-att-data-content="bio_popover_data">
-                                                    <div class="o_wforum_author_pic position-relative rounded-circle">
-                                                        <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
-                                                        t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
+                    <div class="o_wslides_js_ora_container o_user_response" id="lessonAssessment" t-att-data-slide-id="slide.id" name="slide" value="slide.id">
+                        <t t-if="total_responses">
+                            <t t-if="inactive_response">
+                                <t t-foreach="inactive_response" t-as="response">
+                                    <div class="mt-3">
+                                        <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
+                                            <t t-set="bio_popover_data">
+                                                <div class="d-flex o_wforum_bio_popover_wrap">
+                                                    <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.create_uid, 'image_128', '75x75')" alt="Avatar"/>
+                                                    <div>
+                                                        <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.create_uid" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
+                                                        <span class="o_wforum_bio_popover_info" t-field="response.create_uid" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
                                                     </div>
                                                 </div>
-                                                <span class="ml-2">Your response has been submitted successfully on 
-                                                    <t t-esc="response.submitted_date" t-options="{'widget': 'date','format': 'd MMM Y'}"/>
-                                                </span>
-                                            </div>
-                                            <div class="ml-auto">
-                                                <button t-attf-id="show_response-{{response.id}}"
-                                                        t-attf-class="btn btn-primary custom_response"
-                                                        t-attf-data-bs-target="#collapse_div_{{response.id}}"
-                                                        t-attf-aria-controls="collapse_div"
-                                                        data-bs-toggle="collapse"
-                                                        t-attf-style="float:right;position:relative;"
-                                                        type="button">
-                                                    <span id='response_button_text'>View Response</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div t-att-id="'collapse_div_%s' % response.id" style="padding-top:0;padding-bottom:0;"
-                                    class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
-                                    <t t-if="slide.prompt_ids">
-                                        <t t-call="website_ora_elearning.lesson_inactive_response_prompts"/>
-                                    </t>
-                                </div>
-                                <t t-if="response.feedback">
-                                    <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
-                                        <t t-set="bio_popover_data">
-                                            <div class="d-flex o_wforum_bio_popover_wrap">
-                                                <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.staff_id, 'image_128', '75x75')" alt="Avatar"/>
-                                                <div>
-                                                    <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.staff_id" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
-                                                    <span class="o_wforum_bio_popover_info" t-field="response.staff_id" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
-                                                </div>
-                                            </div>
-                                        </t>
-                                        <div class="row">
-                                            <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
-                                                t-att-data-content="bio_popover_data">
-                                                    <div class="o_wforum_author_pic position-relative rounded-circle">
-                                                        <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
-                                                        t-att-src="website.image_url(response.staff_id, 'image_1920', '40x40')" alt="Avatar"/>
+                                            </t>
+                                            <div class="row" style="line-height: 2.3em;">
+                                                <div class="d-flex align-items-start">
+                                                    <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
+                                                    t-att-data-content="bio_popover_data">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                            <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
+                                                            t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
+                                                        </div>
                                                     </div>
-                                            </div>
-                                            <div class="col">
-                                                <t t-out="response.feedback"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </t>
-                            </t>
-                        </t>
-                        <t t-if="assessed_response">
-                            <t t-foreach="assessed_response" t-as="response">
-                                <div class="mt-3">
-                                    <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
-                                        <t t-set="bio_popover_data">
-                                            <div class="d-flex o_wforum_bio_popover_wrap">
-                                                <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.create_uid, 'image_128', '75x75')" alt="Avatar"/>
-                                                <div>
-                                                    <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.create_uid" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
-                                                    <span class="o_wforum_bio_popover_info" t-field="response.create_uid" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
+                                                    <span class="ml-2">Your response has been submitted successfully on 
+                                                        <t t-esc="response.submitted_date" t-options="{'widget': 'date','format': 'd MMM Y'}"/>
+                                                    </span>
                                                 </div>
-                                            </div>
-                                        </t>
-                                        <div class="row" style="line-height: 2.3em;">
-                                            <div class="d-flex align-items-center">
-                                                <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
-                                                t-att-data-content="bio_popover_data">
-                                                    <div class="o_wforum_author_pic position-relative rounded-circle">
-                                                        <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
-                                                        t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
-                                                    </div>
-                                                </div>
-                                                <span class="ml-2">Your response has been assessed.</span>
-                                            </div>
-                                            <div class="ml-auto">
-                                                <button t-attf-id="show_response-{{response.id}}"
-                                                        t-attf-class="btn btn-primary custom_response"
-                                                        t-attf-data-bs-target="#collapse_div_{{response.id}}"
-                                                        t-attf-aria-controls="collapse_div"
-                                                        data-bs-toggle="collapse"
-                                                        t-attf-style="float:right;position:relative;"
-                                                        type="button">
-                                                    <span id='response_button_text'>View Response</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div t-att-id="'collapse_div_%s' % response.id" style="padding-top:0;padding-bottom:0;"
-                                    class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
-                                    <t t-if="slide.prompt_ids">
-                                        <t t-call="website_ora_elearning.lesson_assessed_response_prompts"/>
-                                    </t>
-                                </div>
-                                <t t-if="response.feedback">
-                                    <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
-                                        <t t-set="bio_popover_data">
-                                            <div class="d-flex o_wforum_bio_popover_wrap">
-                                                <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.staff_id, 'image_128', '75x75')" alt="Avatar"/>
-                                                <div>
-                                                    <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.staff_id" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
-                                                    <span class="o_wforum_bio_popover_info" t-field="response.staff_id" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
-                                                </div>
-                                            </div>
-                                        </t>
-                                        <div class="row">
-                                            <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
-                                                t-att-data-content="bio_popover_data">
-                                                    <div class="o_wforum_author_pic position-relative rounded-circle">
-                                                        <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
-                                                        t-att-src="website.image_url(response.staff_id, 'image_1920', '40x40')" alt="Avatar"/>
-                                                    </div>
-                                            </div>
-                                            <div class="col">
-                                                <t t-out="response.feedback"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </t>
-                            </t>
-                        </t>
-                        <t t-if="submitted_response">
-                            <t t-foreach="submitted_response" t-as="response">
-                                <div class="mt-3">
-                                    <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
-                                        <t t-set="bio_popover_data">
-                                            <div class="d-flex o_wforum_bio_popover_wrap">
-                                                <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.create_uid, 'image_128', '75x75')" alt="Avatar"/>
-                                                <div>
-                                                    <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.create_uid" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
-                                                    <span class="o_wforum_bio_popover_info" t-field="response.create_uid" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
-                                                </div>
-                                            </div>
-                                        </t>
-                                        <div class="row" style="line-height: 2.3em;">
-                                            <div class="d-flex align-itmes-start">
-                                                <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
-                                                t-att-data-content="bio_popover_data">
-                                                    <div class="o_wforum_author_pic position-relative rounded-circle">
-                                                        <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
-                                                        t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
-                                                    </div>
-                                                </div>
-                                                <span class="ml-2">Your response has been submitted successfully on 
-                                                    <t t-esc="response.submitted_date" t-options="{'widget': 'date','format': 'd MMM Y'}"/>
-                                                </span>
-                                            </div>
-                                            <div class="ml-auto">
-                                                <button t-attf-id="show_response-{{response.id}}"
-                                                        t-attf-class="btn btn-primary custom_response"
-                                                        t-attf-data-bs-target="#collapse_div_{{response.id}}"
-                                                        t-attf-aria-controls="collapse_div"
-                                                        data-bs-toggle="collapse"
-                                                        t-attf-style="float:right;position:relative;"
-                                                        type="button">
-                                                    <span id='response_button_text'>View Response</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div t-att-id="'collapse_div_%s' % response.id" style="padding-top:0;padding-bottom:0;"
-                                    class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
-                                    <t t-if="slide.prompt_ids">
-                                        <t t-call="website_ora_elearning.lesson_submitted_response_prompts"/>
-                                    </t>
-                                </div>
-                                <t t-if="response.feedback">
-                                    <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
-                                        <t t-set="bio_popover_data">
-                                            <div class="d-flex o_wforum_bio_popover_wrap">
-                                                <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.staff_id, 'image_128', '75x75')" alt="Avatar"/>
-                                                <div>
-                                                    <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.staff_id" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
-                                                    <span class="o_wforum_bio_popover_info" t-field="response.staff_id" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
-                                                </div>
-                                            </div>
-                                        </t>
-                                        <div class="row">
-                                            <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
-                                                t-att-data-content="bio_popover_data">
-                                                    <div class="o_wforum_author_pic position-relative rounded-circle">
-                                                        <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
-                                                        t-att-src="website.image_url(response.staff_id, 'image_1920', '40x40')" alt="Avatar"/>
-                                                    </div>
-                                            </div>
-                                            <div class="col">
-                                                <t t-out="response.feedback"/>
-                                            </div>
-                                        </div>
-                                        <t t-if="response.can_resubmit">
-                                            <form t-attf-action="/ora/response/save" method="post" role="form" enctype="multipart/form-data">
-                                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                                <input type="hidden" name="slide_id" t-att-value="slide.id"/>
-                                                <div>
-                                                    <input type="hidden" name="response_id" t-att-value="response.id"/>
-                                                    <button class="btn btn-primary o_slide_submit_btn" id="submit_response_fresh" type="submit"
-                                                        style="margin-top: 10px;" name="submit" value="resubmit_fresh">
-                                                        <span>Resubmit Fresh</span>
-                                                    </button>
-                                                    <button class="btn btn-primary o_slide_submit_btn" id="submit_response_fresh" type="submit"
-                                                        style="margin-right:10px;margin-top: 10px;" name="submit" value="resubmit_copy">
-                                                        <span>Resubmit Copy</span>
+                                                <div class="ml-auto">
+                                                    <button t-attf-id="show_response-{{response.id}}"
+                                                            t-attf-class="btn btn-primary custom_response"
+                                                            t-attf-data-bs-target="#collapse_div_{{response.id}}"
+                                                            t-attf-aria-controls="collapse_div"
+                                                            data-bs-toggle="collapse"
+                                                            t-attf-style="float:right;position:relative;"
+                                                            type="button">
+                                                        <span id='response_button_text'>View Response</span>
                                                     </button>
                                                 </div>
-                                            </form>
-                                        </t>
+                                            </div>
+                                        </div>
                                     </div>
-                                </t>
-                            </t>
-                        </t>
-                        <form action="/ora/response/save" id="ora_form" role="form" enctype="multipart/form-data">
-                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                            <t t-if="active_response">
-                                <t t-foreach="active_response" t-as="response">
-                                    <div t-if="slide.slide_type != 'certification'">
+                                    <div t-att-id="'collapse_div_%s' % response.id" style="padding-top:0;padding-bottom:0;"
+                                        class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
                                         <t t-if="slide.prompt_ids">
-                                            <t t-call="website_ora_elearning.lesson_active_response_prompts"/>
+                                            <t t-call="website_ora_elearning.lesson_inactive_response_prompts"/>
                                         </t>
                                     </div>
-                                    <div class="mt-3" style="margin-left:13px;">
-                                        <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member) else '')" type="submit" name="submit" value="save">
-                                            <span>Save Your Progress</span>
-                                        </button>
-                                        <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" style="float:right;" type="submit" name="submit" value="submit">
-                                            <span>Submit</span>
-                                        </button>
-                                    </div>
+                                    <t t-if="response.feedback">
+                                        <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
+                                            <t t-set="bio_popover_data">
+                                                <div class="d-flex o_wforum_bio_popover_wrap">
+                                                    <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.staff_id, 'image_128', '75x75')" alt="Avatar"/>
+                                                    <div>
+                                                        <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.staff_id" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
+                                                        <span class="o_wforum_bio_popover_info" t-field="response.staff_id" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <div class="row">
+                                                <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
+                                                    t-att-data-content="bio_popover_data">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                            <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
+                                                            t-att-src="website.image_url(response.staff_id, 'image_1920', '40x40')" alt="Avatar"/>
+                                                        </div>
+                                                </div>
+                                                <div class="col">
+                                                    <t t-out="response.feedback"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
                                 </t>
                             </t>
-                        </form>
-                    </t>
-                    <t t-if="not total_responses and slide.prompt_ids">
-                        <form t-attf-action="/ora/response/save" method="post" role="form" enctype="multipart/form-data">
-                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                            <div t-if="slide.slide_type != 'certification'">
-                                <t t-if="slide.prompt_ids">
-                                    <t t-call="website_ora_elearning.lesson_content_prompts"/>
+                            <t t-if="assessed_response">
+                                <t t-foreach="assessed_response" t-as="response">
+                                    <div class="mt-3">
+                                        <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
+                                            <t t-set="bio_popover_data">
+                                                <div class="d-flex o_wforum_bio_popover_wrap">
+                                                    <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.create_uid, 'image_128', '75x75')" alt="Avatar"/>
+                                                    <div>
+                                                        <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.create_uid" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
+                                                        <span class="o_wforum_bio_popover_info" t-field="response.create_uid" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <div class="row" style="line-height: 2.3em;">
+                                                <div class="d-flex align-items-center">
+                                                    <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
+                                                    t-att-data-content="bio_popover_data">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                            <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
+                                                            t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
+                                                        </div>
+                                                    </div>
+                                                    <span class="ml-2">Your response has been assessed.</span>
+                                                </div>
+                                                <div class="ml-auto">
+                                                    <button t-attf-id="show_response-{{response.id}}"
+                                                            t-attf-class="btn btn-primary custom_response"
+                                                            t-attf-data-bs-target="#collapse_div_{{response.id}}"
+                                                            t-attf-aria-controls="collapse_div"
+                                                            data-bs-toggle="collapse"
+                                                            t-attf-style="float:right;position:relative;"
+                                                            type="button">
+                                                        <span id='response_button_text'>View Response</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div t-att-id="'collapse_div_%s' % response.id" style="padding-top:0;padding-bottom:0;"
+                                        class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
+                                        <t t-if="slide.prompt_ids">
+                                            <t t-call="website_ora_elearning.lesson_assessed_response_prompts"/>
+                                        </t>
+                                    </div>
+                                    <t t-if="response.feedback">
+                                        <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
+                                            <t t-set="bio_popover_data">
+                                                <div class="d-flex o_wforum_bio_popover_wrap">
+                                                    <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.staff_id, 'image_128', '75x75')" alt="Avatar"/>
+                                                    <div>
+                                                        <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.staff_id" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
+                                                        <span class="o_wforum_bio_popover_info" t-field="response.staff_id" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <div class="row">
+                                                <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
+                                                    t-att-data-content="bio_popover_data">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                            <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
+                                                            t-att-src="website.image_url(response.staff_id, 'image_1920', '40x40')" alt="Avatar"/>
+                                                        </div>
+                                                </div>
+                                                <div class="col">
+                                                    <t t-out="response.feedback"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </t>
                                 </t>
-                            </div>
-                            <div class="mt-3" style="margin-left:13px;">
-                                <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" type="submit" name="submit" value="save">
-                                    <span>Save Your Progress</span>
-                                </button>
-                                <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" style="float:right;" type="submit" name="submit" value="submit">
-                                    <span>Submit</span>
-                                </button>
-                            </div>
-                        </form>
-                    </t>
-                </div>
+                            </t>
+                            <t t-if="submitted_response">
+                                <t t-foreach="submitted_response" t-as="response">
+                                    <div class="mt-3">
+                                        <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
+                                            <t t-set="bio_popover_data">
+                                                <div class="d-flex o_wforum_bio_popover_wrap">
+                                                    <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.create_uid, 'image_128', '75x75')" alt="Avatar"/>
+                                                    <div>
+                                                        <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.create_uid" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
+                                                        <span class="o_wforum_bio_popover_info" t-field="response.create_uid" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <div class="row" style="line-height: 2.3em;">
+                                                <div class="d-flex align-itmes-start">
+                                                    <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
+                                                    t-att-data-content="bio_popover_data">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                            <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
+                                                            t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
+                                                        </div>
+                                                    </div>
+                                                    <span class="ml-2">Your response has been submitted successfully on 
+                                                        <t t-esc="response.submitted_date" t-options="{'widget': 'date','format': 'd MMM Y'}"/>
+                                                    </span>
+                                                </div>
+                                                <div class="ml-auto">
+                                                    <button t-attf-id="show_response-{{response.id}}"
+                                                            t-attf-class="btn btn-primary custom_response"
+                                                            t-attf-data-bs-target="#collapse_div_{{response.id}}"
+                                                            t-attf-aria-controls="collapse_div"
+                                                            data-bs-toggle="collapse"
+                                                            t-attf-style="float:right;position:relative;"
+                                                            type="button">
+                                                        <span id='response_button_text'>View Response</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div t-att-id="'collapse_div_%s' % response.id" style="padding-top:0;padding-bottom:0;"
+                                        class="collapse custom_collapse list-group-item" t-if="slide.slide_type != 'certification'">
+                                        <t t-if="slide.prompt_ids">
+                                            <t t-call="website_ora_elearning.lesson_submitted_response_prompts"/>
+                                        </t>
+                                    </div>
+                                    <t t-if="response.feedback">
+                                        <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
+                                            <t t-set="bio_popover_data">
+                                                <div class="d-flex o_wforum_bio_popover_wrap">
+                                                    <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="website.image_url(response.staff_id, 'image_128', '75x75')" alt="Avatar"/>
+                                                    <div>
+                                                        <h5 class="o_wforum_bio_popover_name mb-0" t-field="response.staff_id" t-options='{"widget": "contact", "country_image": True, "fields": ["name", "country_id"]}'/>
+                                                        <span class="o_wforum_bio_popover_info" t-field="response.staff_id" t-options='{"widget": "contact", "UserBio": True, "badges": True, "fields": ["karma"]}'/>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <div class="row">
+                                                <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
+                                                    t-att-data-content="bio_popover_data">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                            <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
+                                                            t-att-src="website.image_url(response.staff_id, 'image_1920', '40x40')" alt="Avatar"/>
+                                                        </div>
+                                                </div>
+                                                <div class="col">
+                                                    <t t-out="response.feedback"/>
+                                                </div>
+                                            </div>
+                                            <t t-if="response.can_resubmit">
+                                                <form t-attf-action="/ora/response/save" method="post" role="form" enctype="multipart/form-data">
+                                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                                    <input type="hidden" name="slide_id" t-att-value="slide.id"/>
+                                                    <div>
+                                                        <input type="hidden" name="response_id" t-att-value="response.id"/>
+                                                        <button class="btn btn-primary o_slide_submit_btn" id="submit_response_fresh" type="submit"
+                                                            style="margin-top: 10px;" name="submit" value="resubmit_fresh">
+                                                            <span>Resubmit Fresh</span>
+                                                        </button>
+                                                        <button class="btn btn-primary o_slide_submit_btn" id="submit_response_fresh" type="submit"
+                                                            style="margin-right:10px;margin-top: 10px;" name="submit" value="resubmit_copy">
+                                                            <span>Resubmit Copy</span>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </t>
+                                        </div>
+                                    </t>
+                                </t>
+                            </t>
+                            <form action="/ora/response/save" id="ora_form" role="form" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <t t-if="active_response">
+                                    <t t-foreach="active_response" t-as="response">
+                                        <div t-if="slide.slide_type != 'certification'">
+                                            <t t-if="slide.prompt_ids">
+                                                <t t-call="website_ora_elearning.lesson_active_response_prompts"/>
+                                            </t>
+                                        </div>
+                                        <div class="mt-3" style="margin-left:13px;">
+                                            <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member) else '')" type="submit" name="submit" value="save">
+                                                <span>Save Your Progress</span>
+                                            </button>
+                                            <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" style="float:right;" type="submit" name="submit" value="submit">
+                                                <span>Submit</span>
+                                            </button>
+                                        </div>
+                                    </t>
+                                </t>
+                            </form>
+                        </t>
+                        <t t-if="not total_responses and slide.prompt_ids">
+                            <form t-attf-action="/ora/response/save" method="post" role="form" enctype="multipart/form-data">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div t-if="slide.slide_type != 'certification'">
+                                    <t t-if="slide.prompt_ids">
+                                        <t t-call="website_ora_elearning.lesson_content_prompts"/>
+                                    </t>
+                                </div>
+                                <div class="mt-3" style="margin-left:13px;">
+                                    <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" type="submit" name="submit" value="save">
+                                        <span>Save Your Progress</span>
+                                    </button>
+                                    <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" style="float:right;" type="submit" name="submit" value="submit">
+                                        <span>Submit</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </t>
+                    </div>
             </div>
             <ul role="tablist" position="inside">
-                <t t-if="slide.peer_assessment">
-                    <li class="nav-item">
-                        <a href="#peer_assessment" aria-controls="peer_assessment" class="nav-link" role="tab"  data-bs-toggle="tab">
-                            <i class="fa fa-users"></i> Peer Assessment
-                        </a>
-                    </li>
-                </t>
+                    <t t-if="slide.peer_assessment">
+                        <li class="nav-item">
+                            <a href="#peer_assessment" aria-controls="peer_assessment" class="nav-link" role="tab"  data-bs-toggle="tab">
+                                <i class="fa fa-users"></i> Peer Assessment
+                            </a>
+                        </li>
+                    </t>
             </ul>
             <div id="statistic" position="after">
-                <div role="tabpanel" class="tab-pane fade" id="peer_assessment">
-                    <t t-if="peer_responses">
-                        <div>
-                            <t t-call="website_ora_elearning.lesson_content_peer_responses"/>
-                        </div>
-                    </t>
-                    <t t-if="not peer_responses">
-                        <h2>There is no peer responses to assess.</h2>
-                    </t>
-                </div>
+                    <div role="tabpanel" class="tab-pane fade" id="peer_assessment">
+                        <t t-if="peer_responses">
+                            <div>
+                                <t t-call="website_ora_elearning.lesson_content_peer_responses"/>
+                            </div>
+                        </t>
+                        <t t-if="not peer_responses">
+                            <h2>There is no peer responses to assess.</h2>
+                        </t>
+                    </div>
             </div>
         </template>
         <template id="lesson_inactive_response_prompts">
@@ -578,24 +578,27 @@
         </template>
         <template inherit_id="website_slides.slide_aside_training_category" id="slide_aside_training_category_inherited">
             <span class="align-items-end" position="attributes">
-                <attribute name="t-if" separator=" or " add="aside_slide.prompt_ids"/>
+                <t t-if="'is_sequential' not in aside_slide.fields_get()">
+                    <attribute name="t-if" separator=" or " add="aside_slide.prompt_ids"/>
+                </t>
             </span>
-            <!-- <div class="ml-auto" position="attributes">
-                <attribute name="t-if" separator=" or " add="aside_slide.prompt_ids"/>
-            </div> -->
             <ul class="list-group ps-5 mb-1 list-unstyled" position="attributes">
-                <attribute name="t-if">aside_slide.prompt_ids or aside_slide._has_additional_resources() or aside_slide.question_ids</attribute>
+                 <t t-if="'is_sequential' not in aside_slide.fields_get()">
+                    <attribute name="t-if">aside_slide.prompt_ids or aside_slide._has_additional_resources() or aside_slide.question_ids</attribute>
+                </t>
             </ul>
             <ul class="list-group ps-5 mb-1 list-unstyled" position="inside">
-                <li class="ps-4">
-                    <a t-if="can_access and aside_slide.prompt_ids" t-att-href="'/slides/slide/%s#lessonAssessment' % (slug(aside_slide))" class="o_wslides_lesson_aside_list_link text-decoration-none small text-600">
-                        <i class="fa fa-flag text-warning"/> Assessment
-                    </a>
-                    <span t-elif="not can_access and aside_slide.prompt_ids"
-                        class="o_wslides_lesson_aside_list_link text-decoration-none small text-600 text-muted">
-                        <i class="fa fa-flag text-warning"/> Assessment
-                    </span>
-                </li>
+                 <t t-if="'is_sequential' not in aside_slide.fields_get()">
+                    <li class="ps-4">
+                        <a t-if="can_access and aside_slide.prompt_ids" t-att-href="'/slides/slide/%s#lessonAssessment' % (slug(aside_slide))" class="o_wslides_lesson_aside_list_link text-decoration-none small text-600">
+                            <i class="fa fa-flag text-warning"/> Assessment
+                        </a>
+                        <span t-elif="not can_access and aside_slide.prompt_ids"
+                            class="o_wslides_lesson_aside_list_link text-decoration-none small text-600 text-muted">
+                            <i class="fa fa-flag text-warning"/> Assessment
+                        </span>
+                    </li>
+                </t>
             </ul>
         </template>
         <template id="lesson_content_peer_responses">

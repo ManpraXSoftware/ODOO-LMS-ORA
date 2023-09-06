@@ -6,180 +6,186 @@
                 display: inline;
             }
         </style>
-        <div class="o_wslides_fs_quiz_container o_wslides_wrap h-100 w-100 overflow-auto pb-5 o_user_response" style="background-color: rgb(236 236 236)">
-            <ul class="nav nav-tabs o_wslides_lesson_nav" role="tablist">
-                <li class="nav-item">
-                    <a href="#ora_assessment" aria-controls="ora_assessment" data-oe-model="slide.slide" class="nav-link active" role="tab" data-bs-toggle="tab">
-                        <i class="fa fa-edit"></i> Assessment
-                    </a>
-                </li>
-                <t t-if="widget.slide.peer_assessment">
+            <div class="o_wslides_fs_quiz_container o_wslides_wrap h-100 w-100 overflow-auto pb-5 o_user_response" style="background-color: rgb(236 236 236)">
+                <ul class="nav nav-tabs o_wslides_lesson_nav" role="tablist">
                     <li class="nav-item">
-                        <a href="#peer_assessment" aria-controls="peer_assessment" data-oe-model="slide.slide" class="nav-link" role="tab" data-bs-toggle="tab">
-                            <i class="fa fa-users"></i> Peer Assessment
+                        <a href="#ora_assessment" aria-controls="ora_assessment" data-oe-model="slide.slide" class="nav-link active" role="tab" data-bs-toggle="tab">
+                            <i class="fa fa-edit"></i> Assessment
                         </a>
                     </li>
-                </t>
-            </ul>
-            <div class="tab-content">
-                <div id="ora_assessment" role="tabpanel" class="o_wslides_js_ora_container tab-pane fade show active" t-att-data-slide-id="widget.slide.id" name="slide" t-att-value="widget.slide.id">
-                    <t t-if="widget.total_responses">
-                        <t t-foreach="widget.total_responses" t-as="response">
-                            <t t-if="response.state == 'inactive' || response.state == 'submitted' || response.state == 'assessed'">
-                                <div class="card-body">
-                                    <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
-                                        <t t-set="bio_popover_data">
-                                            <div class="d-flex o_wforum_bio_popov &amp;&amp;er_wrap">
-                                                <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="response.ora_res_user_image_url" alt="Avatar"
-                                                style="height:70px;width:70px;"/>
-                                                <div>
-                                                    <h5 class="o_wforum_bio_popover_name mb-0" t-esc="response.user_name"/>
-                                                    <span class="o_wforum_bio_popover_info" t-esc="response.user_name"/>
-                                                </div>
-                                            </div>
-                                        </t>
-                                        <div class="row" style="line-height: 2.3em;">
-                                            <div class="d-flex align-items-start">
-                                                <div t-attf-class="o_wforum_author_box d-inline-flex o_show_info o_compact align-items-center o_wforum_bio_popover"
-                                                t-att-data-content="bio_popover_data">
-                                                    <div class="o_wforum_author_pic position-relative rounded-circle">
-                                                        <img t-attf-class="rounded-circle o_forum_avatar shadow" t-att-src="response.ora_res_user_image_url" alt="Avatar"
-                                                        style="height:40px;width:40px;"/>
-                                                    </div>
-                                                </div>
-                                                <t t-if="response.state != 'assessed'">
-                                                    <span class="ml-2">Your response has been submitted successfully on
-                                                        <t t-esc="response.submitted_date"/>
-                                                    </span>
-                                                </t>
-                                                <t t-if="response.state == 'assessed'">
-                                                    <span class="ml-2">Your response has been assessed.</span>
-                                                </t>
-                                            </div>
-                                            <div class="ml-auto">
-                                                <button t-attf-id="show_response-{{response.id}}"
-                                                        t-attf-class="btn btn-primary custom_response"
-                                                        t-attf-data-bs-target="#collapse_div_{{response.id}}"
-                                                        t-attf-aria-controls="collapse_div"
-                                                        data-bs-toggle="collapse"
-                                                        t-attf-style="float:right;position:relative;"
-                                                        type="button">
-                                                    <span id='response_button_text'>View Response</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <t t-if="response.state != 'assessed'">
-                                        <div t-attf-id="collapse_div_{{response.id}}" style="padding-top:0;padding-bottom:0;"
-                                            class="collapse custom_collapse list-group-item">
-                                            <t t-if="widget.slide_prompts">
-                                                <t t-call="lesson_submitted_response_prompts"/>
-                                            </t>
-                                        </div>
-                                    </t>
-                                    <t t-if="response.state == 'assessed'">
-                                        <div t-attf-id="collapse_div_{{response.id}}" style="padding-top:0;padding-bottom:0;"
-                                            class="collapse custom_collapse list-group-item">
-                                                <t t-call="lesson_assessed_response_prompts"/>
-                                        </div>
-                                    </t>
-                                    <t t-if="response.feedback">
+                    <t t-if="widget.slide.peer_assessment">
+                        <li class="nav-item">
+                            <a href="#peer_assessment" aria-controls="peer_assessment" data-oe-model="slide.slide" class="nav-link" role="tab" data-bs-toggle="tab">
+                                <i class="fa fa-users"></i> Peer Assessment
+                            </a>
+                        </li>
+                    </t>
+                </ul>
+                <div class="tab-content">
+                    <div id="ora_assessment" role="tabpanel" class="o_wslides_js_ora_container tab-pane fade show active" t-att-data-slide-id="widget.slide.id" name="slide" t-att-value="widget.slide.id">
+                        <t t-if="widget.total_responses">
+                            <t t-foreach="widget.total_responses" t-as="response">
+                                <t t-if="response.state == 'inactive' || response.state == 'submitted' || response.state == 'assessed'">
+                                    <div class="card-body">
                                         <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
                                             <t t-set="bio_popover_data">
-                                                <div class="d-flex o_wforum_bio_popover_wrap">
-                                                    <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="feedback_user_image_url" alt="Avatar"
-                                                    style="height:75px;width75px;"/>
+                                                <div class="d-flex o_wforum_bio_popov &amp;&amp;er_wrap">
+                                                    <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="response.ora_res_user_image_url" alt="Avatar"
+                                                    style="height:70px;width:70px;"/>
                                                     <div>
-                                                        <h5 class="o_wforum_bio_popover_name mb-0" t-esc="response.staff_name"/>
-                                                        <span class="o_wforum_bio_popover_info" t-esc="response.staff_name"/>
+                                                        <h5 class="o_wforum_bio_popover_name mb-0" t-esc="response.user_name"/>
+                                                        <span class="o_wforum_bio_popover_info" t-esc="response.user_name"/>
                                                     </div>
                                                 </div>
                                             </t>
-                                            <div class="row">
-                                                <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
+                                            <div class="row" style="line-height: 2.3em;">
+                                                <div class="d-flex align-items-start">
+                                                    <div t-attf-class="o_wforum_author_box d-inline-flex o_show_info o_compact align-items-center o_wforum_bio_popover"
                                                     t-att-data-content="bio_popover_data">
                                                         <div class="o_wforum_author_pic position-relative rounded-circle">
-                                                            <img t-attf-class="rounded-circle o_forum_avatar shadow"
-                                                            t-att-src="feedback_user_image_url" alt="Avatar" style="height:40px;width:40px;"/>
+                                                            <img t-attf-class="rounded-circle o_forum_avatar shadow" t-att-src="response.ora_res_user_image_url" alt="Avatar"
+                                                            style="height:40px;width:40px;"/>
                                                         </div>
+                                                    </div>
+                                                    <t t-if="response.state != 'assessed'">
+                                                        <span class="ml-2">Your response has been submitted successfully on
+                                                            <t t-esc="response.submitted_date"/>
+                                                        </span>
+                                                    </t>
+                                                    <t t-if="response.state == 'assessed'">
+                                                        <span class="ml-2">Your response has been assessed.</span>
+                                                    </t>
                                                 </div>
-                                                <div class="col">
-                                                    <t t-out="response.feedback"/>
+                                                <div class="ml-auto">
+                                                    <button t-if="widget.slide.completed &amp;&amp; widget.slide.hasNext" class="btn btn-primary o_wslides_ora_continue" style="float:right;position:relative;">
+                                                        Continue <i class="fa fa-chevron-right ms-1"/>
+                                                    </button>
+                                                    <button t-attf-id="show_response-{{response.id}}"
+                                                            t-attf-class="btn btn-primary custom_response"
+                                                            t-attf-data-bs-target="#collapse_div_{{response.id}}"
+                                                            t-attf-aria-controls="collapse_div"
+                                                            data-bs-toggle="collapse"
+                                                            t-attf-style="float:right;position:relative;margin-right:10px;"
+                                                            type="button">
+                                                        <span id='response_button_text'>View Response</span>
+                                                    </button>
                                                 </div>
                                             </div>
-                                            <t t-if="response.can_resubmit and response.state == 'submitted'">
-                                                <form id="ora_form" t-attf-action="/ora/response/save" method="post" role="form" enctype="multipart/form-data">
-                                                    <input type="hidden" name="csrf_token" t-att-value="widget.csrf_token"/>
-                                                    <input type="hidden" name="slide_id" t-att-value="widget.slide.id"/>
-                                                    <input type="hidden" name="response_id" t-att-value="response.id"/>
-                                                    <div>
-                                                        <button class="o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn" id="submit_response_fresh" type="submit"
-                                                            style="margin-top: 10px;" name="submit" value="resubmit_fresh">
-                                                            <span>Resubmit Fresh</span>
-                                                        </button>
-                                                        <button class="o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn" id="submit_response_copy" type="submit"
-                                                            style="margin-right:10px;margin-top: 10px;" name="submit" value="resubmit_copy">
-                                                            <span>Resubmit Copy</span>
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </t>
                                         </div>
-                                    </t>
-                                </div>
-                            </t>
-                            <t t-if="response.state == 'active'">
-                                <form id="ora_form" role="form" enctype="multipart/form-data" action="/ora/submit/">
-                                    <input type="hidden" id="response_id" t-att-value="response.id"/>
-                                    <input type="hidden" name="csrf_token" t-att-value="widget.csrf_token"/>
-                                    <div>
-                                        <t t-if="widget.slide_prompts">
-                                            <t t-call="lesson_active_response_prompts"/>
+                                        <t t-if="response.state != 'assessed'">
+                                            <div t-attf-id="collapse_div_{{response.id}}" style="padding-top:0;padding-bottom:0;"
+                                                class="collapse custom_collapse list-group-item">
+                                                <t t-if="widget.slide_prompts">
+                                                    <t t-call="lesson_submitted_response_prompts"/>
+                                                </t>
+                                            </div>
+                                        </t>
+                                        <t t-if="response.state == 'assessed'">
+                                            <div t-attf-id="collapse_div_{{response.id}}" style="padding-top:0;padding-bottom:0;"
+                                                class="collapse custom_collapse list-group-item">
+                                                    <t t-call="lesson_assessed_response_prompts"/>
+                                            </div>
+                                        </t>
+                                        <t t-if="response.feedback">
+                                            <div class="o_wslides_quiz_answer_info list-group-item list-group-item-light">
+                                                <t t-set="bio_popover_data">
+                                                    <div class="d-flex o_wforum_bio_popover_wrap">
+                                                        <img class="o_forum_avatar_big flex-shrink-0 mr-3" t-att-src="feedback_user_image_url" alt="Avatar"
+                                                        style="height:75px;width75px;"/>
+                                                        <div>
+                                                            <h5 class="o_wforum_bio_popover_name mb-0" t-esc="response.staff_name"/>
+                                                            <span class="o_wforum_bio_popover_info" t-esc="response.staff_name"/>
+                                                        </div>
+                                                    </div>
+                                                </t>
+                                                <div class="row">
+                                                    <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
+                                                        t-att-data-content="bio_popover_data">
+                                                            <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                                <img t-attf-class="rounded-circle o_forum_avatar shadow"
+                                                                t-att-src="feedback_user_image_url" alt="Avatar" style="height:40px;width:40px;"/>
+                                                            </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <t t-out="response.feedback"/>
+                                                    </div>
+                                                </div>
+                                                <t t-if="response.can_resubmit and response.state == 'submitted'">
+                                                    <form id="ora_form" t-attf-action="/ora/response/save" method="post" role="form" enctype="multipart/form-data">
+                                                        <input type="hidden" name="csrf_token" t-att-value="widget.csrf_token"/>
+                                                        <input type="hidden" name="slide_id" t-att-value="widget.slide.id"/>
+                                                        <input type="hidden" name="response_id" t-att-value="response.id"/>
+                                                        <div>
+                                                            <button class="o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn" id="submit_response_fresh" type="submit"
+                                                                style="margin-top: 10px;" name="submit" value="resubmit_fresh">
+                                                                <span>Resubmit Fresh</span>
+                                                            </button>
+                                                            <button class="o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn" id="submit_response_copy" type="submit"
+                                                                style="margin-right:10px;margin-top: 10px;" name="submit" value="resubmit_copy">
+                                                                <span>Resubmit Copy</span>
+                                                            </button>
+                                                            <button t-if="widget.slide.completed &amp;&amp; widget.slide.hasNext" class="btn btn-primary o_wslides_ora_continue" style="margin-right:10px;margin-top: 10px;">
+                                                                Continue <i class="fa fa-chevron-right ms-1"/>
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                </t>
+                                            </div>
                                         </t>
                                     </div>
-                                    <div class="mt-3 card-body">
-                                        <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary#{(widget.slide.is_member or widget.slide.is_preview) and ' ' or  ' d-none'}" name="submit" value="save" type="submit">
-                                            <span>Save Your Progress</span>
-                                        </button>
-                                        <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary#{(widget.slide.is_member or widget.slide.is_preview) and ' ' or  ' d-none'}" style="float:right;" name="submit" value="submit" type="submit">
-                                            <span>Submit</span>
-                                        </button>
-                                    </div>
-                                </form>
+                                </t>
+                                <t t-if="response.state == 'active'">
+                                    <form id="ora_form" role="form" enctype="multipart/form-data" action="/ora/submit/">
+                                        <input type="hidden" id="response_id" t-att-value="response.id"/>
+                                        <input type="hidden" name="csrf_token" t-att-value="widget.csrf_token"/>
+                                        <div>
+                                            <t t-if="widget.slide_prompts">
+                                                <t t-call="lesson_active_response_prompts"/>
+                                            </t>
+                                        </div>
+                                        <div class="mt-3 card-body">
+                                            <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary#{(widget.slide.is_member or widget.slide.is_preview) and ' ' or  ' d-none'}" name="submit" value="save" type="submit">
+                                                <span>Save Your Progress</span>
+                                            </button>
+                                            <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary#{(widget.slide.is_member or widget.slide.is_preview) and ' ' or  ' d-none'}" style="float:right;" name="submit" value="submit" type="submit">
+                                                <span>Submit</span>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </t>
                             </t>
                         </t>
-                    </t>
-                    <t t-if="(! widget.hasOwnProperty('total_responses') || widget.total_responses.length == 0) &amp;&amp; widget.slide_prompts">
-                        <form id="ora_form" role="form" enctype="multipart/form-data" action="/ora/submit/">
-                            <input type="hidden" name="csrf_token" t-att-value="widget.csrf_token"/>
+                        <t t-if="(! widget.hasOwnProperty('total_responses') || widget.total_responses.length == 0) &amp;&amp; widget.slide_prompts">
+                            <form id="ora_form" role="form" enctype="multipart/form-data" action="/ora/submit/">
+                                <input type="hidden" name="csrf_token" t-att-value="widget.csrf_token"/>
+                                <div>
+                                    <t t-if="widget.slide_prompts">
+                                        <t t-call="lesson_active_response_prompts"/>
+                                    </t>
+                                </div>
+                                <div t-attf-class="mt-3 card-body#{(widget.slide.is_member) and ' ' or  ' d-none'}">
+                                    <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary" name="submit" value="save" type="submit">
+                                        <span>Save Your Progress</span>
+                                    </button>
+                                    <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary" style="float:right;" name="submit" value="submit" type="submit">
+                                        <span>Submit</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </t>
+                    </div>
+                    <div id="peer_assessment" role="tabpanel" class="tab-pane fade">
+                        <t t-if="widget.peer_responses">
                             <div>
-                                <t t-if="widget.slide_prompts">
-                                    <t t-call="lesson_active_response_prompts"/>
-                                </t>
+                                <t t-call="lesson_content_peer_responses"/>
                             </div>
-                            <div t-attf-class="mt-3 card-body#{(widget.slide.is_member) and ' ' or  ' d-none'}">
-                                <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary" name="submit" value="save" type="submit">
-                                    <span>Save Your Progress</span>
-                                </button>
-                                <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary" style="float:right;" name="submit" value="submit" type="submit">
-                                    <span>Submit</span>
-                                </button>
-                            </div>
-                        </form>
-                    </t>
-                </div>
-                <div id="peer_assessment" role="tabpanel" class="tab-pane fade">
-                    <t t-if="widget.peer_responses">
-                        <div>
-                            <t t-call="lesson_content_peer_responses"/>
-                        </div>
-                    </t>
-                    <t t-if="! widget.peer_responses || (widget.peer_responses  &amp;&amp; widget.peer_responses.length == 0)">
-                        <h2>There is no peer responses to assess.</h2>
-                    </t>
+                        </t>
+                        <t t-if="! widget.peer_responses || (widget.peer_responses  &amp;&amp; widget.peer_responses.length == 0)">
+                            <h2>There is no peer responses to assess.</h2>
+                        </t>
+                    </div>
                 </div>
             </div>
-        </div>
     </t>
     <t t-name="lesson_content_peer_responses">
         <div class="o_wslides_js_lesson_ora" id="peer" style="padding-left: 15px;padding-right: 12px;">
@@ -190,6 +196,9 @@
                     <span>Learner Response <t t-esc="count"/>
                         <t t-if="response.submitted_date">assessed on <t t-esc="response.submitted_date"/></t>
                     </span>
+                    <button t-if="widget.slide.completed &amp;&amp; widget.slide.hasNext" class="btn btn-primary o_wslides_ora_continue" style="float:right;position:relative;">
+                        Continue <i class="fa fa-chevron-right ms-1"/>
+                    </button>
                     <button t-attf-id="show_response-{{response.id}}"
                             t-attf-class="btn btn-primary custom_response"
                             t-attf-data-bs-target="#collapse_div_{{response.id}}"

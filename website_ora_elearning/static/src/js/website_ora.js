@@ -17,7 +17,6 @@ odoo.define('website_ora_elearning.website_ora', function (require) {
          */
         start: function () {
             var def = this._super.apply(this, arguments);
-            console.log("aaaaa");
             if (this.editableMode) {
                 return def;
             }

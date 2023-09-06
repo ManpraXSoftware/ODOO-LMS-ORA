@@ -141,8 +141,8 @@ class WebsiteSlidesORA(WebsiteSlides):
                 total_responses = slide.response_ids.filtered(lambda l: l.user_id == request.env.user)
                 values['total_responses'] = []
                 for ora_response in total_responses:
-                    if ora_response.feedback == '<p><br></p>':
-                        ora_response.feedback = False
+                    if ora_response.feedback == '<p><br></p>' or ora_response.feedback == False:
+                        ora_response.feedback = ''
                     values['total_responses'].append(self._get_total_responses(ora_response, slide))
                 peer_response_ids = request.env['open.response.rubric.staff'].search([
                     ('user_id', '=', request.env.user.id),
@@ -175,11 +175,16 @@ class WebsiteSlidesORA(WebsiteSlides):
         return values
 
     def _get_slide_values(self, slide):
+        next_slide = slide.channel_id.slide_content_ids[((slide.channel_id.slide_content_ids.ids).index(slide.id))+1] if ((slide.channel_id.slide_content_ids.ids).index(slide.id)) < len(slide.channel_id.slide_content_ids.ids) - 1 else None
         return {
             'id': slide.id,
             'is_member': slide.channel_id.is_member,
             'is_preview': slide.is_preview,
             'peer_assessment': slide.peer_assessment,
+            'completed': (request.env['slide.slide.partner'].sudo().search([('slide_id', '=', slide.id),('partner_id', '=', request.env.user.partner_id.id)])).completed,
+            'hasNext' : next_slide if next_slide else None,
+            'ispro' : 1 if 'is_sequential' in request.env['slide.channel']._fields else None,
+            'next_slide_url': '/slides/slide/%s?fullscreen=1' % (slug(next_slide)) if next_slide else None,
             'user': request.env.user.id,
             'rubric_ids': [{
                 'criterian_name': rubric.criterian_name,
@@ -280,3 +285,11 @@ class WebsiteSlidesORA(WebsiteSlides):
             result[ora_response.slide_id.id]['quiz_karma_gain'] += ora_response.xp_points
             result[ora_response.slide_id.id]['quiz_karma_won'] += ora_response.xp_points
         return result
+    
+    @http.route(['/slides/channel/leave'], type='json', auth='user', website=True)
+    def slide_channel_leave(self, channel_id):
+        slide_ids = request.env['slide.slide'].sudo().search([('channel_id','=',int(channel_id))])
+        for slide_id in slide_ids:
+            request.env['ora.response'].sudo().search([('user_id','=',int(request.env.uid)),('slide_id','=', int(slide_id))]).unlink()
+        res = super(WebsiteSlidesORA, self).slide_channel_leave(channel_id)
+        return res
