@@ -1,17 +1,12 @@
-odoo.define('website_ora_elearning.website_ora', function (require) {
-    'use strict';
+/** @odoo-module **/
     
-    var publicWidget = require('web.public.widget');
-    var wysiwygLoader = require('web_editor.loader');
-    var core = require('web.core');
-    var _lt = core._lt;
+    import publicWidget from '@web/legacy/js/public/public_widget';
+    import { loadWysiwygFromTextarea } from "@web_editor/js/frontend/loadWysiwygFromTextarea";
+    import { _t } from "@web/core/l10n/translation";
     
     
     publicWidget.registry.websiteORA = publicWidget.Widget.extend({
         selector: '.o_user_response',
-        read_events: {
-            'click .o_slide_submit_btn': '_onSubmitClick',
-        },
         /**
          * @override
          */
@@ -21,39 +16,24 @@ odoo.define('website_ora_elearning.website_ora', function (require) {
                 return def;
             }
             var self = this;
-            _.each($('textarea.o_wysiwyg_loader'), async function (textarea) {
+            $('textarea.o_wysiwyg_loader').toArray().forEach((textarea) => {
                 var $textarea = $(textarea);
-                self._wysiwyg = await wysiwygLoader.loadFromTextarea(self, $textarea[0], {
+                var options = {
                     resizable: true,
                     userGeneratedContent: true,
-                });
+                    height: 100,
+                };
+                loadWysiwygFromTextarea(self, $textarea[0], options)
             });
-            // _.each(this.$('.o_wforum_bio_popover'), authorBox => {
-            //     $(authorBox).popover({
-            //         trigger: 'hover',
-            //         offset: 10,
-            //         animation: false,
-            //         html: true,
-            //     });
-            // });
     
             $('.custom_response').click(function() {
                 var id = this.id.split('-')[this.id.split('-').length - 1]
                 if($('#collapse_div_'+id).hasClass('show')) {
-                    $(this).children().text(_lt('View Response'))
+                    $(this).children().text(_t('View Response'))
                 }else {
-                    $(this).children().text(_lt('Hide Response'))
+                    $(this).children().text(_t('Hide Response'))
                 }
             });
             return Promise.all([def]);
         },
-        /**
-         * @private
-         */
-         _onSubmitClick: function () {
-            if (this._wysiwyg) {
-                this._wysiwyg.save();
-            }
-        },
-    });
     });

@@ -42,7 +42,7 @@
                                                 <div class="d-flex align-items-start">
                                                     <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
                                                     t-att-data-content="bio_popover_data">
-                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle me-2">
                                                             <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
                                                             t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
                                                         </div>
@@ -85,7 +85,7 @@
                                             <div class="row">
                                                 <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
                                                     t-att-data-content="bio_popover_data">
-                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle me-2">
                                                             <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
                                                             t-att-src="website.image_url(response.staff_id, 'image_1920', '40x40')" alt="Avatar"/>
                                                         </div>
@@ -115,7 +115,7 @@
                                                 <div class="d-flex align-items-center">
                                                     <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
                                                     t-att-data-content="bio_popover_data">
-                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle me-2">
                                                             <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
                                                             t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
                                                         </div>
@@ -156,7 +156,7 @@
                                             <div class="row">
                                                 <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
                                                     t-att-data-content="bio_popover_data">
-                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle me-2">
                                                             <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
                                                             t-att-src="website.image_url(response.staff_id, 'image_1920', '40x40')" alt="Avatar"/>
                                                         </div>
@@ -186,7 +186,7 @@
                                                 <div class="d-flex align-itmes-start">
                                                     <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
                                                     t-att-data-content="bio_popover_data">
-                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle me-2">
                                                             <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
                                                             t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
                                                         </div>
@@ -229,7 +229,7 @@
                                             <div class="row">
                                                 <div t-attf-class="o_wforum_author_box d-inline-flex #{display_info and 'o_show_info'} #{compact and 'o_compact align-items-center'} #{bio_popover_data and 'o_wforum_bio_popover'}"
                                                     t-att-data-content="bio_popover_data">
-                                                        <div class="o_wforum_author_pic position-relative rounded-circle">
+                                                        <div class="o_wforum_author_pic position-relative rounded-circle me-2">
                                                             <img t-attf-class="rounded-circle o_forum_avatar #{not display_info and 'shadow'}"
                                                             t-att-src="website.image_url(response.staff_id, 'image_1920', '40x40')" alt="Avatar"/>
                                                         </div>
@@ -404,7 +404,7 @@
                 <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
-                            <i class="fa fa-quora"></i>
+                            <i class="fa fa-quora me-2"></i>
                         </small>
                         <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
                     </div>
@@ -437,7 +437,7 @@
                 <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
-                            <i class="fa fa-quora"></i>
+                            <i class="fa fa-quora me-2"></i>
                         </small>
                         <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
                     </div>
@@ -474,7 +474,7 @@
                 <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
-                            <i class="fa fa-quora"></i>
+                            <i class="fa fa-quora me-2"></i>
                         </small>
                         <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
                     </div>
@@ -484,7 +484,7 @@
                         <t t-if="user_input.prompt_id.id == prompt['id']">
                             <t t-if="prompt['response_type'] == 'text'">
                                 <small class="text-muted">
-                                    <i class="fa fa-font"></i>
+                                    <i class="fa fa-font me-2"></i>
                                 </small>
                                 <div class="input-group ml-1" style="line-height:1">
                                     <t t-esc="user_input.value_text_box"/>
@@ -492,7 +492,7 @@
                             </t>
                             <t t-if="prompt['response_type'] == 'rich_text'">
                                 <small class="text-muted">
-                                    <i class="fa fa-font"></i>
+                                    <i class="fa fa-font me-2"></i>
                                 </small>
                                 <div class="ml-1" style="line-height:1">
                                     <span t-field="user_input.value_richtext_box"/>
@@ -510,7 +510,7 @@
                 <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
-                            <i class="fa fa-quora"></i>
+                            <i class="fa fa-quora me-2"></i>
                         </small>
                         <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
                     </div>
@@ -520,7 +520,7 @@
                         <t t-if="user_input.prompt_id.id == prompt['id']">
                             <t t-if="prompt['response_type'] == 'text'">
                                 <small class="text-muted">
-                                    <i class="fa fa-font"></i>
+                                    <i class="fa fa-font me-2"></i>
                                 </small>
                                 <div class="input-group ml-1" style="line-height:1">
                                     <t t-esc="user_input.value_text_box"/>
@@ -528,7 +528,7 @@
                             </t>
                             <t t-if="prompt['response_type'] == 'rich_text'">
                                 <small class="text-muted">
-                                    <i class="fa fa-font"></i>
+                                    <i class="fa fa-font me-2"></i>
                                 </small>
                                 <div class="ml-1" style="line-height:1">
                                     <span t-field="user_input.value_richtext_box"/>
@@ -546,7 +546,7 @@
                 <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
-                            <i class="fa fa-quora"></i>
+                            <i class="fa fa-quora me-2"></i>
                         </small>
                         <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
                     </div>
@@ -556,7 +556,7 @@
                         <t t-if="user_input.prompt_id.id == prompt['id']">
                             <t t-if="prompt['response_type'] == 'text'">
                                 <small class="text-muted">
-                                    <i class="fa fa-font"></i>
+                                    <i class="fa fa-font me-2"></i>
                                 </small>
                                 <div class="input-group ml-1" style="line-height:1">
                                     <t t-esc="user_input.value_text_box"/>
@@ -564,7 +564,7 @@
                             </t>
                             <t t-if="prompt['response_type'] == 'rich_text'">
                                 <small class="text-muted">
-                                    <i class="fa fa-font"></i>
+                                    <i class="fa fa-font me-2"></i>
                                 </small>
                                 <div class="ml-1" style="line-height:1">
                                     <span t-field="user_input.value_richtext_box"/>
@@ -582,12 +582,12 @@
                     <attribute name="t-if" separator=" or " add="aside_slide.prompt_ids"/>
                 </t>
             </span>
-            <ul class="list-group ps-5 mb-1 list-unstyled" position="attributes">
+            <ul class="o_wslides_lesson_aside_list_links list-group mb-1 list-unstyled fw-light" position="attributes">
                  <t t-if="'is_sequential' not in aside_slide.fields_get()">
                     <attribute name="t-if">aside_slide.prompt_ids or aside_slide._has_additional_resources() or aside_slide.question_ids</attribute>
                 </t>
             </ul>
-            <ul class="list-group ps-5 mb-1 list-unstyled" position="inside">
+            <ul class="o_wslides_lesson_aside_list_links list-group mb-1 list-unstyled fw-light" position="inside">
                  <t t-if="'is_sequential' not in aside_slide.fields_get()">
                     <li class="ps-4">
                         <a t-if="can_access and aside_slide.prompt_ids" t-att-href="'/slides/slide/%s#lessonAssessment' % (slug(aside_slide))" class="o_wslides_lesson_aside_list_link text-decoration-none small text-600">

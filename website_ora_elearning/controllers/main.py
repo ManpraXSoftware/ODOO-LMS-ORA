@@ -199,6 +199,7 @@ class WebsiteSlidesORA(WebsiteSlides):
 
     def _get_user_response(self, user_response_line):
         return {
+            'id': user_response_line.id,
             'prompt_id': user_response_line.prompt_id.id,
             'value_text_box': user_response_line.value_text_box,
             'value_richtext_box': Markup(user_response_line.value_richtext_box),
