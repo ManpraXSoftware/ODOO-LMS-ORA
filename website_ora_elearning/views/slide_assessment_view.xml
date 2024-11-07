@@ -17,12 +17,12 @@
                         <notebook>
                             <page name="prompt" string="Prompts">
                                 <field name="prompt_ids">
-                                    <tree string="Prompts">
+                                    <list string="Prompts">
                                         <field name='sequence' widget='handle'/>
                                         <field name="name"/>
                                         <field name="question_name"/>
                                         <field name="response_type"/>
-                                    </tree>
+                                    </list>
                                     <form>
                                         <label for="question_name"/>
                                         <field name="question_name"/>
@@ -36,10 +36,10 @@
                             </page>
                             <page name="rubric" string="Rubric">
                                 <field name="rubric_ids">
-                                    <tree string="Rubric">
+                                    <list string="Rubric">
                                         <field name="criterian_name"/>
                                         <field name="name"/>
-                                    </tree>
+                                    </list>
                                     <form>
                                         <group>
                                             <field name="criterian_name"/>
@@ -47,11 +47,11 @@
                                         </group>
                                         <label for="criterian_ids"/>
                                         <field name="criterian_ids">
-                                            <tree string="Options" editable="top">
+                                            <list string="Options" editable="top">
                                                 <field name="name"/>
                                                 <field name="option_desc"/>
                                                 <field name="option_points"/>
-                                            </tree>
+                                            </list>
                                         </field>
                                     </form>
                                 </field>
@@ -107,7 +107,6 @@
                                                 <div class="oe_module_vignette" style="width: 900px;">
                                                     <div class="oe_module_desc">
                                                         <div class="float-right"><field name="create_date"/></div>
-                                                        <!-- <div><p><strong>Prompt <field name="question_sequence"/></strong></p></div> -->
                                                         <div>
                                                             <p>
                                                                 <field name="question_name" widget="html"/>
@@ -133,13 +132,13 @@
                             </page>
                             <page name="rubric" string="Rubric">
                                 <field name="slide_rubric_staff_line" readonly="state in ('assessed', 'inactive')">
-                                    <tree string="Rubric">
+                                    <list string="Rubric">
                                         <field name="assess_type"/>
                                         <field name="user_id"/>
                                         <field name="create_date"/>
                                         <field name="total_score"/>
                                         <field name="state"/>
-                                    </tree>
+                                    </list>
                                     <form>
                                         <div class="oe_title">
                                             <h1>
@@ -158,14 +157,14 @@
                                         </group>
                                         <separator string="Options"/>
                                         <field name="option_ids">
-                                            <tree editable="bottom">
+                                            <list editable="bottom">
                                                 <field name="criteria_id"/>
                                                 <field name="criteria_desc"/>
                                                 <field name="option_id" domain="[('rubric_id', '=', criteria_id)]"/>
                                                 <field name="criteria_option_desc"/>
                                                 <field name="criteria_option_point"/>
                                                 <field name="assess_explanation"/>
-                                            </tree>
+                                            </list>
                                         </field>
                                     </form>
                                 </field>
@@ -186,18 +185,18 @@
                 </form>
             </field>
         </record>
-        <record id="ora_response_view_tree" model="ir.ui.view">
-            <field name="name">ora.response.view.tree</field>
+        <record id="ora_response_view_list" model="ir.ui.view">
+            <field name="name">ora.response.view.list</field>
             <field name="model">ora.response</field>
             <field name="arch" type="xml">
-                <tree string="ORA Response" decoration-muted="state == 'inactive'" create="0">
+                <list string="ORA Response" decoration-muted="state == 'inactive'" create="0">
                     <field name="slide_id"/>
                     <field name="create_date"/>
                     <field name="xp_points"/>
                     <field name="user_id"/>
                     <field name="staff_id"/>
                     <field name="state"/>
-                </tree>
+                </list>
             </field>
         </record>
         <record id="ora_user_input_view_search" model="ir.ui.view">
@@ -223,8 +222,8 @@
         <record model="ir.actions.act_window" id="action_ora_response">
             <field name="name">ORA Responses</field>
             <field name="res_model">ora.response</field>
-            <field name="view_mode">tree,form</field>
-            <field name="view_id" ref="ora_response_view_tree"></field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="ora_response_view_list"></field>
             <field name="search_view_id" ref="ora_user_input_view_search"/>
             <field name="context">{'search_default_group_by_user': True}</field>
             <field name="help" type="html">
@@ -236,8 +235,8 @@
         <record model="ir.actions.act_window" id="action_ora_response_reporting">
             <field name="name">ORA Responses</field>
             <field name="res_model">ora.response</field>
-            <field name="view_mode">tree</field>
-            <field name="view_id" ref="ora_response_view_tree"></field>
+            <field name="view_mode">list</field>
+            <field name="view_id" ref="ora_response_view_list"></field>
             <field name="search_view_id" ref="ora_user_input_view_search"/>
         </record>
         <menuitem name="ORA Responses"

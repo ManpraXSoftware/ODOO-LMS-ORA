@@ -6,6 +6,7 @@
     import Fullscreen from "@website_slides/js/slides_course_fullscreen_player";
     import { markup } from "@odoo/owl";
     import { loadWysiwygFromTextarea } from "@web_editor/js/frontend/loadWysiwygFromTextarea";
+    import { rpc } from "@web/core/network/rpc";
 
     var findSlide = function (slideList, matcher) {
         return slideList.find((slide) => {
@@ -39,7 +40,7 @@
                 slide = this.slides[0];
             }
 
-            this.set('slide', slide);
+            this._slideValue = slide;
 
             this.sidebar = new NewSidebar(this, this.slides, slide);
             return result;
@@ -70,8 +71,7 @@
                 isQuiz: slideData.isQuiz || false,
                 isOra: slideData.isOra || false,
             });
-            this.set('slide', newSlide);
-            this.shareButton._onChangeSlide(newSlide);
+            this._updateSlideValue(newSlide);
         },
         /**
          * Triggering a event to switch to next slide
@@ -81,9 +81,9 @@
          */
         _onClickOraNext: function (ev) {
             var self = this;
-            if (this.get('slide').isOra === true) {
-                this.rpc('/slides/slide/get_values', {
-                        slide_id: (this.get('slide').id),
+            if (this._slideValue.isOra === true) {
+                rpc('/slides/slide/get_values', {
+                        slide_id: (this._slideValue.id),
                 }).then(function (data) {
                     if (data.slide.hasNext && data.slide.next_slide_url && !data.slide.ispro) {
                         var url = data.slide.next_slide_url;
@@ -162,9 +162,9 @@
             var def = this._super.apply(this, arguments);
             var $content = this.$('.o_wslides_fs_content');
             var self = this;
-            if (this.get('slide').isOra === true) {
-                this.rpc('/slides/slide/get_values', {
-                    slide_id: (this.get('slide').id),
+            if (this._slideValue.isOra === true) {
+                rpc('/slides/slide/get_values', {
+                    slide_id: (this._slideValue.id),
                 }).then(function (data) {
                     if (data.slide_prompts) {
                         for (let i = 0; i < data.slide_prompts.length; i++) {
@@ -247,12 +247,11 @@
         init: function (parent, slideList, defaultSlide) {
             var result = this._super.apply(this, arguments);
             this.slideEntries = slideList;
-            this.set('slideEntry', defaultSlide);
+            this._slideEntry = defaultSlide;
             return result;
         },
         start: function () {
             var self = this;
-            this.on('change:slideEntry', this, this._onChangeCurrentSlide);
             return this._super.apply(this, arguments).then(function () {
                 $(document).keydown(self._onKeyDown.bind(self));
             });
@@ -272,7 +271,7 @@
         goNext: function () {
             var currentIndex = this._getCurrentIndex();
             if (currentIndex < this.slideEntries.length - 1) {
-                this.set('slideEntry', this.slideEntries[currentIndex + 1]);
+                this._updateSlideEntry(this.slideEntries[currentIndex + 1]);
             }
         },
         /**
@@ -283,7 +282,7 @@
         goPrevious: function () {
             var currentIndex = this._getCurrentIndex();
             if (currentIndex >= 1) {
-                this.set('slideEntry', this.slideEntries[currentIndex - 1]);
+                this._updateSlideEntry(this.slideEntries[currentIndex - 1]);
             }
         },
 
@@ -294,7 +293,7 @@
          * Get the index of the current slide entry (slide and/or quiz)
          */
         _getCurrentIndex: function () {
-            var slide = this.get('slideEntry');
+            const slide = this._slideEntry;
             var currentIndex = this.slideEntries.findIndex(entry => {
                 return entry.id === slide.id && entry.isQuiz === slide.isQuiz;
             });
@@ -314,11 +313,11 @@
          */
         _onClickMiniQuiz: function (ev) {
             var slideID = parseInt($(ev.currentTarget).data().slide_id);
-            this.set('slideEntry', {
+            this._updateSlideEntry({
                 slideID: slideID,
                 isMiniQuiz: true
             });
-            this.trigger_up('change_slide', this.get('slideEntry'));
+            this.trigger_up('change_slide', this._slideEntry);
         },
         /**
          * Handler called when the user clicks on a normal slide tab
@@ -334,7 +333,7 @@
                 var isOra = $elem.data('isOra');
                 var slideID = parseInt($elem.data('id'));
                 var slide = findSlide(this.slideEntries, { id: slideID, isQuiz: isQuiz, isOra: isOra });
-                this.set('slideEntry', slide);
+                this._updateSlideEntry(slide);
             }
         },
         /**
@@ -342,15 +341,18 @@
          * the slide currently displayed
          *
          * @private
+         * @param {Object} slide
          */
-        _onChangeCurrentSlide: function () {
-            var slide = this.get('slideEntry');
+        _updateSlideEntry: function (slide) {
+            if (this._slideEntry === slide) {
+                return;
+            }
+            this._slideEntry = slide;
             this.$('.o_wslides_fs_sidebar_list_item.active').removeClass('active');
-            var selector = '.o_wslides_fs_sidebar_list_item[data-id=' + slide.id + '][data-is-quiz!="1"]';
+            var selector = '.o_wslides_fs_sidebar_list_item[data-id='+slide.id+'][data-is-quiz!="1"]';
 
             this.$(selector).addClass('active');
-            this.$('.ora_tab.active').removeClass('active');
-            this.trigger_up('change_slide', this.get('slideEntry'));
+            this.trigger_up('change_slide', this._slideEntry);
         },
 
         /**
