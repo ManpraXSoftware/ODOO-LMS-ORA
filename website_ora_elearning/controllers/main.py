@@ -46,7 +46,7 @@ class WebsiteSlidesORA(WebsiteSlides):
                 body='This response has been submitted!', message_type='notification',
                 subtype_xmlid='mail.mt_comment', author_id=request.env.user.partner_id.id,
                 partner_ids=[user_response.staff_id.partner_id.id])
-        return request.redirect('/slides/slide/%s' % _slug(slide))
+        return request.redirect('/slides/slide/%s' % request.env['ir.http']._slug(slide))
 
     def _get_access_data(self, post, resubmit=False):
         user = request.env.user
@@ -183,7 +183,7 @@ class WebsiteSlidesORA(WebsiteSlides):
             'completed': (request.env['slide.slide.partner'].sudo().search([('slide_id', '=', slide.id),('partner_id', '=', request.env.user.partner_id.id)])).completed,
             'hasNext' : next_slide if next_slide else None,
             'ispro' : 1 if 'is_sequential' in request.env['slide.channel']._fields else None,
-            'next_slide_url': '/slides/slide/%s?fullscreen=1' % (_slug(next_slide)) if next_slide else None,
+            'next_slide_url': '/slides/slide/%s?fullscreen=1' % request.env['ir.http']._slug(next_slide) if next_slide else None,
             'user': request.env.user.id,
             'rubric_ids': [{
                 'criterian_name': rubric.criterian_name,
@@ -271,7 +271,7 @@ class WebsiteSlidesORA(WebsiteSlides):
                     line.option_ids = values
                     line.state = 'completed'
                     line.submitted_date = datetime.now()
-        return request.redirect('/slides/slide/%s' % _slug(slide))
+        return request.redirect('/slides/slide/%s' % request.env['ir.http']._slug(slide))
 
     def _get_channel_progress(self, channel, include_quiz=False):
         result = super(WebsiteSlidesORA, self)._get_channel_progress(channel, include_quiz=include_quiz)

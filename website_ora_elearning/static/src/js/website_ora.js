@@ -26,14 +26,16 @@
                 loadWysiwygFromTextarea(self, $textarea[0], options)
             });
     
-            $('.custom_response').click(function() {
-                var id = this.id.split('-')[this.id.split('-').length - 1]
-                if($('#collapse_div_'+id).hasClass('show')) {
-                    $(this).children().text(_t('View Response'))
-                }else {
-                    $(this).children().text(_t('Hide Response'))
-                }
-            });
+            $('.custom_response').click(function () {
+                var id = this.id.split('-')[this.id.split('-').length - 1];
+                var button = $(this);
+                $('#collapse_div_' + id).on('shown.bs.collapse', function () {
+                    button.children().text(_t('Hide Response'));
+                });
+                $('#collapse_div_' + id).on('hidden.bs.collapse', function () {
+                    button.children().text(_t('View Response'));
+                });
+            });            
             return Promise.all([def]);
         },
     });

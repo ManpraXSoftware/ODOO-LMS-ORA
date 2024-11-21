@@ -47,7 +47,7 @@
                                                             t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
                                                         </div>
                                                     </div>
-                                                    <span class="ml-2">Your response has been submitted successfully on 
+                                                    <span style="margin-top:13px;margin-left:5px;">Your response has been submitted successfully on 
                                                         <t t-esc="response.submitted_date" t-options="{'widget': 'date','format': 'd MMM Y'}"/>
                                                     </span>
                                                 </div>
@@ -191,7 +191,7 @@
                                                             t-att-src="website.image_url(response.user_id, 'image_1920', '40x40')" alt="Avatar"/>
                                                         </div>
                                                     </div>
-                                                    <span class="ml-2">Your response has been submitted successfully on 
+                                                    <span style="margin-top:13px;margin-left:5px;">Your response has been submitted successfully on 
                                                         <t t-esc="response.submitted_date" t-options="{'widget': 'date','format': 'd MMM Y'}"/>
                                                     </span>
                                                 </div>
@@ -317,7 +317,7 @@
                             </div>
                         </t>
                         <t t-if="not peer_responses">
-                            <h2>There is no peer responses to assess.</h2>
+                            <h2 class="margin-sizing">There is no peer responses to assess.</h2>
                         </t>
                     </div>
             </div>
@@ -404,7 +404,8 @@
                 <div class="row d-flex mb-2">
                     <div class="d-flex align-content-start">
                         <small class="text-muted">
-                            <i class="fa fa-quora me-2"></i>
+                            <!-- <i class="fa fa-quora me-2"></i> -->
+                            <i class="bi bi-question-circle-fill me-2"></i>
                         </small>
                         <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
                     </div>
@@ -584,7 +585,7 @@
             </span>
             <ul class="o_wslides_lesson_aside_list_links list-group mb-1 list-unstyled fw-light" position="attributes">
                  <t t-if="'is_sequential' not in aside_slide.fields_get()">
-                    <attribute name="t-if">aside_slide.prompt_ids or aside_slide._has_additional_resources() or aside_slide.question_ids</attribute>
+                    <attribute name="t-if">aside_slide.prompt_ids or aside_slide.sudo().slide_resource_ids or aside_slide.question_ids</attribute>
                 </t>
             </ul>
             <ul class="o_wslides_lesson_aside_list_links list-group mb-1 list-unstyled fw-light" position="inside">
