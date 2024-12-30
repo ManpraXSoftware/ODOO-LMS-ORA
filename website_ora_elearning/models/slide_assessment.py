@@ -37,21 +37,22 @@ class Slide(models.Model):
         return action
 
     def _create_answer(self, user=False):
-        user_response = self.env['ora.response']
+        existing_response = self.env['ora.response'].search([
+            ('user_id', '=', user),
+            ('slide_id', '=', self.id),
+            ('state', '=', 'active')
+        ], limit=1)
         vals = {
             'user_id': user,
             'slide_id': self.id,
-            'state': 'active'
+            'state': 'active',
+            'user_response_line': [(0, 0, {'prompt_id': prompt_id.id}) for prompt_id in self.prompt_ids],
+            'slide_rubric_ids': [(6, 0, self.rubric_ids.ids)]
         }
-        val_line = []
-        for prompt_id in self.prompt_ids:
-            val_line.append((0, 0, {
-                'prompt_id': prompt_id.id,
-            }))
-        vals['user_response_line'] = val_line
-        vals['slide_rubric_ids'] = [(6, 0, self.rubric_ids.ids)]
-        user_response = user_response.create(vals)
-        return user_response
+        if existing_response:
+            existing_response.write(vals)
+            return existing_response
+        return self.env['ora.response'].create(vals)
 
     @api.model
     def _assign_peer_response(self):
