@@ -189,12 +189,14 @@
                         loadWysiwygFromTextarea(self, $textarea[0], options)
                     });
                     $('.custom_response').click(function () {
-                        var id = this.id.split('-')[this.id.split('-').length - 1]
-                        if ($('#collapse_div_' + id).hasClass('show')) {
-                            $(this).children().text(_t('View Response'))
-                        } else {
-                            $(this).children().text(_t('Hide Response'))
-                        }
+                        var id = this.id.split('-')[this.id.split('-').length - 1];
+                        var button = $(this);
+                        $('#collapse_div_' + id).on('shown.bs.collapse', function () {
+                            button.children().text(_t('Hide Response'));
+                        });
+                        $('#collapse_div_' + id).on('hidden.bs.collapse', function () {
+                            button.children().text(_t('View Response'));
+                        });
                     });
                 });
             }
@@ -217,7 +219,27 @@
         },
 
         _submitOra: function (ev) {
+            var responseData = []
+            $('.o_wslides_ora_answer_info').each(function () {
+                var response_div_id = `response_div_${this.id}`;
+                var $response_div = $(`.${response_div_id}`);
+                if ($response_div.length && !$response_div.val()) {
+                    var richTextValue = $response_div.find('.note-editable').html();
+                    responseData.push({ name: this.id, value: richTextValue });
+                }
+            });            
+            responseData;
             var data = $('#ora_form').serializeArray();
+            responseData.forEach(function (item) {
+                var existingField = data.find(function (field) {
+                    return field.name === item.name;
+                });
+                if (existingField) {
+                    existingField.value = item.value;
+                } else {
+                    data.push({ name: item.name, value: item.value });
+                }
+            });        
             data.push({ name: ev.currentTarget.name, value: ev.currentTarget.value });
             ev.preventDefault();
             var self = this;

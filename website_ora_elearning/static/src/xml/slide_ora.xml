@@ -359,12 +359,12 @@
                             <t t-if="prompt.response_type == 'text'">
                                 <span class="input-group-text">Your Response</span>
                                 <div class="input-group" style="text-align: justify;">
-                                    <textarea class="form-control" t-att-name="prompt.id" required="required"><t t-esc="user_input.value_text_box"/></textarea>
+                                    <textarea t-attf-class="form-control response_div_#{prompt.id}" t-att-name="prompt.id" required="required"><t t-esc="user_input.value_text_box"/></textarea>
                                 </div>
                             </t>
                             <t t-if="prompt.response_type == 'rich_text'">
                                 <span class="input-group-text">Your Response</span>
-                                <div class="position-relative o_wysiwyg_textarea_wrapper">
+                                <div t-attf-class="position-relative o_wysiwyg_textarea_wrapper response_div_#{prompt.id}">
                                     <textarea class="form-control o_wysiwyg_loader" 
                                         t-att-name="prompt.id" required="required">
                                         <t t-esc="user_input.value_richtext_box"/>
@@ -378,12 +378,12 @@
                     <t t-if="prompt.response_type == 'text'">
                         <span class="input-group-text">Your Response</span>
                         <div class="input-group" style="text-align: justify;">
-                            <textarea class="form-control" t-att-name="prompt.id" required="required"></textarea>
+                            <textarea t-attf-class="form-control response_div_#{prompt.id}" t-att-name="prompt.id" required="required"></textarea>
                         </div>
                     </t>
                     <t t-if="prompt.response_type == 'rich_text'">
                         <span class="input-group-text">Your Response</span>
-                        <div class="position-relative o_wysiwyg_textarea_wrapper">
+                        <div t-attf-class="position-relative o_wysiwyg_textarea_wrapper response_div_#{prompt.id}">
                             <textarea class="form-control s_website_form_input o_wysiwyg_loader" t-att-name="prompt.id" required="required"></textarea>
                         </div>
                     </t>
