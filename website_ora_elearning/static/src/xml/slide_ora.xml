@@ -135,7 +135,7 @@
                                     </div>
                                 </t>
                                 <t t-if="response.state == 'active'">
-                                    <form id="ora_form" role="form" enctype="multipart/form-data" action="/ora/submit/">
+                                    <form id="ora_form" role="form" enctype="multipart/form-data" action="#">
                                         <input type="hidden" id="response_id" t-att-value="response.id"/>
                                         <input type="hidden" name="csrf_token" t-att-value="widget.csrf_token"/>
                                         <div>
@@ -144,10 +144,10 @@
                                             </t>
                                         </div>
                                         <div class="mt-3 card-body">
-                                            <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary#{(widget.slide.is_member or widget.slide.is_preview) and ' ' or  ' d-none'}" name="submit" value="save" type="submit">
+                                            <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary#{(widget.slide.is_member or widget.slide.is_preview) and ' ' or  ' d-none'}" name="submit" value="save" type="button">
                                                 <span>Save Your Progress</span>
                                             </button>
-                                            <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary#{(widget.slide.is_member or widget.slide.is_preview) and ' ' or  ' d-none'}" style="float:right;" name="submit" value="submit" type="submit">
+                                            <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary#{(widget.slide.is_member or widget.slide.is_preview) and ' ' or  ' d-none'}" style="float:right;" name="submit" value="submit" type="button">
                                                 <span>Submit</span>
                                             </button>
                                         </div>
@@ -156,7 +156,7 @@
                             </t>
                         </t>
                         <t t-if="(! widget.hasOwnProperty('total_responses') || widget.total_responses.length == 0) &amp;&amp; widget.slide_prompts">
-                            <form id="ora_form" role="form" enctype="multipart/form-data" action="/ora/submit/">
+                            <form id="ora_form" role="form" enctype="multipart/form-data" action="#">
                                 <input type="hidden" name="csrf_token" t-att-value="widget.csrf_token"/>
                                 <div>
                                     <t t-if="widget.slide_prompts">
@@ -164,10 +164,10 @@
                                     </t>
                                 </div>
                                 <div t-attf-class="mt-3 card-body#{(widget.slide.is_member) and ' ' or  ' d-none'}">
-                                    <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary" name="submit" value="save" type="submit">
+                                    <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary" name="submit" value="save" type="button">
                                         <span>Save Your Progress</span>
                                     </button>
-                                    <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary" style="float:right;" name="submit" value="submit" type="submit">
+                                    <button t-attf-class="o_wslides_js_lesson_ora_submit btn btn-primary" style="float:right;" name="submit" value="submit" type="button">
                                         <span>Submit</span>
                                     </button>
                                 </div>
@@ -359,12 +359,12 @@
                             <t t-if="prompt.response_type == 'text'">
                                 <span class="input-group-text">Your Response</span>
                                 <div class="input-group" style="text-align: justify;">
-                                    <textarea class="form-control" t-att-name="prompt.id" required="required"><t t-esc="user_input.value_text_box"/></textarea>
+                                    <textarea t-attf-class="form-control response_div_#{prompt.id}" t-att-name="prompt.id" required="required"><t t-esc="user_input.value_text_box"/></textarea>
                                 </div>
                             </t>
                             <t t-if="prompt.response_type == 'rich_text'">
                                 <span class="input-group-text">Your Response</span>
-                                <div class="position-relative o_wysiwyg_textarea_wrapper">
+                                <div t-attf-class="position-relative o_wysiwyg_textarea_wrapper response_div_#{prompt.id}">
                                     <textarea class="form-control o_wysiwyg_loader" 
                                         t-att-name="prompt.id" required="required">
                                         <t t-esc="user_input.value_richtext_box"/>
@@ -378,12 +378,12 @@
                     <t t-if="prompt.response_type == 'text'">
                         <span class="input-group-text">Your Response</span>
                         <div class="input-group" style="text-align: justify;">
-                            <textarea class="form-control" t-att-name="prompt.id" required="required"></textarea>
+                            <textarea t-attf-class="form-control response_div_#{prompt.id}" t-att-name="prompt.id" required="required"></textarea>
                         </div>
                     </t>
                     <t t-if="prompt.response_type == 'rich_text'">
                         <span class="input-group-text">Your Response</span>
-                        <div class="position-relative o_wysiwyg_textarea_wrapper">
+                        <div t-attf-class="position-relative o_wysiwyg_textarea_wrapper response_div_#{prompt.id}">
                             <textarea class="form-control s_website_form_input o_wysiwyg_loader" t-att-name="prompt.id" required="required"></textarea>
                         </div>
                     </t>
