@@ -259,7 +259,7 @@
                                     </t>
                                 </t>
                             </t>
-                            <form action="#" id="ora_form" role="form" enctype="multipart/form-data">
+                            <form t-attf-action="/ora/response/save" id="ora_form" role="form" enctype="multipart/form-data">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <t t-if="active_response">
                                     <t t-foreach="active_response" t-as="response">
@@ -269,10 +269,10 @@
                                             </t>
                                         </div>
                                         <div class="mt-3" style="margin-left:13px;">
-                                            <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member) else '')" type="button" name="submit" value="save">
+                                            <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary %s' % ('d-none' if not (slide.channel_id.is_member) else '')" type="submit" name="submit" value="save">
                                                 <span>Save Your Progress</span>
                                             </button>
-                                            <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" style="float:right;" type="button" name="submit" value="submit">
+                                            <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" style="float:right;" type="submit" name="submit" value="submit">
                                                 <span>Submit</span>
                                             </button>
                                         </div>
@@ -281,7 +281,7 @@
                             </form>
                         </t>
                         <t t-if="not total_responses and slide.prompt_ids">
-                            <form action="#" method="post" role="form" enctype="multipart/form-data">
+                            <form t-attf-action="/ora/response/save" method="post" role="form" enctype="multipart/form-data">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <div t-if="slide.slide_type != 'certification'">
                                     <t t-if="slide.prompt_ids">
@@ -289,10 +289,10 @@
                                     </t>
                                 </div>
                                 <div class="mt-3" style="margin-left:13px;">
-                                    <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" type="button" name="submit" value="save">
+                                    <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" type="submit" name="submit" value="save">
                                         <span>Save Your Progress</span>
                                     </button>
-                                    <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" style="float:right;" type="button" name="submit" value="submit">
+                                    <button t-att-class="'o_wslides_js_lesson_ora_submit btn btn-primary o_slide_submit_btn %s' % ('d-none' if not (slide.channel_id.is_member) else '')" style="float:right;" type="submit" name="submit" value="submit">
                                         <span>Submit</span>
                                     </button>
                                 </div>
