@@ -349,7 +349,7 @@
                     <small class="text-muted">
                         <i class="fa fa-quora me-1"></i>
                     </small>
-                    <span class="question_text ml-2" style="line-height: 1;" t-out="prompt['question']"/>
+                    <div class="question_text ml-2" style="line-height: 1;flex-direction:column;display:inline-flex;" t-out="prompt['question']"/>
                 </div>
             </div>
             <div class="list-group o_wslides_ora_answer_info" t-att-id="prompt.id">
