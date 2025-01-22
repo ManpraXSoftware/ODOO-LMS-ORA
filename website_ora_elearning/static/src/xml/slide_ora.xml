@@ -345,11 +345,11 @@
         <div t-attf-class="o_wslides_js_lesson_quiz_question card-body #{(widget.slide.is_member) and ' ' or  ' disabled'}"
             t-attf-data-question-id="#{prompt.id}" t-att-data-title="prompt.question">
             <div class="row mb-2">
-                <div>
+                <div style="display:inline-flex;">
                     <small class="text-muted">
                         <i class="fa fa-quora me-1"></i>
                     </small>
-                    <div class="question_text ml-2" style="line-height: 1;flex-direction:column;display:inline-flex;" t-out="prompt['question']"/>
+                    <div class="question_text ml-2" style="line-height:1.2;flex-direction:column;display:inline-flex;" t-out="prompt['question']"/>
                 </div>
             </div>
             <div class="list-group o_wslides_ora_answer_info" t-att-id="prompt.id">
@@ -401,15 +401,15 @@
         <div t-attf-class="o_wslides_js_lesson_quiz_question card-body #{(widget.slide.is_member) and ' ' or  ' disabled'}"
             t-attf-data-question-id="#{prompt.id}" t-att-data-title="prompt.question">
             <div class="row mb-2">
-                <div>
+                <div style="display:inline-flex;">
                     <small class="text-muted">
                         <i class="fa fa-quora me-1"></i>
                     </small>
-                    <span class="question_text ml-2" style="line-height: 1;"  t-out="prompt['question']"/>
+                    <div class="question_text ml-2" style="line-height:1.2;flex-direction:column;display:inline-flex;" t-out="prompt['question']"/>
                 </div>
             </div>
             <div class="row mb-2">
-                <div>
+                <div style="display:inline-flex;line-height:1">
                     <t t-foreach="response.user_response_line" t-as="user_input" t-key="user_imput">
                         <t t-if="user_input.prompt_id == prompt.id">
                             <t t-if="prompt.response_type == 'text'">
@@ -425,7 +425,7 @@
                                     <i class="fa fa-font me-1"></i>
                                 </small>
                                 <span class="ml-1" style="line-height: 1">
-                                    <span class="d-inline-block" t-out="user_input.value_richtext_box"/>
+                                    <span t-out="user_input.value_richtext_box"/>
                                 </span>
                             </t>
                         </t>
