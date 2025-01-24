@@ -402,11 +402,11 @@
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2">
-                    <div class="d-flex align-content-start">
+                    <div class="d-flex align-content-start" style="display:inline-flex;">
                         <small class="text-muted">
                             <i class="fa fa-quora me-2"></i>
                         </small>
-                        <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
+                        <span class="question_text ml-2" style="line-height:1.2;flex-direction:column;display:inline-flex;" t-out="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -435,11 +435,11 @@
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2">
-                    <div class="d-flex align-content-start">
+                    <div class="d-flex align-content-start" style="display:inline-flex;">
                         <small class="text-muted">
                             <i class="fa fa-quora me-2"></i>
                         </small>
-                        <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
+                        <span class="question_text ml-2" style="line-height:1.2;flex-direction:column;display:inline-flex;" t-out="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group">
@@ -472,11 +472,11 @@
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2">
-                    <div class="d-flex align-content-start">
+                    <div class="d-flex align-content-start" style="display:inline-flex;">
                         <small class="text-muted">
                             <i class="fa fa-quora me-2"></i>
                         </small>
-                        <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
+                        <span class="question_text ml-2" style="line-height:1.2;flex-direction:column;display:inline-flex;" t-out="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group flex-row">
@@ -508,11 +508,11 @@
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2">
-                    <div class="d-flex align-content-start">
+                    <div class="d-flex align-content-start" style="display:inline-flex;">
                         <small class="text-muted">
                             <i class="fa fa-quora me-2"></i>
                         </small>
-                        <span class="question_text ml-1" style="line-height:1;" t-out="prompt['question']"/>
+                        <span class="question_text ml-2" style="line-height:1.2;flex-direction:column;display:inline-flex;" t-out="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group flex-row">
@@ -544,11 +544,11 @@
             <div t-att-class="'o_wslides_js_lesson_quiz_question mt-3 %s' % ('disabled' if not (slide.channel_id.is_member) else '')"
                 t-att-data-question-id="prompt['id']" t-att-data-title="prompt['question']">
                 <div class="row d-flex mb-2">
-                    <div class="d-flex align-content-start">
+                    <div class="d-flex align-content-start" style="display:inline-flex;">
                         <small class="text-muted">
                             <i class="fa fa-quora me-2"></i>
                         </small>
-                        <span class="question_text ml-1" style="line-height:1;" t-raw="prompt['question']"/>
+                        <span class="question_text ml-2" style="line-height:1.2;flex-direction:column;display:inline-flex;" t-raw="prompt['question']"/>
                     </div>
                 </div>
                 <div class="list-group flex-row">

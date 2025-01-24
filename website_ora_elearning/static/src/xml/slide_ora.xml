@@ -417,7 +417,7 @@
                                     <i class="fa fa-font me-1"></i>
                                 </small>
                                 <span class="ml-1" style="line-height: 1">
-                                    <span t-esc="user_input.value_text_box"/>
+                                    <span style="white-space: break-spaces;" t-esc="user_input.value_text_box"/>
                                 </span>
                             </t>
                             <t t-if="prompt.response_type == 'rich_text'">
