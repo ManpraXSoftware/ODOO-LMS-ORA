@@ -178,6 +178,13 @@
                             }
                         }
                     }
+                    if (data.peer_responses) {
+                        for (let i = 0; i < data.peer_responses.length; i++) {
+                            for (let j = 0; j < (data.peer_responses[i].user_response_line).length; j++) {
+                                data.peer_responses[i].user_response_line[j].value_richtext_box = markup(data.peer_responses[i].user_response_line[j].value_richtext_box)
+                            }
+                        }
+                    }
                     $content.empty().append(renderToFragment('slide.ora.assessment', {widget: data}));
                     $('textarea.o_wysiwyg_loader').toArray().forEach((textarea) => {
                         var $textarea = $(textarea);

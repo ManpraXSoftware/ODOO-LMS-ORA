@@ -115,7 +115,7 @@
                                                             <div><p><strong>Response</strong></p></div>
                                                             <t t-if="record.response_type.raw_value == 'text'">
                                                                 <p style="overflow-wrap: break-word;">
-                                                                    <field name="value_text_box"/>
+                                                                    <field name="value_text_box" style="white-space:break-spaces;" />
                                                                 </p>
                                                             </t>
                                                             <t t-if="record.response_type.raw_value == 'rich_text'">
