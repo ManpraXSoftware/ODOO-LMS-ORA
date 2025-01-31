@@ -29,7 +29,7 @@
         init: function (parent, slides, defaultSlideId, channelData) {
             var result = this._super.apply(this,arguments);
             this.initialSlideID = defaultSlideId;
-            this.slides = this._preprocessSlideData(slides);
+            // this.slides = this._preprocessSlideData(slides);
             this.channel = channelData;
             var slide;
             const urlParams = new URL(window.location).searchParams;
