@@ -584,7 +584,7 @@
             </span>
             <ul class="o_wslides_lesson_aside_list_links list-group mb-1 list-unstyled fw-light" position="attributes">
                  <t t-if="'is_sequential' not in aside_slide.fields_get()">
-                    <attribute name="t-if">aside_slide.prompt_ids or aside_slide._has_additional_resources() or aside_slide.question_ids</attribute>
+                    <attribute name="t-if">aside_slide.prompt_ids or aside_slide.sudo().slide_resource_ids or aside_slide.question_ids</attribute>
                 </t>
             </ul>
             <ul class="o_wslides_lesson_aside_list_links list-group mb-1 list-unstyled fw-light" position="inside">
